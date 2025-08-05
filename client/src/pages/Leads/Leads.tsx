@@ -1,0 +1,423 @@
+import { MdDelete, MdEdit } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
+import { motion } from "motion/react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllStatus } from "../../api/status";
+import { getAllLead } from "../../api/lead";
+import { getAllProcess } from "../../api/process";
+import { useState } from "react";
+import { getAllUser } from "../../api/user";
+import DeleteModal from "../../components/Modal/DeleteModal";
+import EditLeadModal from "../../components/Modal/EditLeadModal";
+
+const Leads = () => {
+    // const [phone, setPhone] = useState("");
+    const [process, setProcess] = useState(0);
+    // const [centre, setCentre] = useState("");
+    // const [leadUser, setLeadUser] = useState("");
+    // const [closerUser, setCloserUser] = useState("");
+    const [saleDate, setSaleDate] = useState("");
+    const [fromDate, setFromDate] = useState("");
+    const [toDate, setToDate] = useState("");
+    const [status, setStatus] = useState(0);
+    const [detail, setDetail] = useState({});
+
+    const [show, setShow] = useState({
+        edit: false,
+        delete: false,
+        view: false,
+    });
+
+    const queryClient = useQueryClient();
+
+    const { data: processData } = useQuery({
+        queryKey: ["process"],
+        queryFn: getAllProcess,
+    });
+    const { data: userData } = useQuery({
+        queryKey: ["user"],
+        queryFn: getAllUser,
+    });
+    const filteredUsers = userData?.filter(
+        (item: any) => item?.role === "user"
+    );
+
+    console.log(saleDate, fromDate, toDate);
+
+    const { data: statusData } = useQuery({
+        queryKey: ["status"],
+        queryFn: getAllStatus,
+    });
+
+    const { data: leads, refetch } = useQuery({
+        queryKey: ["leads", status],
+        queryFn: () => getAllLead(status, process, saleDate, fromDate, toDate),
+    });
+
+    console.log(leads);
+
+    const resetFilters = () => {
+        setStatus(0);
+    };
+    return (
+        <>
+            <div className="overflow-hidden">
+                <div className="p-5">
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0 }}
+                    >
+                        <div className="grid grid-cols-4 gap-x-5 gap-y-3">
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="phone">Phone</label>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    id="phone"
+                                    className="border border-gray-400 px-3 py-1 rounded-md outline-none"
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="phone">Process</label>
+                                <select
+                                    name="process"
+                                    id="phone"
+                                    onClick={(e: any) =>
+                                        setProcess(e.target.value)
+                                    }
+                                    className="border outline-none border-gray-400 px-3 py-1 rounded-md"
+                                >
+                                    <option value={0}>Select A Process</option>
+                                    {processData?.map((item: any) => (
+                                        <option value={item?.id}>
+                                            {item?.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="phone">Centre</label>
+                                <select
+                                    name="center"
+                                    id="center"
+                                    defaultValue="1"
+                                    className="border outline-none border-gray-400 px-3 py-1 rounded-md"
+                                >
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="5">6</option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="leadUser">Lead User</label>
+                                <select
+                                    name="leadUser"
+                                    id="leadUser"
+                                    defaultValue="1"
+                                    className="border outline-none border-gray-400 px-3 py-1 rounded-md"
+                                >
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="5">6</option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="closerUser">Closer User</label>
+                                <select
+                                    name="closerUser"
+                                    id="closerUser"
+                                    defaultValue="1"
+                                    className="border outline-none border-gray-400 px-3 py-1 rounded-md"
+                                >
+                                    <option>Select A Closer User</option>
+                                    {filteredUsers?.map((item: any) => (
+                                        <option value={item?.id}>
+                                            {item?.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="saleDate">Sale Date</label>
+                                <input
+                                    type="date"
+                                    name="saleDate"
+                                    id="saleDate"
+                                    onChange={(e) =>
+                                        setSaleDate(e.target.value)
+                                    }
+                                    className="border border-gray-400 px-3 py-1 rounded-md outline-none"
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="fromDate">From Date</label>
+                                <input
+                                    type="date"
+                                    name="fromDate"
+                                    id="fromDate"
+                                    onChange={(e) =>
+                                        setFromDate(e.target.value)
+                                    }
+                                    className="border border-gray-400 px-3 py-1 rounded-md outline-none"
+                                />
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="toDate">To Date</label>
+                                <input
+                                    type="date"
+                                    name="toDate"
+                                    id="toDate"
+                                    onChange={(e) => setToDate(e.target.value)}
+                                    className="border border-gray-400 px-3 py-1 rounded-md outline-none"
+                                />
+                            </div>
+                        </div>
+                        <div className="mb-10 mt-3 flex items-center gap-2 text-sm">
+                            <button
+                                onClick={() => refetch()}
+                                className="bg-green-500 text-white px-10 py-1 rounded-md cursor-pointer"
+                            >
+                                Search
+                            </button>
+                            <button
+                                onClick={() => resetFilters()}
+                                className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer"
+                            >
+                                Reset Filters
+                            </button>
+                        </div>
+                    </motion.div>
+
+                    <div className="mb-5  text-gray-900 bg-white ">
+                        <motion.p
+                            initial={{
+                                opacity: 0,
+                                scale: 1.2,
+                            }}
+                            animate={{
+                                opacity: 1,
+                                scale: 1,
+                            }}
+                            transition={{ duration: 0.5 }}
+                            className="text-3xl font-semibold uppercase origin-center w-fit"
+                        >
+                            Leads - All Leads
+                        </motion.p>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.25 }}
+                            className="mt-1 text-sm font-normal text-gray-700 w-[50%]"
+                        >
+                            Browse a list of Flowbite products designed to help
+                            you work and play, stay organized, get answers, keep
+                            in touch, grow your business, and more.
+                        </motion.p>
+                    </div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.25 }}
+                        className="mt-1 text-sm font-normal text-gray-700 w-[50%]"
+                    >
+                        <div className="flex gap-x-1 mb-5">
+                            {statusData?.map((item: any) => (
+                                <button
+                                    onClick={() => {
+                                        setStatus(item?.id);
+                                        queryClient.invalidateQueries({
+                                            queryKey: ["leads"],
+                                        });
+                                    }}
+                                    className={`${
+                                        item?.name.toLowerCase() === "success"
+                                            ? "bg-green-500"
+                                            : ""
+                                    } ${
+                                        item?.name.toLowerCase() === "cancelled"
+                                            ? "bg-red-500"
+                                            : ""
+                                    } ${
+                                        item?.name.toLowerCase() === "pending"
+                                            ? "bg-yellow-500"
+                                            : ""
+                                    } bg-gray-500 text-white text-xs font-semibold px-6 py-1 rounded-md capitalize cursor-pointer`}
+                                >
+                                    {item?.name}
+                                </button>
+                            ))}
+                        </div>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="relative overflow-x-auto shadow-md sm:rounded-lg"
+                    >
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                            <thead className="text-center text-gray-700 uppercase bg-gray-200">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">
+                                        Sr. No.
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Actions
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        status
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Sale Date
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Lead By
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Closed By
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Phone
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Process
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Plan
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {leads?.map((item: any, i: number) => (
+                                    <tr
+                                        className={` capitalize text-center border-b :border-gray-700 border-gray-200`}
+                                    >
+                                        <th
+                                            scope="row"
+                                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap :text-white"
+                                        >
+                                            {i + 1}
+                                        </th>
+                                        <td className="px-6 py-4 flex flex-col gap-1 items-center">
+                                            <button
+                                                onClick={() => {
+                                                    setShow({
+                                                        edit: true,
+                                                        delete: false,
+                                                        view: false,
+                                                    });
+                                                    setDetail(item);
+                                                }}
+                                                className="font-medium text-white bg-green-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
+                                            >
+                                                <MdEdit />
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    setShow({
+                                                        edit: false,
+                                                        delete: false,
+                                                        view: true,
+                                                    })
+                                                }
+                                                className="font-medium text-white bg-blue-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
+                                            >
+                                                <FaEye />
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    setShow({
+                                                        edit: false,
+                                                        delete: true,
+                                                        view: false,
+                                                    })
+                                                }
+                                                className="font-medium text-white bg-red-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
+                                            >
+                                                <MdDelete />
+                                            </button>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <p
+                                                className={`${
+                                                    item?.status?.name?.toLowerCase() ===
+                                                    "success"
+                                                        ? "bg-green-500"
+                                                        : ""
+                                                } ${
+                                                    item?.status?.name?.toLowerCase() ===
+                                                    "pending"
+                                                        ? "bg-blue-500"
+                                                        : ""
+                                                } ${
+                                                    item?.status?.name?.toLowerCase() ===
+                                                    "cancelled"
+                                                        ? "bg-red-500"
+                                                        : ""
+                                                } px-3 py-1 text-xs rounded font-semibold text-white`}
+                                            >
+                                                {item?.status?.name}
+                                            </p>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {new Date(
+                                                item?.saleDate
+                                            ).toDateString()}
+                                        </td>
+                                        <td className="px-6 py-4">name</td>
+                                        <td className="px-6 py-4">
+                                            {item?.closer?.name}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {item?.title} {item?.firstName}{" "}
+                                            {item?.middleName} {item?.lastName}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {item?.phone}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {item?.process?.name}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {item?.plan?.name}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </motion.div>
+                </div>
+            </div>
+
+            {show.delete && (
+                <DeleteModal
+                    handleClose={() =>
+                        setShow({ edit: false, view: false, delete: false })
+                    }
+                    handleDelete={() => {}}
+                />
+            )}
+            {show.edit && (
+                <EditLeadModal
+                    handleClose={() =>
+                        setShow({ edit: false, view: false, delete: false })
+                    }
+                    item={detail}
+                />
+            )}
+        </>
+    );
+};
+
+export default Leads;
