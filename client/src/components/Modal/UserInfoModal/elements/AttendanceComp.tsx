@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Bar } from "react-chartjs-2";
-import { getEmployeeYearlyAttendance } from "../../../../api/userAttendance";
+import { getUserMonthWiseAttendance } from "../../../../api/userAttendance";
 
 const AttendanceComp = ({ userId }: { userId: number }) => {
     const { data = [] } = useQuery({
         queryKey: ["bar-chart"],
-        queryFn: () => getEmployeeYearlyAttendance(userId),
+        queryFn: () => getUserMonthWiseAttendance(userId),
     });
+
+    console.log(data);
     let groupdata = {
         labels: [
             "Jan",

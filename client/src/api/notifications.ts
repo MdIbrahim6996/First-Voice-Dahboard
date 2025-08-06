@@ -1,25 +1,34 @@
 import axios from "axios";
-import { SERVER_URL } from "../constants/apiConstant";
+import toast from "react-hot-toast";
+import { axiosInstance } from "../lib/axiosInstance";
 
 export const getAllNotifs = async (userId: number) => {
     try {
-        const { data } = await axios.get(
-            `${SERVER_URL}/user/notification/${userId}`,
+        const { data } = await axiosInstance.get(
+            `/user/notification/${userId}`,
             { withCredentials: true }
         );
         return data;
     } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
     }
 };
 
 export const deleteNotifs = async (userId: number, id: number) => {
     try {
-        const { data } = await axios.delete(
-            `${SERVER_URL}/user/notification/${userId}/${id}`
+        const { data } = await axiosInstance.delete(
+            `/user/notification/${userId}/${id}`
         );
         return data;
     } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
     }
 };

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { SERVER_URL } from "../constants/apiConstant";
 import toast from "react-hot-toast";
+import { axiosInstance } from "../lib/axiosInstance";
 
 export const createEmployeeAttendance = async (id: number) => {
     try {
-        const { data } = await axios.post(`${SERVER_URL}/attendance/${id}`);
+        const { data } = await axiosInstance.post(`/attendance/${id}`);
         if (data?.message) {
             toast.success(data?.message);
         }
@@ -19,7 +19,7 @@ export const createEmployeeAttendance = async (id: number) => {
 };
 export const getEmployeeAttendance = async (id: number) => {
     try {
-        const { data } = await axios.get(`${SERVER_URL}/attendance/${id}`);
+        const { data } = await axiosInstance.get(`/attendance/${id}`);
         return data;
     } catch (error) {
         console.log(error);
@@ -31,7 +31,7 @@ export const getEmployeeAttendance = async (id: number) => {
 };
 export const getAllAttendance = async () => {
     try {
-        const { data } = await axios.get(`${SERVER_URL}/attendance`);
+        const { data } = await axiosInstance.get(`/attendance`);
         return data;
     } catch (error) {
         console.log(error);

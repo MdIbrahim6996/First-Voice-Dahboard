@@ -2,12 +2,15 @@ import { Scheduler } from "@aldabil/react-scheduler";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { getAllUserHoliday } from "../../api/holiday";
+import type { Holiday } from "../../types/app.types";
 
 const Holiday = () => {
     const { data: holidays } = useQuery({
         queryKey: ["holiday"],
         queryFn: getAllUserHoliday,
     });
+
+    console.log(holidays);
 
     const events = holidays?.map((item: any) => ({
         event_id: item?.id,

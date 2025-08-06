@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../lib/prismaClient";
-import { Prisma } from "../../../prisma/generated/prisma/client";
+import { Prisma } from "@prisma/client";
 import { pusher } from "../lib/pusher";
 import { groupBy } from "lodash";
 
@@ -123,8 +123,6 @@ export const getAllLeadOfUser = async (
     const { userId } = req.params;
     const { status, saleDate, fromDate, toDate } = req.query;
 
-    console.log("userId", userId);
-
     try {
         const newSaleDate = new Date(saleDate as string);
         const nextDay = new Date(saleDate as string);
@@ -155,7 +153,6 @@ export const getAllLeadOfUser = async (
             },
             orderBy: { createdAt: "desc" },
         });
-        console.log(leads.length);
         res.send(leads);
     } catch (error) {
         console.log(error);
@@ -227,6 +224,7 @@ export const updateLead = async (
     } = req.body;
 
     try {
+        console.log(req.body);
         let initialStatus = req?.body?.initialStatus as string;
         let finalStatus = "";
 
@@ -256,7 +254,6 @@ export const updateLead = async (
             },
         });
         finalStatus = lead?.status?.name;
-        console.log(lead);
 
         const notif = await prisma.notification.create({
             data: {
@@ -283,7 +280,7 @@ export const updateLead = async (
         //     where: { id: parseInt(id) },
         //     data: { statusId: data?.statusId },
         // });
-        
+
         res.send(lead);
     } catch (error) {
         console.log(error);

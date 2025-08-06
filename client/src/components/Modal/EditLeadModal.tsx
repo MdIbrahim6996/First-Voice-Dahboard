@@ -36,16 +36,20 @@ const EditLeadModal = ({
             accountNumber: item?.accountNumber,
             sort: item?.sort,
             dateOfBirth: item?.dateOfBirth?.substring(0, 10),
+            status: item?.statusId,
         },
     });
 
     const queryClient = useQueryClient();
     const finalStatus = watch("status");
-    console.log(finalStatus);
+    const statusCheck = watch("status");
     const { data: status } = useQuery({
         queryKey: ["status"],
         queryFn: getAllStatus,
     });
+
+    console.log(item?.statusId, statusCheck);
+    console.log(typeof item?.statusId, typeof statusCheck);
 
     const editMutation = useMutation({
         mutationFn: updateLead,
@@ -65,7 +69,6 @@ const EditLeadModal = ({
             initialStatus: item?.status?.name,
             finalStatus: finalStatus,
         });
-        // console.log(data);
     };
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 overflow-y-scroll">
@@ -94,7 +97,7 @@ const EditLeadModal = ({
                             </label>
                             <select
                                 {...register("status", {
-                                    required: "Please select Title.",
+                                    required: "Please select Status.",
                                 })}
                                 id="status"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
@@ -114,6 +117,25 @@ const EditLeadModal = ({
                                 </p>
                             )}
                         </div>
+
+                        {item?.statusId !== statusCheck && (
+                            <div className="flex flex-col text-sm space-y-0.5 my-2">
+                                <label
+                                    htmlFor="reason"
+                                    className="font-semibold"
+                                >
+                                    Reason For Status Change:
+                                </label>
+                                <textarea
+                                    rows={5}
+                                    id="reason"
+                                    {...register("reason")}
+                                    placeholder="Reason"
+                                    className="border border-gray-400 px-3 py-1 rounded outline-none"
+                                />
+                            </div>
+                        )}
+
                         <p className="mb-4 text-2xl font-semibold italic text-black/80 underline">
                             Customer Information
                         </p>

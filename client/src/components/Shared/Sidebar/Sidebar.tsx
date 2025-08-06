@@ -86,7 +86,7 @@ const adminLinks = [
     },
     {
         id: 6,
-        title: "Holiday",
+        title: "Holiday-Calendar",
         icon: <MdCalendarMonth className="text-xl" />,
     },
     {
@@ -200,7 +200,6 @@ const Sidebar = () => {
         });
         const channel = pusher.subscribe("lead");
         channel.bind(`status-change-${user?.user?.id}`, (data: any) => {
-           
             setLength((prev: number) => prev + 1);
             toast.custom(<NotificationToast data={data?.notif} />, {
                 duration: 10 * 1000,

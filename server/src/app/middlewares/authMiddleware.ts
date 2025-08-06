@@ -24,6 +24,7 @@ export const isAuth = async (
 ) => {
     try {
         const { token } = req.cookies;
+        console.log(token);
         if (!token) throw new Error("Token expired login again.");
         const { id } = jwt.verify(token, "fsdfsdf") as IJwtPayload;
         if (id) {

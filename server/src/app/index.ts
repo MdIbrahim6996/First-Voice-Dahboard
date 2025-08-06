@@ -25,7 +25,6 @@ app.get("/api/v1/health-check", (_, res: Response) =>
     res.send({ message: "ok" })
 );
 app.use("/api/v1", router);
-console.log(path.join(path.resolve(), "../client", "dist"));
 
 if (process.env.NODE_ENV === "production") {
     // Serve front-end app for all unmatched routes
@@ -33,10 +32,19 @@ if (process.env.NODE_ENV === "production") {
 
     app.get("/{*any}", (req, res) => {
         res.sendFile(
-            path.resolve(path.resolve(), "client", "dist", "index.html")
+            path.resolve(path.resolve(), "../client", "dist", "index.html")
         );
     });
 }
+
+console.log(path.join(path.resolve(), "../client", "dist"));
+app.use(express.static(path.join(path.resolve(), "../client", "dist")));
+
+app.get("/{*any}", (req, res) => {
+    res.sendFile(
+        path.resolve(path.resolve(), "../client", "dist", "index.html")
+    );
+});
 
 //ERROR HANDLER
 app.use(notFound);
@@ -236,3 +244,11 @@ app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
 
 // const date = new Date();
 // console.log(new Date(2025, 5, date.getDate()).getDate());
+
+// async function dropTable() {
+//     await prisma.$executeRaw`DROP TABLE IF EXISTS leadCount;`;
+//     // Or with IF EXISTS to prevent errors if the table doesn't exist:
+//     // await prisma.$executeRaw`DROP TABLE IF EXISTS User;`;
+// }
+
+// dropTable();

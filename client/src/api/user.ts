@@ -30,7 +30,7 @@ export const getSingleUser = async (id: number) => {
 export const getUserInfo = async (id: number, time: string) => {
     try {
         const { data } = await axiosInstance.get(
-            `${SERVER_URL}/profile/${id}?time=${time}`
+            `${SERVER_URL}/user/profile/${id}?time=${time}`
         );
         return data;
     } catch (error) {

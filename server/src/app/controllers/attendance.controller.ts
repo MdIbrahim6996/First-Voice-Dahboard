@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../lib/prismaClient";
-import { groupBy } from "lodash";
-import { Prisma } from "../../../prisma/generated/prisma/client";
+import groupBy from "lodash/groupBy";
+import { Prisma } from "@prisma/client";
 
 export const createEmployeeAttendance = async (
     req: Request,

@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const superadmin_notification_route_1 = __importDefault(require("./superadmin.notification.route"));
+const router = (0, express_1.Router)();
+// router.use("/attendance", attendanceRouter);
+// router.use("/dashboard", dashboardRouter);
+// router.use("/main-dashboard", mainDashboardRouter);
+// router.use("/holiday", holidayRouter);
+// router.use("/lead", leadRouter);
+// router.use("/process", processRouter);
+// router.use("/user", userRouter);
+// router.use("/plan", planRouter);
+// router.use("/employee", employeeAttendance);
+// router.use("/status", statusRoute);
+router.use("/notification", superadmin_notification_route_1.default);
+// router.use("/profile", profileRoute);
+exports.default = router;

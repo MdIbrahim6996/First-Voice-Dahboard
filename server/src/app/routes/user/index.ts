@@ -2,23 +2,15 @@ import { Router } from "express";
 import attendanceRouter from "./attendance.route";
 import notificationRouter from "./notification.route";
 import holidayRouter from "./holiday.route";
-import { isAuth } from "../../middlewares/authMiddleware";
+import profileRouter from "./profile.route";
+import leadRouter from "./lead.route";
 
 const router = Router();
 
-router.use("/attendance", isAuth, attendanceRouter);
-router.use("/notification", isAuth, notificationRouter);
-router.use("/holiday", isAuth, holidayRouter);
-
-// router.use("/dashboard", dashboardRouter);
-// router.use("/main-dashboard", mainDashboardRouter);
-// router.use("/holiday", holidayRouter);
-// router.use("/lead", leadRouter);
-// router.use("/process", processRouter);
-// router.use("/user", userRouter);
-// router.use("/plan", planRouter);
-// router.use("/employee", employeeAttendance);
-// router.use("/status", statusRoute);
-// router.use("/profile", profileRoute);
+router.use("/attendance", attendanceRouter);
+router.use("/notification", notificationRouter);
+router.use("/holiday", holidayRouter);
+router.use("/profile", profileRouter);
+router.use("/lead", leadRouter);
 
 export default router;

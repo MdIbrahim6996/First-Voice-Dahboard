@@ -1,5 +1,7 @@
 import axios from "axios";
 import { SERVER_URL } from "../constants/apiConstant";
+import { axiosInstance } from "../lib/axiosInstance";
+import toast from "react-hot-toast";
 
 export const createLead = async (formData: any) => {
     try {
@@ -9,6 +11,10 @@ export const createLead = async (formData: any) => {
         return data;
     } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
     }
 };
 export const updateLead = async (formData: any) => {
@@ -19,8 +25,14 @@ export const updateLead = async (formData: any) => {
         return data;
     } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
     }
 };
+
+//User
 export const getAllLeadOfUser = async (
     userId: number,
     status: number,
@@ -29,12 +41,16 @@ export const getAllLeadOfUser = async (
     toDate: string
 ) => {
     try {
-        const { data } = await axios.get(
-            `${SERVER_URL}/lead/${userId}?status=${status}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
+        const { data } = await axiosInstance.get(
+            `${SERVER_URL}/user/lead/${userId}?status=${status}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
         );
         return data;
     } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
     }
 };
 export const getAllLead = async (
@@ -51,5 +67,9 @@ export const getAllLead = async (
         return data;
     } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
     }
 };

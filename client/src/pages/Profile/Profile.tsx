@@ -4,17 +4,17 @@ import "chart.js/auto"; // ADD THIS
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQuery } from "@tanstack/react-query";
-import { getEmployeeYearlyAttendance } from "../../api/userAttendance";
+import { getUserMonthWiseAttendance } from "../../api/userAttendance";
 // import { getAllStatus } from "../../api/status";
 import { getUserInfo } from "../../api/user";
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
-
     const [time, setTime] = useState("thisMonth");
+
     const { data = [] } = useQuery({
-        queryKey: ["bar-chart"],
-        queryFn: () => getEmployeeYearlyAttendance(user?.user.id!),
+        queryKey: ["bar-chart", user?.user?.id],
+        queryFn: () => getUserMonthWiseAttendance(user?.user.id!),
     });
     // const { data: status = [] } = useQuery({
     //     queryKey: ["status"],
@@ -28,11 +28,11 @@ const Profile = () => {
     const piedata = {
         datasets: [
             {
-                data: leadData?.map((item: any) => item?.count),
+                data: leadData.map((item: any) => item?.count),
                 backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
             },
         ],
-        labels: leadData?.map((item: any) => item?.status?.toUpperCase()),
+        labels: leadData.map((item: any) => item?.status?.toUpperCase()),
     };
 
     let groupdata = {

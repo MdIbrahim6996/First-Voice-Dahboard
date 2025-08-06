@@ -1,5 +1,5 @@
 import { MdDelete, MdEdit } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaFileCsv } from "react-icons/fa";
 import { motion } from "motion/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllStatus } from "../../api/status";
@@ -7,6 +7,7 @@ import { getAllLead } from "../../api/lead";
 import { getAllProcess } from "../../api/process";
 import { useState } from "react";
 import { getAllUser } from "../../api/user";
+import { CSVLink } from "react-csv";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import EditLeadModal from "../../components/Modal/EditLeadModal";
 
@@ -42,8 +43,6 @@ const Leads = () => {
         (item: any) => item?.role === "user"
     );
 
-    console.log(saleDate, fromDate, toDate);
-
     const { data: statusData } = useQuery({
         queryKey: ["status"],
         queryFn: getAllStatus,
@@ -55,6 +54,107 @@ const Leads = () => {
     });
 
     console.log(leads);
+
+    const headers = [
+        { label: "ACCOUNT NAME", key: "accountName" },
+        { label: "ADDRESS", key: "address" },
+        { label: "BANK NAME", key: "bankName" },
+        { label: "CENTRE", key: "centre" },
+        { label: "CITY", key: "city" },
+        { label: "COUNTRY", key: "country" },
+        { label: "CURRENCY", key: "currency" },
+        { label: "TITLE", key: "title" },
+        { label: "FIRST NAME", key: "firstName" },
+        { label: "MIDDLE NAME", key: "middleName" },
+        { label: "LAST NAME", key: "lastName" },
+        { label: "DATE OF BIRTH", key: "dateOfBirth" },
+        { label: "PHONE", key: "phone" },
+        { label: "PROCESS", key: "process" },
+        { label: "PLAN", key: "plan" },
+        { label: "FEE", key: "fee" },
+        { label: "SALE DATE", key: "saleDate" },
+        { label: "STATUS", key: "status.name" },
+        { label: "SORT", key: "sort" },
+        { label: "PROCESS ID", key: "processId" },
+        { label: "PLAN ID", key: "planId" },
+
+        // applianceId
+        // :
+        // null
+
+        // :
+        // "sdfds"
+
+        // :
+        // "dsf"
+
+        // :
+        // "dsfsd"
+        // closer
+        // :
+        // {name: 'user1'}
+        // closerId
+        // :
+        // 1
+
+        // :
+        // "f"
+        // createdAt
+        // :
+        // "2025-08-04T14:02:39.056Z"
+
+        // :
+        // "Mr."
+
+        // :
+        // "2025-08-27T00:00:00.000Z"
+
+        // :
+        // 34
+
+        // :
+        // "first "
+        // id
+        // :
+        // 22
+
+        // :
+        // "last"
+
+        // :
+        // "middle"
+        // password
+        // :
+        // "324"
+
+        // :
+        // "sdf"
+
+        // :
+        // "3432432"
+
+        // :
+        // {name: 'plan 1'}
+
+        // :
+        // 7
+
+        // :
+        // {name: 'process 1'}
+
+        // :
+        // 3
+
+        // :
+        // "2025-08-04T14:02:39.056Z"
+
+        // :
+        // "erter"
+        // status
+        // :
+        // {name: 'cancelled'}
+        // statusId
+    ];
 
     const resetFilters = () => {
         setStatus(0);
@@ -90,7 +190,7 @@ const Leads = () => {
                                 >
                                     <option value={0}>Select A Process</option>
                                     {processData?.map((item: any) => (
-                                        <option value={item?.id}>
+                                        <option key={item?.id} value={item?.id}>
                                             {item?.name}
                                         </option>
                                     ))}
@@ -138,7 +238,7 @@ const Leads = () => {
                                 >
                                     <option>Select A Closer User</option>
                                     {filteredUsers?.map((item: any) => (
-                                        <option value={item?.id}>
+                                        <option key={item?.id} value={item?.id}>
                                             {item?.name}
                                         </option>
                                     ))}
@@ -227,36 +327,54 @@ const Leads = () => {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.25 }}
-                        className="mt-1 text-sm font-normal text-gray-700 w-[50%]"
+                        className="mt-1 text-sm font-normal text-gray-700 w-full"
                     >
-                        <div className="flex gap-x-1 mb-5">
-                            {statusData?.map((item: any) => (
-                                <button
-                                    onClick={() => {
-                                        setStatus(item?.id);
-                                        queryClient.invalidateQueries({
-                                            queryKey: ["leads"],
-                                        });
-                                    }}
-                                    className={`${
-                                        item?.name.toLowerCase() === "success"
-                                            ? "bg-green-500"
-                                            : ""
-                                    } ${
-                                        item?.name.toLowerCase() === "cancelled"
-                                            ? "bg-red-500"
-                                            : ""
-                                    } ${
-                                        item?.name.toLowerCase() === "pending"
-                                            ? "bg-yellow-500"
-                                            : ""
-                                    } bg-gray-500 text-white text-xs font-semibold px-6 py-1 rounded-md capitalize cursor-pointer`}
+                        <div className="flex  mb-5 items-center justify-between">
+                            <div className="flex gap-x-1">
+                                {statusData?.map((item: any) => (
+                                    <button
+                                        key={item?.id}
+                                        onClick={() => {
+                                            setStatus(item?.id);
+                                            queryClient.invalidateQueries({
+                                                queryKey: ["leads"],
+                                            });
+                                        }}
+                                        className={`${
+                                            item?.name.toLowerCase() ===
+                                            "success"
+                                                ? "bg-green-500"
+                                                : ""
+                                        } ${
+                                            item?.name.toLowerCase() ===
+                                            "cancelled"
+                                                ? "bg-red-500"
+                                                : ""
+                                        } ${
+                                            item?.name.toLowerCase() ===
+                                            "pending"
+                                                ? "bg-yellow-500"
+                                                : ""
+                                        } bg-gray-500 text-white text-xs font-semibold px-6 py-1 rounded-md capitalize cursor-pointer`}
+                                    >
+                                        {item?.name}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <button className="py-1.5 px-7 bg-green-700 text-white rounded-md text-sm flex gap-1 items-center cursor-pointer">
+                                <FaFileCsv className="text-lg" />{" "}
+                                <CSVLink
+                                    headers={headers}
+                                    data={leads ? leads : []}
+                                    filename="Leads.csv"
                                 >
-                                    {item?.name}
-                                </button>
-                            ))}
+                                    Export as CSV
+                                </CSVLink>
+                            </button>
                         </div>
                     </motion.div>
+
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -301,6 +419,7 @@ const Leads = () => {
                             <tbody>
                                 {leads?.map((item: any, i: number) => (
                                     <tr
+                                        key={item?.id}
                                         className={` capitalize text-center border-b :border-gray-700 border-gray-200`}
                                     >
                                         <th

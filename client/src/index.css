@@ -12,6 +12,9 @@ body {
 .sidebar::-webkit-scrollbar {
     display: none;
 }
+button {
+    cursor: pointer!;
+}
 
 /* .gradient-background {
     background: linear-gradient(300deg, deepskyblue, darkviolet, blue);

@@ -1,25 +1,10 @@
 import RootLayout from "./components/Shared/Layout/RootLayout";
 import AuthContextProvider from "./context/authContext";
-import Attendance from "./pages/Attendance/Attendance";
 import Login from "./pages/Auth/Login/Login";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainDashboard from "./pages/MainDashboard/MainDashboard";
-import Leads from "./pages/Leads/Leads";
-import UserLeads from "./pages/User/Leads/Leads";
-import Holiday from "./pages/Holiday/Holiday";
-import AddLeads from "./pages/AddLeads/AddLeads";
-import Profile from "./pages/Profile/Profile";
+
 import NotFoundPage from "./pages/NotFound";
-import Users from "./pages/Users/Users";
-import AddHoliday from "./pages/AddHoliday/AddHoliday";
-import Process from "./pages/Process/Process";
-import Plan from "./pages/Plan/Plan";
-import AllAttendance from "./pages/AllAttendance/AllAttendance";
-import MonthlyAttendance from "./pages/MonthlyAttendance/MonthlyAttendance";
-import Notification from "./pages/Notification/Notification";
-import Status from "./pages/Status/Status";
 
 const router = createBrowserRouter([
     {
@@ -32,71 +17,134 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <Dashboard />,
+                async lazy() {
+                    let Dashboard = await import("./pages/Dashboard/Dashboard");
+                    return { Component: Dashboard.default };
+                },
             },
             {
                 path: "dashboard",
-                element: <Dashboard />,
+                async lazy() {
+                    let Dashboard = await import("./pages/Dashboard/Dashboard");
+                    return { Component: Dashboard.default };
+                },
             },
             {
                 path: "attendance",
-                element: <Attendance />,
+                async lazy() {
+                    let Attendance = await import(
+                        "./pages/Attendance/Attendance"
+                    );
+                    return { Component: Attendance.default };
+                },
             },
             {
                 path: "maindashboard",
-                element: <MainDashboard />,
+                async lazy() {
+                    let MainDashboard = await import(
+                        "./pages/MainDashboard/MainDashboard"
+                    );
+                    return { Component: MainDashboard.default };
+                },
             },
             {
                 path: "add-lead",
-                element: <AddLeads />,
+                async lazy() {
+                    let AddLeads = await import("./pages/AddLeads/AddLeads");
+                    return { Component: AddLeads.default };
+                },
             },
             {
                 path: "leads",
-                element: <Leads />,
+                async lazy() {
+                    let Leads = await import("./pages/Leads/Leads");
+                    return { Component: Leads.default };
+                },
             },
             {
                 path: "user-leads",
-                element: <UserLeads />,
+                async lazy() {
+                    let UserLeads = await import("./pages/User/Leads/Leads");
+                    return { Component: UserLeads.default };
+                },
             },
             {
                 path: "holiday-calendar",
-                element: <Holiday />,
+                async lazy() {
+                    let Holiday = await import("./pages/Holiday/Holiday");
+                    return { Component: Holiday.default };
+                },
             },
             {
                 path: "holidays",
-                element: <AddHoliday />,
+                async lazy() {
+                    let AddHoliday = await import(
+                        "./pages/AddHoliday/AddHoliday"
+                    );
+                    return { Component: AddHoliday.default };
+                },
             },
             {
                 path: "profile",
-                element: <Profile />,
+                async lazy() {
+                    let Profile = await import("./pages/Profile/Profile");
+                    return { Component: Profile.default };
+                },
             },
             {
                 path: "users",
-                element: <Users />,
+                async lazy() {
+                    let Users = await import("./pages/Users/Users");
+                    return { Component: Users.default };
+                },
             },
             {
                 path: "process",
-                element: <Process />,
+                async lazy() {
+                    let Process = await import("./pages/Process/Process");
+                    return { Component: Process.default };
+                },
             },
             {
                 path: "plan",
-                element: <Plan />,
+                async lazy() {
+                    let Plan = await import("./pages/Plan/Plan");
+                    return { Component: Plan.default };
+                },
             },
             {
                 path: "all-attendance",
-                element: <AllAttendance />,
+                async lazy() {
+                    let AllAttendance = await import(
+                        "./pages/AllAttendance/AllAttendance"
+                    );
+                    return { Component: AllAttendance.default };
+                },
             },
             {
                 path: "monthly-attendance",
-                element: <MonthlyAttendance />,
+                async lazy() {
+                    let MonthlyAttendance = await import(
+                        "./pages/MonthlyAttendance/MonthlyAttendance"
+                    );
+                    return { Component: MonthlyAttendance.default };
+                },
             },
             {
                 path: "notifications",
-                element: <Notification />,
+                async lazy() {
+                    let Notification = await import(
+                        "./pages/Notification/Notification"
+                    );
+                    return { Component: Notification.default };
+                },
             },
             {
                 path: "status",
-                element: <Status />,
+                async lazy() {
+                    let Status = await import("./pages/Status/Status");
+                    return { Component: Status.default };
+                },
             },
         ],
     },

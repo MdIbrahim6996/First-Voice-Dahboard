@@ -6,15 +6,6 @@ import DeleteModal from "../../components/Modal/DeleteModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteHoliday, getAllHoliday } from "../../api/holiday";
 
-import { CSVLink } from "react-csv";
-
-const csvData = [
-    ["firstname", "lastname", "email"],
-    ["Ahmed", "Tomi", "ah@smthing.co.com"],
-    ["Raed", "Labes", "rl@smthing.co.com"],
-    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
-];
-
 const AddHoliday = () => {
     const [show, setShow] = useState({
         create: false,
@@ -41,7 +32,6 @@ const AddHoliday = () => {
     return (
         <>
             <div className="overflow-hidden">
-                <CSVLink data={csvData}>Download me</CSVLink>; // or
                 <div className="p-5">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}

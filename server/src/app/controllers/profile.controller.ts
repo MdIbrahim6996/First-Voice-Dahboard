@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../lib/prismaClient";
+import { groupBy } from "lodash";
+import { graphData } from "../utils/arrayGouping";
 
 export const getUserInfo = async (
     req: Request,
@@ -27,7 +29,6 @@ export const getUserInfo = async (
 
             filterDate.startDate = new Date(startDay);
             filterDate.endDate = new Date(nextDay);
-            console.log(filterDate);
         }
 
         if (time === "thisMonth") {
@@ -43,7 +44,6 @@ export const getUserInfo = async (
             ).setUTCHours(0, 0, 0);
             filterDate.startDate = new Date(startMonth);
             filterDate.endDate = new Date(endMonth);
-            console.log(filterDate);
         }
 
         if (time === "thisYear") {
@@ -60,7 +60,6 @@ export const getUserInfo = async (
 
             filterDate.startDate = new Date(startYear);
             filterDate.endDate = new Date(endYear);
-            console.log(filterDate);
         }
         const status = await prisma.status.findMany({});
 
@@ -82,7 +81,6 @@ export const getUserInfo = async (
                 status: item?.name,
                 count: count ? count : 0,
             };
-            console.log(data);
         });
         // const user = await prisma.lead.groupBy({
         //     by: ["statusId"],
@@ -93,5 +91,32 @@ export const getUserInfo = async (
         res.send(data);
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const getUserMonthWiseAttendance = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { userId } = req.params;
+    try {
+        const user = await prisma.user.findFirst({
+            where: { id: parseInt(userId) },
+        });
+
+        if (!user) throw new Error("User doesn't exist.");
+
+        const userAttendance = await prisma.attendance.findMany({
+            where: { userId: parseInt(userId) },
+            orderBy: { dateTime: "desc" },
+        });
+        const grouped = groupBy(userAttendance, (record) =>
+            record.dateTime.toISOString().slice(5, 7)
+        );
+        res.send({ data: grouped, graphData: graphData(grouped) });
+    } catch (error) {
+        console.log(error);
+        next(error);
     }
 };

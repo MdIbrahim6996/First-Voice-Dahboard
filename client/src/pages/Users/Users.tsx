@@ -1,12 +1,13 @@
 import { motion } from "motion/react";
 import { MdDelete, MdEdit, MdAdd } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaFileCsv } from "react-icons/fa";
 import { useState } from "react";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import CreateUserModal from "../../components/Modal/CreateUserModal";
 import EditUserModal from "../../components/Modal/EditUserModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteUser, getAllUser } from "../../api/user";
+import { CSVLink } from "react-csv";
 import UserInfoModal from "../../components/Modal/UserInfoModal/UserInfoModal";
 
 const Users = () => {
@@ -32,11 +33,22 @@ const Users = () => {
         },
     });
 
+    console.log(user);
+
+    const headers = [
+        { label: "EMAIL", key: "email" },
+        { label: "EMPLOYEE ID", key: "employeeId" },
+        { label: "ID", key: "id" },
+        { label: "NAME", key: "name" },
+        { label: "PHONE", key: "phone" },
+        { label: "ROLE", key: "role" },
+    ];
+
     return (
         <>
             <div className="overflow-hidden">
                 <div className="p-5">
-                    <div className="mb-5  text-gray-900 bg-white ">
+                    <div className="mb- text-gray-900 bg-white ">
                         <motion.div
                             initial={{
                                 opacity: 0,
@@ -52,19 +64,21 @@ const Users = () => {
                             <p className="text-3xl font-semibold uppercase origin-center w-fit">
                                 My Workspsaces - All Users
                             </p>
-                            <button
-                                onClick={() =>
-                                    setShow({
-                                        create: true,
-                                        view: false,
-                                        edit: false,
-                                        delete: false,
-                                    })
-                                }
-                                className="py-1.5 px-7 bg-blue-700 text-white rounded-md text-sm flex gap-1 items-center"
-                            >
-                                <MdAdd className="text-xl" /> Add User
-                            </button>
+                            <div>
+                                <button
+                                    onClick={() =>
+                                        setShow({
+                                            create: true,
+                                            view: false,
+                                            edit: false,
+                                            delete: false,
+                                        })
+                                    }
+                                    className="py-1.5 px-7 bg-blue-700 text-white rounded-md text-sm flex gap-1 items-center"
+                                >
+                                    <MdAdd className="text-xl" /> Add User
+                                </button>
+                            </div>
                         </motion.div>
 
                         <motion.p
@@ -78,6 +92,25 @@ const Users = () => {
                             in touch, grow your business, and more.
                         </motion.p>
                     </div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="flex flex-row-reverse"
+                    >
+                        <button className="py-1.5 px-7 my-3 bg-green-700 text-white rounded-md text-sm flex gap-2 items-center cursor-pointer">
+                            <FaFileCsv className="text-lg" />
+                            <CSVLink
+                                data={user ? user : []}
+                                headers={headers}
+                                filename="Users.csv"
+                            >
+                                Export as CSV
+                            </CSVLink>
+                        </button>
+                    </motion.div>
+
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}

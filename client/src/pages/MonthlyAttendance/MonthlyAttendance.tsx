@@ -3,23 +3,22 @@ import { motion } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import { getEmployeeMonthlyAttendance } from "../../api/userAttendance";
 import { useState } from "react";
+import { monthNames } from "../../constants/appConstant";
 
 const MonthlyAttendance = () => {
-    const [year, setYear] = useState(new Date().getFullYear());
-    const [month, setMonth] = useState(new Date().getMonth());
-    const [name, setName] = useState<string | undefined>(undefined);
-    console.log(year);
+    const date = new Date();
+    const [year, setYear] = useState(date.getFullYear());
+    const [month, setMonth] = useState(date.getMonth());
+    const [name, setName] = useState<string | undefined>("");
 
     const { data: monthlyAttendance, refetch } = useQuery({
         queryKey: ["monthly-attendance"],
         queryFn: () => getEmployeeMonthlyAttendance(year, month, name),
     });
-
     const getUserisLateCountDetails = (id: string) =>
         monthlyAttendance?.isLateCount.find((item: any) => item.userId === id);
     const getUserOnTimeCountDetails = (id: string) =>
         monthlyAttendance?.onTimeCount.find((item: any) => item.userId === id);
-
     return (
         <div className="overflow-hidden">
             <div className="p-5">
@@ -57,18 +56,14 @@ const MonthlyAttendance = () => {
                                 defaultValue={month}
                                 className="border outline-none border-gray-400 px-3 py-1 rounded-md"
                             >
-                                <option value={0}>January</option>
-                                <option value={1}>February</option>
-                                <option value={2}>March</option>
-                                <option value={3}>April</option>
-                                <option value={4}>May</option>
-                                <option value={5}>June</option>
-                                <option value={6}>July</option>
-                                <option value={7}>August</option>
-                                <option value={8}>September</option>
-                                <option value={9}>October</option>
-                                <option value={10}>November</option>
-                                <option value={11}>December</option>
+                                <option value="" disabled>
+                                    Select a Month
+                                </option>
+                                {monthNames?.map((item, i) => (
+                                    <option key={i} value={i}>
+                                        {item}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="flex flex-col space-y-1">
@@ -93,10 +88,11 @@ const MonthlyAttendance = () => {
                         </button>
                         <button
                             onClick={() => {
-                                setYear(new Date().getFullYear());
-                                setMonth(new Date().getMonth() + 1);
-                                setName("");
-                                refetch();
+                                // setYear(date.getFullYear());
+                                // setMonth(date.getMonth() + 1);
+                                // setName("");
+                                // refetch();
+                                window.location.reload();
                             }}
                             className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer"
                         >
@@ -160,7 +156,10 @@ const MonthlyAttendance = () => {
                         <tbody>
                             {monthlyAttendance?.attendance?.map(
                                 (item: any, i: number) => (
-                                    <tr className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200">
+                                    <tr
+                                        key={item?.userId}
+                                        className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200"
+                                    >
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap :text-white"
@@ -174,7 +173,9 @@ const MonthlyAttendance = () => {
                                             }
                                         </td>
                                         <td className="px-6 py-4">2025</td>
-                                        <td className="px-6 py-4">July</td>
+                                        <td className="px-6 py-4">
+                                            {monthNames[month]}
+                                        </td>
                                         <td className="px-6 py-4 flex items-center flex-col space-y-1">
                                             <p className="bg-blue-500 flex items-center gap-x-2 text-white px-5 py-0.5 rounded w-fit">
                                                 <MdCoPresent className="text-lg" />

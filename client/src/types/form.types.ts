@@ -28,6 +28,7 @@ export type LeadsFormInput = {
 };
 export type UpdateLeadsFormInput = {
     status: number;
+    reason: string;
     title: string;
     firstName: string;
     middleName: string;
