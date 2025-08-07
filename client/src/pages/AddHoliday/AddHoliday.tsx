@@ -1,10 +1,10 @@
 import { MdDelete, MdEdit, MdAdd } from "react-icons/md";
 import { motion } from "motion/react";
 import { useState } from "react";
-import CreateHolidayModal from "../../components/Modal/CreateHolidayModal";
-import DeleteModal from "../../components/Modal/DeleteModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteHoliday, getAllHoliday } from "../../api/holiday";
+import CreateHolidayModal from "../../components/Modal/CreateHolidayModal";
+import DeleteModal from "../../components/Modal/DeleteModal";
 
 const AddHoliday = () => {
     const [show, setShow] = useState({
@@ -19,8 +19,6 @@ const AddHoliday = () => {
         queryKey: ["holiday"],
         queryFn: getAllHoliday,
     });
-
-    console.log(holidays);
 
     const deleteMutation = useMutation({
         mutationFn: (id: number) => deleteHoliday(id),

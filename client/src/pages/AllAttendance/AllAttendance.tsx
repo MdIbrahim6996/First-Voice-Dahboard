@@ -3,10 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllAttendance } from "../../api/attendance";
 
 const AllAttendance = () => {
+    
     const { data } = useQuery({
         queryKey: ["all-attendance"],
         queryFn: getAllAttendance,
     });
+
     return (
         <div className="overflow-hidden">
             <div className="p-5">

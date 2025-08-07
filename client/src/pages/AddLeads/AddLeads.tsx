@@ -16,6 +16,7 @@ const AddLeads = () => {
         formState: { errors },
         handleSubmit,
         watch,
+        reset,
     } = useForm<LeadsFormInput>();
 
     const queryClient = useQueryClient();
@@ -34,7 +35,14 @@ const AddLeads = () => {
     const filterPlan = (id: number) =>
         plan?.filter((item: any) => id == item?.processId);
 
-    const createLeadMutation = useMutation({
+    const {
+        mutate: createLeadMutation,
+        isPending,
+        isError,
+        isSuccess,
+        data,
+        error,
+    } = useMutation({
         mutationFn: (formData) => createLead(formData),
         onSuccess: (data) => {
             if (data?.id) {
@@ -43,12 +51,15 @@ const AddLeads = () => {
                     queryKey: ["leads"],
                 });
             }
+            // reset();
         },
     });
 
+    console.log(isPending);
+
     const onSubmit: SubmitHandler<LeadsFormInput> = (data) => {
         //@ts-ignore
-        createLeadMutation.mutate(data);
+        createLeadMutation(data);
     };
     return (
         <div className="overflow-y-scroll h-full">
@@ -359,12 +370,15 @@ const AddLeads = () => {
                                     required: "Please Select a Process.",
                                 })}
                                 id="process"
+                                defaultValue={""}
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option>Select a Process</option>
+                                <option disabled selected value="">
+                                    Select a Process
+                                </option>
                                 {process?.map((item: any) => (
                                     <option value={item?.id}>
-                                        {item?.name}
+                                        {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
                             </select>
@@ -383,13 +397,15 @@ const AddLeads = () => {
                                     required: "Please Select a Plan.",
                                 })}
                                 id="plan"
-                                defaultValue="1"
+                                defaultValue={""}
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option>Select a Plan</option>
+                                <option disabled selected value="">
+                                    Select a Plan
+                                </option>
                                 {filterPlan(processValue)?.map((item: any) => (
                                     <option value={item?.id}>
-                                        {item?.name}
+                                        {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
                             </select>
@@ -411,9 +427,9 @@ const AddLeads = () => {
                                 defaultValue="1"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option value={1}>Mr.</option>
-                                <option value={3}>Mrs.</option>
-                                <option value={5}>Miss</option>
+                                <option value={8}>Mr.</option>
+                                <option value={9}>Mrs.</option>
+                                <option value={10}>Miss</option>
                             </select>
                             {errors?.closer && (
                                 <p className="text-red-500">
@@ -607,7 +623,10 @@ const AddLeads = () => {
                         </div>
                     </div>
                     <div>
-                        <button className="bg-blue-700 text-white px-10 py-2 rounded-md">
+                        <button
+                            disabled={isPending}
+                            className="bg-blue-700 text-white px-10 py-2 rounded-md disabled:bg-blue-200 disabled:cursor-not-allowed"
+                        >
                             SUBMIT
                         </button>
                     </div>

@@ -39,11 +39,11 @@ model Process {
 model Plan {
   id        Int      @id @default(autoincrement())
   name      String
-  processId Int      @default(1)
+  processId Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Lead      Lead[]
-  process   Process  @relation(fields: [processId], references: [id])
+  process   Process? @relation(fields: [processId], references: [id], onDelete: SetNull)
 }
 
 model Holiday {
@@ -96,15 +96,15 @@ model Lead {
   accountName        String?
   sort               String?
   applianceId        Int?
-  statusId           Int                  @default(1)
+  statusId           Int?                 @default(1)
   saleDate           DateTime             @default(now())
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
-  status             Status               @relation(fields: [statusId], references: [id])
-  appliance          Appliance?           @relation(fields: [applianceId], references: [id])
-  closer             User?                @relation(fields: [closerId], references: [id])
-  plan               Plan?                @relation(fields: [planId], references: [id])
-  process            Process?             @relation(fields: [processId], references: [id])
+  status             Status?              @relation(fields: [statusId], references: [id], onDelete: SetNull)
+  appliance          Appliance?           @relation(fields: [applianceId], references: [id], onDelete: SetNull)
+  closer             User?                @relation(fields: [closerId], references: [id], onDelete: SetNull)
+  plan               Plan?                @relation(fields: [planId], references: [id], onDelete: SetNull)
+  process            Process?             @relation(fields: [processId], references: [id], onDelete: SetNull)
   StatusChangeReason StatusChangeReason[]
 }
 
@@ -131,10 +131,15 @@ model Notification {
 model LeadCount {
   id        Int      @id @default(autoincrement())
   count     Int      @default(0)
+  date      Int
+  month     Int
+  year      Int
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([date, month, year, userId], name: "uniqueDate")
 }
 
 model StatusChangeReason {

@@ -5,8 +5,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { getUserMonthWiseAttendance } from "../../api/userAttendance";
-// import { getAllStatus } from "../../api/status";
 import { getUserInfo } from "../../api/user";
+import { monthNames } from "../../constants/appConstant";
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
@@ -16,10 +16,7 @@ const Profile = () => {
         queryKey: ["bar-chart", user?.user?.id],
         queryFn: () => getUserMonthWiseAttendance(user?.user.id!),
     });
-    // const { data: status = [] } = useQuery({
-    //     queryKey: ["status"],
-    //     queryFn: () => getAllStatus(),
-    // });
+
     const { data: leadData = [] } = useQuery({
         queryKey: [`profile-${user?.user?.id}`, time],
         queryFn: () => getUserInfo(user?.user?.id!, time),
@@ -36,20 +33,7 @@ const Profile = () => {
     };
 
     let groupdata = {
-        labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
+        labels: monthNames?.map((item) => item?.substring(0, 3)),
         datasets: [
             {
                 label: "ON TIME",

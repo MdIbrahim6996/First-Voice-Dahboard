@@ -8,12 +8,17 @@ export const getAllNotifs = async (userId: number) => {
             `/user/notification/${userId}`,
             { withCredentials: true }
         );
+        if (!data) {
+            throw new Error("sdfsdfds");
+        }
+        console.log(data, "sdf");
         return data;
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
             toast.error(error?.response?.data?.message);
         }
+
         return error;
     }
 };

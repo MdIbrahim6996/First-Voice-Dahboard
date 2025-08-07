@@ -24,8 +24,10 @@ export const isAuth = async (
 ) => {
     try {
         const { token } = req.cookies;
-        console.log(token);
-        if (!token) throw new Error("Token expired login again.");
+        if (!token) {
+            res.status(401);
+            throw new Error("Token expired login again.");
+        }
         const { id } = jwt.verify(token, "fsdfsdf") as IJwtPayload;
         if (id) {
             const user = (await prisma.user.findUnique({

@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Bar, Pie } from "react-chartjs-2";
 import { useState } from "react";
 import { getPlanInfo } from "../../api/plan";
+import "chart.js/auto";
 
 const PlanInfoModal = ({
     handleClose,
@@ -17,7 +18,6 @@ const PlanInfoModal = ({
         queryFn: () => getPlanInfo(id, selectedDate),
     });
 
-    console.log(planInfo);
     const thisMonthdata = {
         datasets: [
             {

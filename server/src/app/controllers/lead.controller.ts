@@ -35,11 +35,14 @@ export const createLead = async (
         expiryDateMonth,
         cvv,
     } = req.body;
-
+    const date = new Date();
+    console.log(date);
+    console.log(date.toISOString().substring(0, 10));
     try {
         const status = await prisma.status.findFirst({
             where: { name: "pending" },
         });
+
         const lead = await prisma.lead.create({
             data: {
                 title,
@@ -69,6 +72,28 @@ export const createLead = async (
                 // expiryDateYear,
             },
         });
+        console.log(lead?.closerId);
+
+        const dailyLeadCount = await prisma.leadCount.upsert({
+            where: {
+                userId: lead?.closerId as number,
+                uniqueDate: {
+                    date: date.getDate(),
+                    month: date.getMonth() + 1,
+                    year: date.getFullYear() - 1,
+                    userId: lead?.closerId as number,
+                },
+            },
+            create: {
+                userId: lead?.closerId as number,
+                count: 1,
+                date: date.getDate(),
+                month: date.getMonth() + 1,
+                year: date.getFullYear() - 1,
+            },
+            update: { count: { increment: 1 } },
+        });
+
         res.send(lead);
     } catch (error) {
         console.log(error);
@@ -253,7 +278,7 @@ export const updateLead = async (
                 closer: { select: { id: true } },
             },
         });
-        finalStatus = lead?.status?.name;
+        finalStatus = lead?.status?.name as string;
 
         const notif = await prisma.notification.create({
             data: {
@@ -263,7 +288,7 @@ export const updateLead = async (
                 ).toDateString()} changed status from ${initialStatus?.toUpperCase()} to ${finalStatus?.toUpperCase()}`,
                 title: "lead status changed",
                 saleDate: lead?.saleDate,
-                userId: 1,
+                userId: lead?.closerId as number,
             },
         });
         if (notif?.id) {

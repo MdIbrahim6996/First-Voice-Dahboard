@@ -1,16 +1,7 @@
-import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/authContext";
 
 const FallbackRenderer = () => {
-    const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
-    const handleLogout = () => {
-        localStorage.removeItem("authUser");
-        setUser(null);
-        navigate("/login");
-        window.location.reload();
-    };
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4">
             <img
@@ -27,10 +18,10 @@ const FallbackRenderer = () => {
                 We're doing our best and we'll be back soon.
             </p>
             <button
-                onClick={handleLogout}
+                onClick={() => navigate(0)}
                 className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
             >
-                <Link to={"/login"}>Back to Login</Link>
+                <Link to={"/login"}>Refresh Page</Link>
             </button>
         </div>
     );

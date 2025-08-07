@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import router from "./routes";
 import { errorHandler, notFound } from "./middlewares/errorHandler";
 import path from "path";
+import { prisma } from "./lib/prismaClient";
 
 const app: Application = express();
 

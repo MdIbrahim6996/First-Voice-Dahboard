@@ -10,8 +10,6 @@ const Holiday = () => {
         queryFn: getAllUserHoliday,
     });
 
-    console.log(holidays);
-
     const events = holidays?.map((item: any) => ({
         event_id: item?.id,
         title: item?.name.toUpperCase(),

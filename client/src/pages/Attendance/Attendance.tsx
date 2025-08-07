@@ -13,11 +13,6 @@ const Attendance = () => {
         queryFn: () => getSingleEmployeeEveryAttendance(userId!),
     });
 
-    // const date = new Date();
-    // let currentMonth = date.getMonth() + 1;
-    // let currentMonthString =
-    //     currentMonth < 10 ? `0${currentMonth}` : `${currentMonth}`;
-
     const getFormattedTime = (date: Date) => {
         const initialDate = new Date(date);
 
@@ -33,7 +28,7 @@ const Attendance = () => {
         return formattedDate;
     };
 
-    const even = data?.map((item: any) => ({
+    const events = data?.map((item: any) => ({
         event_id: item?.id,
         title: (
             <motion.p
@@ -93,7 +88,7 @@ const Attendance = () => {
                                 );
                             },
                         }}
-                        events={even}
+                        events={events}
                         agenda={false}
                         editable={false}
                         deletable={false}

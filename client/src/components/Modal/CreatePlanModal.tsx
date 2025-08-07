@@ -53,6 +53,7 @@ const CreatePlanModal = ({ handleClose }: { handleClose: () => void }) => {
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="px-6 py-5 space-y-2"
+                    autoComplete="off"
                 >
                     <div>
                         <label htmlFor="name">Name</label>

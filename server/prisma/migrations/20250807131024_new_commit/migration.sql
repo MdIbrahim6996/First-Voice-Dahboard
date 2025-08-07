@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "StatusChangeReason" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "reason" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "leadId" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "StatusChangeReason_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "StatusChangeReason_leadId_fkey" FOREIGN KEY ("leadId") REFERENCES "Lead" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

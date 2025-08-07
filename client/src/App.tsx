@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import NotFoundPage from "./pages/NotFound";
+import TokenExpired from "./pages/TokenExpired/TokenExpired";
 
 const router = createBrowserRouter([
     {
@@ -151,6 +152,10 @@ const router = createBrowserRouter([
     {
         path: "*",
         element: <NotFoundPage />,
+    },
+    {
+        path: "/token-expired",
+        element: <TokenExpired />,
     },
 ]);
 

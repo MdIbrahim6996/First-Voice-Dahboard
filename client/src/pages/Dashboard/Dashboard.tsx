@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { createEmployeeAttendance } from "../../api/attendance";
 import { useContext } from "react";
@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/authContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import Pusher from "pusher-js";
+import { getDailyLeadCount } from "../../api/dashboard";
 
 const data = [
     {
@@ -53,6 +54,13 @@ const Dashboard = () => {
         //     toast.success(data?.message);
         // },
     });
+
+    const { data: leadCount } = useQuery({
+        queryKey: ["leadCount"],
+        queryFn: () => getDailyLeadCount(user?.user?.id!),
+    });
+
+    console.log(leadCount);
     return (
         <div className="overflow-hidden">
             <div className="p-5">
@@ -111,16 +119,18 @@ const Dashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.map((item: any) => (
+                            {leadCount?.map((item: any) => (
                                 <tr className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200">
                                     <th
                                         scope="row"
                                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                                     >
-                                        {item?.date}
+                                        {new Date(
+                                            item?.createdAt
+                                        ).toDateString()}
                                     </th>
                                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {item?.leadCount}
+                                        {item?.count}
                                     </td>
                                 </tr>
                             ))}

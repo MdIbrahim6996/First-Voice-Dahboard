@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Bar, Pie } from "react-chartjs-2";
 import { getProcessInfo } from "../../api/process";
 import { useState } from "react";
+import "chart.js/auto";
 
 const ProcessInfoModal = ({
     handleClose,

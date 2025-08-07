@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { Pie } from "react-chartjs-2";
+import "chart.js/auto";
+
 import { getUserInfo } from "../../../../api/user";
 import { useState } from "react";
 

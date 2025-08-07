@@ -77,83 +77,6 @@ const Leads = () => {
         { label: "SORT", key: "sort" },
         { label: "PROCESS ID", key: "processId" },
         { label: "PLAN ID", key: "planId" },
-
-        // applianceId
-        // :
-        // null
-
-        // :
-        // "sdfds"
-
-        // :
-        // "dsf"
-
-        // :
-        // "dsfsd"
-        // closer
-        // :
-        // {name: 'user1'}
-        // closerId
-        // :
-        // 1
-
-        // :
-        // "f"
-        // createdAt
-        // :
-        // "2025-08-04T14:02:39.056Z"
-
-        // :
-        // "Mr."
-
-        // :
-        // "2025-08-27T00:00:00.000Z"
-
-        // :
-        // 34
-
-        // :
-        // "first "
-        // id
-        // :
-        // 22
-
-        // :
-        // "last"
-
-        // :
-        // "middle"
-        // password
-        // :
-        // "324"
-
-        // :
-        // "sdf"
-
-        // :
-        // "3432432"
-
-        // :
-        // {name: 'plan 1'}
-
-        // :
-        // 7
-
-        // :
-        // {name: 'process 1'}
-
-        // :
-        // 3
-
-        // :
-        // "2025-08-04T14:02:39.056Z"
-
-        // :
-        // "erter"
-        // status
-        // :
-        // {name: 'cancelled'}
-        // statusId
     ];
 
     const resetFilters = () => {
@@ -191,7 +114,7 @@ const Leads = () => {
                                     <option value={0}>Select A Process</option>
                                     {processData?.map((item: any) => (
                                         <option key={item?.id} value={item?.id}>
-                                            {item?.name}
+                                            {item?.name?.toUpperCase()}
                                         </option>
                                     ))}
                                 </select>

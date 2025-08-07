@@ -17,6 +17,7 @@ export const createEmployeeAttendance = async (id: number) => {
         return error;
     }
 };
+
 export const getEmployeeAttendance = async (id: number) => {
     try {
         const { data } = await axiosInstance.get(`/attendance/${id}`);

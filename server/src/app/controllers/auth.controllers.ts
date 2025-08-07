@@ -9,16 +9,16 @@ export const registerController = async (
     next: NextFunction
 ) => {
     try {
-        const { email, password, role } = req.body;
+        const { email, password, role, name } = req.body;
         const existingUser = await prisma.user.findFirst({ where: { email } });
         if (existingUser) {
             throw new Error("User Already Exist.");
         }
         const hanshedPassword = await bcrypt.hash(password, 10);
-        // const user = await prisma.user.create({
-        //     data: { email, password: hanshedPassword, role },
-        // });
-        res.send("user");
+        const user = await prisma.user.create({
+            data: { email, password: hanshedPassword, role, name },
+        });
+        res.send(user);
     } catch (error) {
         console.log(error);
         next(error);

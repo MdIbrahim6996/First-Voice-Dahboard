@@ -8,10 +8,11 @@ const Notification = () => {
     const { user } = useContext(AuthContext);
     const queryClient = useQueryClient();
 
-    const { data: notif } = useQuery({
+    const { data: notif = [], error } = useQuery({
         queryKey: ["notif"],
         queryFn: () => getAllNotifs(user?.user?.id!),
     });
+    console.log(error);
 
     const deleteMutation = useMutation({
         mutationKey: ["del-notif"],

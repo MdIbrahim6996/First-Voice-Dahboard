@@ -26,7 +26,9 @@ export const getAllPlan = async (
     next: NextFunction
 ) => {
     try {
-        const plan = await prisma.plan.findMany({ include: { process: true } });
+        const plan = await prisma.plan.findMany({
+            include: { process: { select: { id: true, name: true } } },
+        });
         res.send(plan);
     } catch (error) {
         console.log(error);
@@ -156,7 +158,7 @@ export const deletePlan = async (
 ) => {
     try {
         const { id } = req.params;
-
+        console.log("dfsdf");
         const leadIds = await prisma.lead.findMany({
             where: { planId: parseInt(id) },
             select: {
@@ -166,17 +168,14 @@ export const deletePlan = async (
 
         console.log(leadIds);
 
-        const updatedPlan = await prisma.plan.update({
+        const deletedPlan = await prisma.plan.delete({
             where: { id: parseInt(id) },
-            data: {
-                Lead: { disconnect: leadIds },
-            },
         });
 
         // const plan = await prisma.plan.delete({
         //     where: { id: parseInt(id) },
         // });
-        res.send(updatedPlan);
+        res.send(deletedPlan);
     } catch (error) {
         console.log(error);
         next(error);
