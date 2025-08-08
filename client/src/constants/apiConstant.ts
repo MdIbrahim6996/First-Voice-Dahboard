@@ -4,4 +4,4 @@ console.log(MODE);
 export const SERVER_URL =
     MODE === "development"
         ? `http://localhost:4000/api/v1`
-        : "http://first-voice-dahboard.onrender.com";
+        : "https://first-voice-dahboard.onrender.com";
