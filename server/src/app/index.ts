@@ -29,7 +29,7 @@ app.use("/api/v1", router);
 
 if (process.env.NODE_ENV === "production") {
     // Serve front-end app for all unmatched routes
-    app.use(express.static(path.join(path.resolve(), "client", "dist")));
+    app.use(express.static(path.join(path.resolve(), "../client", "dist")));
 
     app.get("/{*any}", (req, res) => {
         res.sendFile(
@@ -38,7 +38,6 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 
-console.log(path.join(path.resolve(), "../client", "dist"));
 app.use(express.static(path.join(path.resolve(), "../client", "dist")));
 
 app.get("/{*any}", (req, res) => {
