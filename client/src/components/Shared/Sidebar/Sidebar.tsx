@@ -1,16 +1,8 @@
 import {
-    MdDashboard,
-    MdSpaceDashboard,
-    MdPerson,
-    MdList,
-    MdWorkspacePremium,
-    MdEventNote,
-    MdCalendarMonth,
-} from "react-icons/md";
-import { IoBookSharp } from "react-icons/io5";
-import { RiFileAddFill, RiBook2Fill } from "react-icons/ri";
-import { BsCalendar2EventFill } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
+    userLinks,
+    adminLinks,
+    superAdminLinks,
+} from "../../../constants/appConstant";
 
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/authContext";
@@ -20,154 +12,7 @@ import { getAllNotifs } from "../../../api/notifications";
 import NotificationToast from "../../NotificationToast/NotificationToast";
 import toast from "react-hot-toast";
 import Pusher from "pusher-js";
-
-const userLinks = [
-    {
-        id: 1,
-        title: "Dashboard",
-        icon: <MdDashboard className="text-xl" />,
-    },
-    // {
-    //     id: 2,
-    //     title: "MainDashboard",
-    //     icon: <MdSpaceDashboard className="text-xl" />,
-    // },
-    {
-        id: 3,
-        title: "Attendance",
-        icon: <IoBookSharp className="text-xl" />,
-    },
-    {
-        id: 4,
-        title: "Add-Lead",
-        icon: <RiFileAddFill className="text-xl" />,
-    },
-    {
-        id: 5,
-        title: "User-Leads",
-        icon: <MdList className="text-xl" />,
-    },
-    {
-        id: 6,
-        title: "Holiday-Calendar",
-        icon: <MdCalendarMonth className="text-xl" />,
-    },
-    {
-        id: 7,
-        title: "Profile",
-        icon: <CgProfile className="text-xl" />,
-    },
-];
-const adminLinks = [
-    {
-        id: 1,
-        title: "Dashboard",
-        icon: <MdDashboard className="text-xl" />,
-    },
-    {
-        id: 2,
-        title: "MainDashboard",
-        icon: <MdSpaceDashboard className="text-xl" />,
-    },
-    {
-        id: 3,
-        title: "Attendance",
-        icon: <IoBookSharp className="text-xl" />,
-    },
-    {
-        id: 4,
-        title: "Add-Lead",
-        icon: <RiFileAddFill className="text-xl" />,
-    },
-    {
-        id: 5,
-        title: "Leads",
-        icon: <MdList className="text-xl" />,
-    },
-    {
-        id: 6,
-        title: "Holiday-Calendar",
-        icon: <MdCalendarMonth className="text-xl" />,
-    },
-    {
-        id: 7,
-        title: "Profile",
-        icon: <MdPerson className="text-xl" />,
-    },
-];
-const superAdminLinks = [
-    {
-        id: 1,
-        title: "Dashboard",
-        icon: <MdDashboard className="text-xl" />,
-    },
-    {
-        id: 2,
-        title: "MainDashboard",
-        icon: <MdSpaceDashboard className="text-xl" />,
-    },
-    {
-        id: 3,
-        title: "Attendance",
-        icon: <IoBookSharp className="text-xl" />,
-    },
-    {
-        id: 4,
-        title: "Add-Lead",
-        icon: <RiFileAddFill className="text-xl" />,
-    },
-    {
-        id: 5,
-        title: "Leads",
-        icon: <MdList className="text-xl" />,
-    },
-    {
-        id: 6,
-        title: "Holiday-Calendar",
-        icon: <MdEventNote className="text-xl" />,
-    },
-    {
-        id: 7,
-        title: "Holidays",
-        icon: <MdEventNote className="text-xl" />,
-    },
-    {
-        id: 8,
-        title: "All-Attendance",
-        icon: <BsCalendar2EventFill className="text-xl" />,
-    },
-    {
-        id: 9,
-        title: "Monthly-Attendance",
-        icon: <BsCalendar2EventFill className="text-xl" />,
-    },
-
-    {
-        id: 10,
-        title: "Users",
-        icon: <MdPerson className="text-xl" />,
-    },
-    {
-        id: 11,
-        title: "Process",
-        icon: <MdWorkspacePremium className="text-xl" />,
-    },
-    {
-        id: 12,
-        title: "Plan",
-        icon: <RiBook2Fill className="text-xl" />,
-    },
-    {
-        id: 13,
-        title: "Profile",
-        icon: <CgProfile className="text-xl" />,
-    },
-    {
-        id: 14,
-        title: "Status",
-        icon: <MdPerson className="text-xl" />,
-    },
-];
+import { MdPerson } from "react-icons/md";
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -178,7 +23,7 @@ const Sidebar = () => {
         isSuccess,
         isRefetching,
     } = useQuery({
-        queryKey: ["notif"],
+        queryKey: ["notif", user?.user?.id],
         queryFn: () => getAllNotifs(user?.user?.id!),
     });
 
@@ -228,7 +73,7 @@ const Sidebar = () => {
                         <div className="my-10 space-y-1">
                             {userLinks?.map((item) => (
                                 <NavLink
-                                    to={item.title}
+                                    to={item.link}
                                     key={item.id}
                                     className={({ isActive }) =>
                                         isActive
@@ -242,7 +87,7 @@ const Sidebar = () => {
                             ))}
 
                             <NavLink
-                                to={"/Notifications"}
+                                to={"/user/notifications"}
                                 key={20}
                                 className={({ isActive }) =>
                                     isActive
@@ -264,7 +109,7 @@ const Sidebar = () => {
                         <div className="my-10 space-y-1">
                             {adminLinks?.map((item) => (
                                 <NavLink
-                                    to={item.title}
+                                    to={item.link}
                                     key={item.id}
                                     className={({ isActive }) =>
                                         isActive
@@ -282,7 +127,7 @@ const Sidebar = () => {
                         <div className="my-10 mb-14 space-y-1 h-[22rem] overflow-y-scroll sidebar">
                             {superAdminLinks?.map((item) => (
                                 <NavLink
-                                    to={item.title}
+                                    to={item.link}
                                     key={item.id}
                                     className={({ isActive }) =>
                                         isActive

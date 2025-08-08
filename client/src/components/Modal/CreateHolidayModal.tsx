@@ -47,6 +47,7 @@ const CreateHolidayModal = ({ handleClose }: { handleClose: () => void }) => {
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="px-6 py-5 space-y-2"
+                    autoComplete="off"
                 >
                     <div>
                         <label htmlFor="name">Name</label>
@@ -68,7 +69,7 @@ const CreateHolidayModal = ({ handleClose }: { handleClose: () => void }) => {
                     <div>
                         <label htmlFor="startDate">Start Date</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="startDate"
                             {...register("startDate", {
                                 required: "Please Enter Start Date.",
@@ -84,7 +85,7 @@ const CreateHolidayModal = ({ handleClose }: { handleClose: () => void }) => {
                     <div>
                         <label htmlFor="endDate">End Date</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="endDate"
                             {...register("endDate", {
                                 required: "Please Enter End Date.",

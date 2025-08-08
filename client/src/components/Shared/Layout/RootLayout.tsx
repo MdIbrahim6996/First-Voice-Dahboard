@@ -42,6 +42,8 @@ const RootLayout = () => {
 
     useEffect(() => {
         if (!user) navigate("/login");
+        // else if (user?.user?.role === "user") navigate("/user");
+        // else if (user?.user?.role === "admin") navigate("/admin");
     }, []);
 
     useEffect(() => {

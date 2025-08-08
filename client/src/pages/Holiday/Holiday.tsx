@@ -16,7 +16,10 @@ const Holiday = () => {
         start: new Date(item?.startDate),
         end: new Date(item?.endDate),
         color: "#2E8B57",
+        subtitle: `${new Date(item?.startDate).toDateString()}`,
+        allDay: true,
     }));
+    
     return (
         <motion.div
             initial={{

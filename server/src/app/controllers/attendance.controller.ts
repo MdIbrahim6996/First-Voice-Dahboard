@@ -27,7 +27,9 @@ export const createEmployeeAttendance = async (
             orderBy: { dateTime: "desc" },
         });
 
-        if (currentDate === existingAttendance[0].dateTime.getDate()) {
+        console.log(existingAttendance);
+
+        if (currentDate === existingAttendance[0]?.dateTime?.getDate()) {
             throw new Error("Your Attendance has already been marked.");
         }
 

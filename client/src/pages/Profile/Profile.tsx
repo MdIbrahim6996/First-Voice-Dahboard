@@ -26,7 +26,7 @@ const Profile = () => {
         datasets: [
             {
                 data: leadData.map((item: any) => item?.count),
-                backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
+                backgroundColor: ["#ACE1AF", "#FFFE71", "#C81D11"],
             },
         ],
         labels: leadData.map((item: any) => item?.status?.toUpperCase()),

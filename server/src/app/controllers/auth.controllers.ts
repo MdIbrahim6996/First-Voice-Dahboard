@@ -32,7 +32,9 @@ export const loginController = async (
 ) => {
     const { email, password } = req.body;
     try {
-        const existingUser = await prisma.user.findFirst({ where: { email } });
+        const existingUser = await prisma.user.findFirst({
+            where: { email },
+        });
         if (!existingUser) {
             throw new Error("User Does not Exist.");
         }
@@ -46,13 +48,15 @@ export const loginController = async (
                 existingUser.role
             );
 
+            const { password, ...userData } = existingUser;
+
             return res
                 .cookie("token", token, {
                     httpOnly: true,
                     secure: true,
                     maxAge: 12 * 60 * 60 * 1000,
                 })
-                .send({ user: existingUser });
+                .send({ user: userData });
         } else {
             throw new Error("Invalid Credentials.");
         }

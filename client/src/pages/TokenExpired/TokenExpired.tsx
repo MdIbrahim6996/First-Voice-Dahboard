@@ -5,7 +5,11 @@ const TokenExpired = () => {
         <div className="min-h-screen flex items-center justify-center bg-[#e4edf9]">
             <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-8 text-center">
                 <div className="flex items-center justify-start mb-6">
-                    <img src="fv-logo.png" className="bg-blue-600 h-10 p-1.5 rounded " alt="" />
+                    <img
+                        src="fv-logo.png"
+                        className="bg-blue-600 h-10 p-1.5 rounded "
+                        alt=""
+                    />
                 </div>
                 {/* Illustration */}
                 <div className="mb-6">
@@ -28,10 +32,11 @@ const TokenExpired = () => {
                 </p>
 
                 {/* Button */}
-                <button className="bg-blue-600 text-xs uppercase hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-                    <Link to={"/login"}>Login Again</Link>
-                </button>
-
+                <Link to={"/login"}>
+                    <button className="bg-blue-600 text-xs uppercase hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                        Login Again
+                    </button>
+                </Link>
                 {/* Footer link */}
                 <p className="text-xs text-gray-500 mt-4">
                     If this issue continues to persist,{" "}
