@@ -4,7 +4,7 @@
     "main": "dist/index.js",
     "scripts": {
         "dev": "nodemon --files src/app/index.ts",
-        "build": " npm install && npm install --prefix ../client && npm run build --prefix ../client && npx prisma generate --no-engine && tsc",
+        "build": " npm install && npm install --prefix ../client && npm run build --prefix ../client && npx prisma generate && tsc",
         "start": "node dist/index.js"
     },
     "keywords": [],
