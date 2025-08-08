@@ -4,7 +4,7 @@
     "main": "dist/index.js",
     "scripts": {
         "dev": "nodemon --files src/app/index.ts",
-        "build": "prisma generate --no-engine && tsc",
+        "build": "npx prisma generate --no-engine && tsc",
         "start": "node dist/index.js"
     },
     "keywords": [],
