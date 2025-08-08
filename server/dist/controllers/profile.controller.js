@@ -9,8 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserInfo = void 0;
+exports.getUserMonthWiseAttendance = exports.getUserInfo = void 0;
 const prismaClient_1 = require("../lib/prismaClient");
+const lodash_1 = require("lodash");
+const arrayGouping_1 = require("../utils/arrayGouping");
 const getUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     const { time = "thisMonth" } = req.query;
@@ -26,14 +28,12 @@ const getUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             console.log(new Date(nextDay));
             filterDate.startDate = new Date(startDay);
             filterDate.endDate = new Date(nextDay);
-            console.log(filterDate);
         }
         if (time === "thisMonth") {
             const startMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 2).setUTCHours(0, 0, 0);
             const endMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 2).setUTCHours(0, 0, 0);
             filterDate.startDate = new Date(startMonth);
             filterDate.endDate = new Date(endMonth);
-            console.log(filterDate);
         }
         if (time === "thisYear") {
             const startYear = new Date();
@@ -47,7 +47,6 @@ const getUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             endYear.setUTCHours(0, 0, 0, 0);
             filterDate.startDate = new Date(startYear);
             filterDate.endDate = new Date(endYear);
-            console.log(filterDate);
         }
         const status = yield prismaClient_1.prisma.status.findMany({});
         const result = status.map((item) => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,7 +68,6 @@ const getUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 status: item === null || item === void 0 ? void 0 : item.name,
                 count: count ? count : 0,
             };
-            console.log(data);
         }));
         // const user = await prisma.lead.groupBy({
         //     by: ["statusId"],
@@ -84,3 +82,24 @@ const getUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getUserInfo = getUserInfo;
+const getUserMonthWiseAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    try {
+        const user = yield prismaClient_1.prisma.user.findFirst({
+            where: { id: parseInt(userId) },
+        });
+        if (!user)
+            throw new Error("User doesn't exist.");
+        const userAttendance = yield prismaClient_1.prisma.attendance.findMany({
+            where: { userId: parseInt(userId) },
+            orderBy: { dateTime: "desc" },
+        });
+        const grouped = (0, lodash_1.groupBy)(userAttendance, (record) => record.dateTime.toISOString().slice(5, 7));
+        res.send({ data: grouped, graphData: (0, arrayGouping_1.graphData)(grouped) });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+exports.getUserMonthWiseAttendance = getUserMonthWiseAttendance;

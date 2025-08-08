@@ -8,12 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAttendance = exports.updateAttendance = exports.getSingleAttendance = exports.getAllAttendance = exports.createAttendance = exports.getEmployeeMonthlyAttendance = exports.getEmployeePeriodwiseAttendance = exports.getUserAllAttendance = exports.getEmployeeAttendance = exports.createEmployeeAttendance = void 0;
 const prismaClient_1 = require("../lib/prismaClient");
-const lodash_1 = require("lodash");
+const groupBy_1 = __importDefault(require("lodash/groupBy"));
 const client_1 = require("@prisma/client");
 const createEmployeeAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     const { id } = req.params;
     try {
         const user = yield prismaClient_1.prisma.user.findFirst({
@@ -30,7 +34,8 @@ const createEmployeeAttendance = (req, res, next) => __awaiter(void 0, void 0, v
             where: { userId: parseInt(id) },
             orderBy: { dateTime: "desc" },
         });
-        if (currentDate === existingAttendance[0].dateTime.getDate()) {
+        console.log(existingAttendance);
+        if (currentDate === ((_b = (_a = existingAttendance[0]) === null || _a === void 0 ? void 0 : _a.dateTime) === null || _b === void 0 ? void 0 : _b.getDate())) {
             throw new Error("Your Attendance has already been marked.");
         }
         // const timeA = new Date();
@@ -126,7 +131,7 @@ const getEmployeePeriodwiseAttendance = (req, res, next) => __awaiter(void 0, vo
             where: { userId: parseInt(id) },
             orderBy: { dateTime: "desc" },
         });
-        const grouped = (0, lodash_1.groupBy)(userAttendance, (record) => record.dateTime.toISOString().slice(5, 7));
+        const grouped = (0, groupBy_1.default)(userAttendance, (record) => record.dateTime.toISOString().slice(5, 7));
         const attendanceData = Object === null || Object === void 0 ? void 0 : Object.values(grouped);
         res.send(attendanceData[0]);
     }

@@ -35,14 +35,7 @@ const AddLeads = () => {
     const filterPlan = (id: number) =>
         plan?.filter((item: any) => id == item?.processId);
 
-    const {
-        mutate: createLeadMutation,
-        isPending,
-        isError,
-        isSuccess,
-        data,
-        error,
-    } = useMutation({
+    const { mutate: createLeadMutation, isPending } = useMutation({
         mutationFn: (formData) => createLead(formData),
         onSuccess: (data) => {
             if (data?.id) {
@@ -51,7 +44,7 @@ const AddLeads = () => {
                     queryKey: ["leads"],
                 });
             }
-            // reset();
+            reset();
         },
     });
 

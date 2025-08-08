@@ -35,6 +35,7 @@ const RootLayout = () => {
         }
     };
 
+    //@ts-ignore
     const { data: profile = [], refetch } = useQuery({
         queryKey: ["userprofile"],
         queryFn: () => getSingleUser(user?.user?.id!),

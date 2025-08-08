@@ -28,7 +28,9 @@ const createPlan = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.createPlan = createPlan;
 const getAllPlan = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const plan = yield prismaClient_1.prisma.plan.findMany({ include: { process: true } });
+        const plan = yield prismaClient_1.prisma.plan.findMany({
+            include: { process: { select: { id: true, name: true } } },
+        });
         res.send(plan);
     }
     catch (error) {
@@ -131,6 +133,7 @@ exports.getPlanInfo = getPlanInfo;
 const deletePlan = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        console.log("dfsdf");
         const leadIds = yield prismaClient_1.prisma.lead.findMany({
             where: { planId: parseInt(id) },
             select: {
@@ -138,16 +141,13 @@ const deletePlan = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             },
         });
         console.log(leadIds);
-        const updatedPlan = yield prismaClient_1.prisma.plan.update({
+        const deletedPlan = yield prismaClient_1.prisma.plan.delete({
             where: { id: parseInt(id) },
-            data: {
-                Lead: { disconnect: leadIds },
-            },
         });
         // const plan = await prisma.plan.delete({
         //     where: { id: parseInt(id) },
         // });
-        res.send(updatedPlan);
+        res.send(deletedPlan);
     }
     catch (error) {
         console.log(error);

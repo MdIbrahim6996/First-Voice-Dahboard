@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.arrayGrouping = void 0;
+exports.graphData = exports.arrayGrouping = void 0;
 const prismaClient_1 = require("../lib/prismaClient");
 const arrayGrouping = (obj) => __awaiter(void 0, void 0, void 0, function* () {
     const status = yield prismaClient_1.prisma.status.findMany({ select: { name: true } });
@@ -43,3 +43,29 @@ const arrayGrouping = (obj) => __awaiter(void 0, void 0, void 0, function* () {
     catch (error) { }
 });
 exports.arrayGrouping = arrayGrouping;
+const graphData = (data) => {
+    const lateArray = [];
+    const ontimeArray = [];
+    for (const [key, value] of Object.entries(data)) {
+        let late = 0;
+        let ontime = 0;
+        let absent = 0;
+        const date = new Date();
+        const totalDays = new Date(date.getFullYear(), parseInt(key), 0).getDate();
+        //@ts-ignore
+        for (const entry of value) {
+            if (entry.isLate) {
+                late++;
+            }
+            else {
+                ontime++;
+            }
+        }
+        lateArray[parseInt(key) - 1] = late;
+        ontimeArray[parseInt(key) - 1] = ontime;
+        absent = totalDays - (late + ontime);
+        console.log(key, absent);
+    }
+    return { lateArray, ontimeArray };
+};
+exports.graphData = graphData;

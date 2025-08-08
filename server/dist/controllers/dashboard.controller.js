@@ -9,21 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDashboard = exports.updateDashboard = exports.getSingleDashboard = exports.getDailyLeadCount = exports.createDailyLeadCount = void 0;
-const createDailyLeadCount = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId } = req.params;
-    res.send("createDashboard");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.createDailyLeadCount = createDailyLeadCount;
+exports.getDailyLeadCount = void 0;
+const prismaClient_1 = require("../lib/prismaClient");
 const getDailyLeadCount = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("getAllDashboard");
+    const { userId } = req.params;
     try {
+        const leadCount = yield prismaClient_1.prisma.leadCount.findMany({
+            where: { userId: parseInt(userId) },
+            orderBy: { createdAt: "desc" },
+        });
+        res.send(leadCount);
     }
     catch (error) {
         console.log(error);
@@ -31,33 +26,3 @@ const getDailyLeadCount = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getDailyLeadCount = getDailyLeadCount;
-const getSingleDashboard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("getSingleDashboard");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.getSingleDashboard = getSingleDashboard;
-const updateDashboard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("updateDashboard");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.updateDashboard = updateDashboard;
-const deleteDashboard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("deleteDashboard");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.deleteDashboard = deleteDashboard;

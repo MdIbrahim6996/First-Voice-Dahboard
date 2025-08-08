@@ -18,8 +18,10 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const isAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { token } = req.cookies;
-        if (!token)
+        if (!token) {
+            res.status(401);
             throw new Error("Token expired login again.");
+        }
         const { id } = jsonwebtoken_1.default.verify(token, "fsdfsdf");
         if (id) {
             const user = (yield prismaClient_1.prisma.user.findUnique({

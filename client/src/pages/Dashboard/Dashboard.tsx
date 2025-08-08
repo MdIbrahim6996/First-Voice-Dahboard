@@ -8,28 +8,6 @@ import { useEffect } from "react";
 import Pusher from "pusher-js";
 import { getDailyLeadCount } from "../../api/dashboard";
 
-const data = [
-    {
-        id: 1,
-        date: "23 July, 2025",
-        leadCount: 4,
-    },
-    {
-        id: 2,
-        date: "24/5/25",
-        leadCount: 6,
-    },
-    {
-        id: 3,
-        date: "25/5/25",
-        leadCount: 3,
-    },
-    {
-        id: 4,
-        date: "26/5/25",
-        leadCount: 10,
-    },
-];
 const Dashboard = () => {
     //This will be called when your component is mounted
     useEffect(() => {

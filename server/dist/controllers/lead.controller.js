@@ -15,6 +15,9 @@ const client_1 = require("@prisma/client");
 const pusher_1 = require("../lib/pusher");
 const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, firstName, middleName, lastName, centre, address, city, country, pincode, password, dateOfBirth, phone, process, plan, closer, fee, currency, bankName, accountName, comment, cardNumber, expiryDateYear, expiryDateMonth, cvv, } = req.body;
+    const date = new Date();
+    console.log(date);
+    console.log(date.toISOString().substring(0, 10));
     try {
         const status = yield prismaClient_1.prisma.status.findFirst({
             where: { name: "pending" },
@@ -47,6 +50,26 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 // expiryDateMonth,
                 // expiryDateYear,
             },
+        });
+        console.log(lead === null || lead === void 0 ? void 0 : lead.closerId);
+        const dailyLeadCount = yield prismaClient_1.prisma.leadCount.upsert({
+            where: {
+                userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                uniqueDate: {
+                    date: date.getDate(),
+                    month: date.getMonth() + 1,
+                    year: date.getFullYear() - 1,
+                    userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                },
+            },
+            create: {
+                userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                count: 1,
+                date: date.getDate(),
+                month: date.getMonth() + 1,
+                year: date.getFullYear() - 1,
+            },
+            update: { count: { increment: 1 } },
         });
         res.send(lead);
     }
@@ -95,7 +118,6 @@ exports.getAllLead = getAllLead;
 const getAllLeadOfUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     const { status, saleDate, fromDate, toDate } = req.query;
-    console.log("userId", userId);
     try {
         const newSaleDate = new Date(saleDate);
         const nextDay = new Date(saleDate);
@@ -125,7 +147,6 @@ const getAllLeadOfUser = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             },
             orderBy: { createdAt: "desc" },
         });
-        console.log(leads.length);
         res.send(leads);
     }
     catch (error) {
@@ -171,6 +192,7 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     const { id } = req.params;
     const { title, firstName, middleName, lastName, address, city, country, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, } = req.body;
     try {
+        console.log(req.body);
         let initialStatus = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.initialStatus;
         let finalStatus = "";
         const lead = yield prismaClient_1.prisma.lead.update({
@@ -199,14 +221,13 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             },
         });
         finalStatus = (_b = lead === null || lead === void 0 ? void 0 : lead.status) === null || _b === void 0 ? void 0 : _b.name;
-        console.log(lead);
         const notif = yield prismaClient_1.prisma.notification.create({
             data: {
                 type: "important",
                 content: `Lead created on ${new Date(lead === null || lead === void 0 ? void 0 : lead.saleDate).toDateString()} changed status from ${initialStatus === null || initialStatus === void 0 ? void 0 : initialStatus.toUpperCase()} to ${finalStatus === null || finalStatus === void 0 ? void 0 : finalStatus.toUpperCase()}`,
                 title: "lead status changed",
                 saleDate: lead === null || lead === void 0 ? void 0 : lead.saleDate,
-                userId: 1,
+                userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
             },
         });
         if (notif === null || notif === void 0 ? void 0 : notif.id) {
