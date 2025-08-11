@@ -1,13 +1,24 @@
 import { motion } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllAttendance } from "../../api/attendance";
+import { useState } from "react";
 
 const AllAttendance = () => {
-    
-    const { data } = useQuery({
+    const [name, setName] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    const { data, refetch } = useQuery({
         queryKey: ["all-attendance"],
-        queryFn: getAllAttendance,
+        queryFn: () => getAllAttendance(name, startDate, endDate),
     });
+
+    const resetFilters = () => {
+        setName("");
+        setStartDate("");
+        setEndDate("");
+        refetch();
+    };
 
     return (
         <div className="overflow-hidden">
@@ -23,6 +34,8 @@ const AllAttendance = () => {
                             <input
                                 type="text"
                                 name="name"
+                                value={name}
+                                onChange={(e) => setName(e?.target?.value)}
                                 id="name"
                                 placeholder="Name"
                                 className="border border-gray-400 px-3 py-1 rounded-md outline-none"
@@ -33,6 +46,8 @@ const AllAttendance = () => {
                             <input
                                 type="date"
                                 name="startDate"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e?.target?.value)}
                                 id="startDate"
                                 className="border border-gray-400 px-3 py-1 rounded-md outline-none"
                             />
@@ -42,16 +57,24 @@ const AllAttendance = () => {
                             <input
                                 type="date"
                                 name="endDate"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e?.target?.value)}
                                 id="endDate"
                                 className="border border-gray-400 px-3 py-1 rounded-md outline-none"
                             />
                         </div>
                     </div>
                     <div className="mb-10 mt-3 flex items-center gap-2 text-sm">
-                        <button className="bg-green-500 text-white px-10 py-1 rounded-md cursor-pointer">
+                        <button
+                            onClick={() => refetch()}
+                            className="bg-green-500 text-white px-10 py-1 rounded-md cursor-pointer"
+                        >
                             Search
                         </button>
-                        <button className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer">
+                        <button
+                            onClick={resetFilters}
+                            className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer"
+                        >
                             Reset Filters
                         </button>
                     </div>
@@ -116,7 +139,7 @@ const AllAttendance = () => {
                                         scope="row"
                                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap :text-white"
                                     >
-                                        {item?.id}
+                                        {item?.userId}
                                     </th>
                                     <td className="px-6 py-4">
                                         {item?.user?.name}

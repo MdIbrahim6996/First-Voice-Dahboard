@@ -11,7 +11,6 @@ export const getAllNotifs = async (userId: number) => {
         if (!data) {
             throw new Error("sdfsdfds");
         }
-        console.log(data, "sdf");
         return data;
     } catch (error) {
         console.log(error);

@@ -1,5 +1,7 @@
 import { Router } from "express";
-import superAdminNitificationRoute from "./superadmin.notification.route";
+import NotificationRoute from "./superadmin.notification.route";
+import holidayRoute from "./holiday.route";
+import attendanceRoute from "./attendance.route";
 
 const router = Router();
 
@@ -13,7 +15,9 @@ const router = Router();
 // router.use("/plan", planRouter);
 // router.use("/employee", employeeAttendance);
 // router.use("/status", statusRoute);
-router.use("/notification", superAdminNitificationRoute);
+router.use("/notification", NotificationRoute);
+router.use("/holiday", holidayRoute);
+router.use("/attendance", attendanceRoute);
 // router.use("/profile", profileRoute);
 
 export default router;

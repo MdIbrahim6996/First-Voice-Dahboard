@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../lib/prismaClient";
+import { Prisma } from "@prisma/client";
 
 export const createHoliday = async (
     req: Request,
@@ -24,6 +25,28 @@ export const createHoliday = async (
     }
 };
 export const getAllHoliday = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { title, startDate, endDate } = req.query;
+    try {
+        const holiday = await prisma.holiday.findMany({
+            where: {
+                name: title ? (title as string) : Prisma.skip,
+                startDate: startDate
+                    ? new Date(startDate as string)
+                    : Prisma.skip,
+                endDate: endDate ? new Date(endDate as string) : Prisma.skip,
+            },
+        });
+        res.send(holiday);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+export const getAllUserHoliday = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -56,12 +79,16 @@ export const updateHoliday = async (
     const { id } = req.params;
     const { name, startDate, endDate } = req.body;
 
-    const holiday = await prisma.holiday.update({
-        where: { id: parseInt(id) },
-        data: { name, startDate, endDate },
-    });
-    res.send(holiday);
     try {
+        const holiday = await prisma.holiday.update({
+            where: { id: parseInt(id) },
+            data: {
+                name,
+                startDate: new Date(startDate),
+                endDate: new Date(endDate),
+            },
+        });
+        res.send(holiday);
     } catch (error) {
         console.log(error);
         next(error);

@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserMonthWiseAttendance } from "../../api/userAttendance";
 import { getUserInfo } from "../../api/user";
 import { monthNames } from "../../constants/appConstant";
+import { returnColors } from "../../utils/utils";
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
@@ -22,11 +23,15 @@ const Profile = () => {
         queryFn: () => getUserInfo(user?.user?.id!, time),
     });
 
+    console.log(leadData);
+
     const piedata = {
         datasets: [
             {
                 data: leadData.map((item: any) => item?.count),
-                backgroundColor: ["#ACE1AF", "#FFFE71", "#C81D11"],
+                backgroundColor: leadData.map((item: any) =>
+                    returnColors(item?.status)
+                ),
             },
         ],
         labels: leadData.map((item: any) => item?.status?.toUpperCase()),

@@ -4,6 +4,8 @@ import { Bar, Pie } from "react-chartjs-2";
 import { getProcessInfo } from "../../api/process";
 import { useState } from "react";
 import "chart.js/auto";
+import { returnColors } from "../../utils/utils";
+import { monthNames } from "../../constants/appConstant";
 
 const ProcessInfoModal = ({
     handleClose,
@@ -17,43 +19,33 @@ const ProcessInfoModal = ({
         queryKey: [`process-info-${id}`, selectedDate],
         queryFn: () => getProcessInfo(id, selectedDate),
     });
+    console.log(processInfo);
     const thisMonthdata = {
         datasets: [
             {
                 data: processInfo?.map((item: any) => item?.count),
-                backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
+                backgroundColor: processInfo.map((item: any) =>
+                    returnColors(item?.name)
+                ),
             },
         ],
         labels: processInfo?.map((item: any) => item?.name?.toUpperCase()),
     };
-
-    console.log(processInfo);
 
     const piedata = {
         datasets: [
             {
                 data: processInfo?.map((item: any) => item?.count),
-                backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
+                backgroundColor: processInfo.map((item: any) =>
+                    returnColors(item?.name)
+                ),
             },
         ],
         labels: processInfo?.map((item: any) => item?.name?.toUpperCase()),
     };
-    const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sept",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
+
     const bardata = {
-        labels: months,
+        labels: monthNames?.map((item) => item?.substring(0, 3)),
         datasets: [
             {
                 label: "success",
@@ -102,7 +94,7 @@ const ProcessInfoModal = ({
                                 }
                                  rounded-md flex-1 text-center capitalize m-1 cursor-pointer hover:font-[500]`}
                         >
-                            this month ({months[currentMonth]})
+                            this month ({monthNames[currentMonth]})
                         </button>
                         <button
                             onClick={() => setSelectedDate("thisYear")}

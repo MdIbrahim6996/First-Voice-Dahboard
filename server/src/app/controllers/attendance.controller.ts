@@ -267,12 +267,22 @@ export const getAllAttendance = async (
     res: Response,
     next: NextFunction
 ) => {
-    const attendances = await prisma.attendance.findMany({
-        orderBy: { dateTime: "desc" },
-        include: { user: { select: { name: true } } },
-    });
-    res.send(attendances);
+    const { name, startDate, endDate } = req.query;
     try {
+        const attendances = await prisma.attendance.findMany({
+            orderBy: { dateTime: "desc" },
+            include: { user: { select: { name: true } } },
+            where: {
+                user: { name: name ? (name as string) : Prisma.skip },
+                dateTime: {
+                    gte: startDate
+                        ? new Date(startDate as string)
+                        : Prisma.skip,
+                    lte: endDate ? new Date(endDate as string) : Prisma.skip,
+                },
+            },
+        });
+        res.send(attendances);
     } catch (error) {
         console.log(error);
         next(error);

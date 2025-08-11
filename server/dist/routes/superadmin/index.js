@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const superadmin_notification_route_1 = __importDefault(require("./superadmin.notification.route"));
+const holiday_route_1 = __importDefault(require("./holiday.route"));
 const router = (0, express_1.Router)();
 // router.use("/attendance", attendanceRouter);
 // router.use("/dashboard", dashboardRouter);
@@ -17,5 +18,6 @@ const router = (0, express_1.Router)();
 // router.use("/employee", employeeAttendance);
 // router.use("/status", statusRoute);
 router.use("/notification", superadmin_notification_route_1.default);
+router.use("/holiday", holiday_route_1.default);
 // router.use("/profile", profileRoute);
 exports.default = router;

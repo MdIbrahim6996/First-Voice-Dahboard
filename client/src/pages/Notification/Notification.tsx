@@ -51,46 +51,60 @@ const Notification = () => {
                         </motion.p>
                     </div>
                     <div className="max-w-3xl mx-auto space-y-5">
-                        {notif?.map((item: any, i: number) => (
-                            <motion.article
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ duration: 0.5, delay: i * 0.2 }}
-                                key={item.id}
-                                className={`px-4 py-2 rounded-md shadow-lg flex gap-x-2 ${
-                                    item?.type === "urgent"
-                                        ? "bg-red-500 text-white"
-                                        : ""
-                                } ${
-                                    item?.type === "moderate"
-                                        ? "bg-yellow-500 text-white"
-                                        : ""
-                                }`}
-                            >
-                                <div className="w-full">
-                                    <p className="capitalize font-semibold text-xl ">
-                                        {item?.title}
-                                    </p>
-                                    <p className="text-sm">{item?.content}</p>
-                                    <div className="flex justify-between items-baseline w-full mt-2">
-                                        <button
-                                            onClick={() =>
-                                                deleteMutation.mutate(item?.id)
-                                            }
-                                            className="capitalize bg-green-400 text-white/95 text-xs font-semibold 
-                                    px-6 py-1 rounded-md cursor-pointer hover:scale-105 transition duration-200"
-                                        >
-                                            mark as read
-                                        </button>
-                                        <p className="text-xs">
-                                            {new Date(
-                                                item?.createdAt
-                                            ).toDateString()}
+                        {notif?.length > 0 ? (
+                            notif?.map((item: any, i: number) => (
+                                <motion.article
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{
+                                        duration: 0.5,
+                                        delay: i * 0.2,
+                                    }}
+                                    key={item.id}
+                                    className={`px-4 py-2 rounded-md shadow-lg flex gap-x-2 ${
+                                        item?.type === "urgent"
+                                            ? "bg-red-500 text-white"
+                                            : ""
+                                    } ${
+                                        item?.type === "moderate"
+                                            ? "bg-yellow-500 text-white"
+                                            : ""
+                                    }`}
+                                >
+                                    <div className="w-full">
+                                        <p className="capitalize font-semibold text-xl ">
+                                            {item?.title}
                                         </p>
+                                        <p className="text-sm whitespace-pre-wrap">
+                                            {item?.content}
+                                        </p>
+                                        <div className="flex justify-between items-baseline w-full mt-2">
+                                            <button
+                                                onClick={() =>
+                                                    deleteMutation.mutate(
+                                                        item?.id
+                                                    )
+                                                }
+                                                className="capitalize bg-green-400 text-white/95 text-xs font-semibold 
+                                    px-6 py-1 rounded-md cursor-pointer hover:scale-105 transition duration-200"
+                                            >
+                                                mark as read
+                                            </button>
+                                            <p className="text-xs">
+                                                {new Date(
+                                                    item?.createdAt
+                                                ).toDateString()}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.article>
-                        ))}
+                                </motion.article>
+                            ))
+                        ) : (
+                            // <div className="text-xl text-center font-semibold text-black/90 uppercase my-52 p-5 rounded shadow-xl">
+                            //     no notifications
+                            // </div>
+                            <></>
+                        )}
                     </div>
                 </div>
             </div>

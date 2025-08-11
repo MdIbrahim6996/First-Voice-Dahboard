@@ -6,6 +6,7 @@ import { createLead } from "../../api/lead";
 import { getAllProcess } from "../../api/process";
 import { getAllPlan } from "../../api/plan";
 import type { LeadsFormInput } from "../../types/form.types";
+import { getAllUser } from "../../api/user";
 
 const AddLeads = () => {
     const date = new Date();
@@ -28,6 +29,11 @@ const AddLeads = () => {
     const { data: plan } = useQuery({
         queryKey: ["plan"],
         queryFn: getAllPlan,
+    });
+
+    const { data: user } = useQuery({
+        queryKey: ["user"],
+        queryFn: getAllUser,
     });
 
     const processValue = watch("process") ? watch("process") : 1;
@@ -420,8 +426,14 @@ const AddLeads = () => {
                                 defaultValue="1"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option value={8}>Mr.</option>
-                                <option value={9}>Mrs.</option>
+                                <option disabled selected value="">
+                                    Select a Closer
+                                </option>
+                                {user?.map((item: any) => (
+                                    <option key={item?.id} value={item?.id}>
+                                        {item?.name?.toUpperCase()}
+                                    </option>
+                                ))}
                                 <option value={10}>Miss</option>
                             </select>
                             {errors?.closer && (

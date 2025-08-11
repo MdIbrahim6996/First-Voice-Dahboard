@@ -30,9 +30,15 @@ export const getEmployeeAttendance = async (id: number) => {
         return error;
     }
 };
-export const getAllAttendance = async () => {
+export const getAllAttendance = async (
+    name: string,
+    startDate: string,
+    endDate: string
+) => {
     try {
-        const { data } = await axiosInstance.get(`/attendance`);
+        const { data } = await axiosInstance.get(
+            `/superadmin/attendance?name=${name}&startDate=${startDate}&endDate=${endDate}`
+        );
         return data;
     } catch (error) {
         console.log(error);

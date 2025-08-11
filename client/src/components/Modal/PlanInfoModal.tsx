@@ -4,6 +4,8 @@ import { Bar, Pie } from "react-chartjs-2";
 import { useState } from "react";
 import { getPlanInfo } from "../../api/plan";
 import "chart.js/auto";
+import { monthNames } from "../../constants/appConstant";
+import { returnColors } from "../../utils/utils";
 
 const PlanInfoModal = ({
     handleClose,
@@ -22,39 +24,29 @@ const PlanInfoModal = ({
         datasets: [
             {
                 data: planInfo?.map((item: any) => item?.count),
-                backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
+                backgroundColor: planInfo.map((item: any) =>
+                    returnColors(item?.name)
+                ),
             },
         ],
         labels: planInfo?.map((item: any) => item?.name?.toUpperCase()),
     };
+    console.log(planInfo);
 
     const piedata = {
         datasets: [
             {
                 data: planInfo?.map((item: any) => item?.count),
-                backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
+                backgroundColor: planInfo.map((item: any) =>
+                    returnColors(item?.name)
+                ),
             },
         ],
         labels: planInfo?.map((item: any) => item?.name?.toUpperCase()),
     };
 
-    const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sept",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
-
     const bardata = {
-        labels: months,
+        labels: monthNames?.map((item) => item?.substring(0, 3)),
         datasets: [
             {
                 label: "success",
@@ -102,7 +94,7 @@ const PlanInfoModal = ({
                                 }
                                  rounded-md flex-1 text-center capitalize m-1 cursor-pointer hover:font-[500]`}
                         >
-                            this month ({months[currentMonth]})
+                            this month ({monthNames[currentMonth]})
                         </button>
                         <button
                             onClick={() => setSelectedDate("thisYear")}

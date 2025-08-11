@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { getAllStatus } from "../../../api/status";
 import { getAllLeadOfUser } from "../../../api/lead";
 import { AuthContext } from "../../../context/authContext";
+import StatusChangeInfoModal from "../../../components/Modal/StatusChangeInfoModal";
 
 const Leads = () => {
     const { user } = useContext(AuthContext);
@@ -11,10 +12,10 @@ const Leads = () => {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [status, setStatus] = useState(0);
+    const [view, setView] = useState(false);
+    const [details, setDetails] = useState({});
 
     const queryClient = useQueryClient();
-
-    console.log(saleDate, fromDate, toDate);
 
     const { data: statusData } = useQuery({
         queryKey: ["status"],
@@ -32,7 +33,6 @@ const Leads = () => {
                 toDate
             ),
     });
-
     console.log(leads);
 
     const resetFilters = () => {
@@ -100,7 +100,7 @@ const Leads = () => {
                         </div>
                     </motion.div>
 
-                    <div className="mb-5  text-gray-900 bg-white ">
+                    <div className="mb-5 text-gray-900 bg-white ">
                         <motion.p
                             initial={{
                                 opacity: 0,
@@ -187,6 +187,9 @@ const Leads = () => {
                                     <th scope="col" className="px-6 py-3">
                                         Plan
                                     </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        action
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -238,6 +241,19 @@ const Leads = () => {
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {item?.plan?.name}
                                         </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <button
+                                                onClick={() => {
+                                                    setView(true);
+                                                    setDetails(
+                                                        item?.StatusChangeReason
+                                                    );
+                                                }}
+                                                className="px-3 py-1 text-xs rounded font-semibold bg-blue-500 cursor-pointer capitalize text-white"
+                                            >
+                                                view change in status
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -245,6 +261,13 @@ const Leads = () => {
                     </motion.div>
                 </div>
             </div>
+
+            {view && (
+                <StatusChangeInfoModal
+                    item={details as any}
+                    handleClose={() => setView(false)}
+                />
+            )}
         </>
     );
 };

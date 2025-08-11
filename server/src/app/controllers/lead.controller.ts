@@ -118,6 +118,7 @@ export const getAllLead = async (
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
                 status: { select: { name: true } },
+                StatusChangeReason: true,
             },
             where: {
                 statusId: parseInt(status as string)
@@ -159,6 +160,7 @@ export const getAllLeadOfUser = async (
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
                 status: { select: { name: true } },
+                StatusChangeReason: { orderBy: { createdAt: "desc" } },
             },
             where: {
                 statusId: parseInt(status as string)
@@ -246,10 +248,10 @@ export const updateLead = async (
         sort,
         dateOfBirth,
         status,
+        reason,
     } = req.body;
 
     try {
-        console.log(req.body);
         let initialStatus = req?.body?.initialStatus as string;
         let finalStatus = "";
 
@@ -280,13 +282,31 @@ export const updateLead = async (
         });
         finalStatus = lead?.status?.name as string;
 
+        let statusChangeReason;
+        if (reason) {
+            statusChangeReason = await prisma.statusChangeReason.create({
+                data: {
+                    reason,
+                    leadId: lead?.id,
+                    userId: lead?.closerId!,
+                    fromStatus: initialStatus,
+                    toStatus: finalStatus,
+                },
+            });
+        }
+        const content = reason
+            ? `Lead created on ${new Date(
+                  lead?.saleDate
+              ).toDateString()} changed status from ${initialStatus?.toUpperCase()} to ${finalStatus?.toUpperCase()} \n\nREASON:\n ${reason}`
+            : `Lead created on ${new Date(
+                  lead?.saleDate
+              ).toDateString()} changed status from ${initialStatus?.toUpperCase()} to ${finalStatus?.toUpperCase()}`;
         const notif = await prisma.notification.create({
             data: {
                 type: "important",
-                content: `Lead created on ${new Date(
-                    lead?.saleDate
-                ).toDateString()} changed status from ${initialStatus?.toUpperCase()} to ${finalStatus?.toUpperCase()}`,
+                content,
                 title: "lead status changed",
+
                 saleDate: lead?.saleDate,
                 userId: lead?.closerId as number,
             },
@@ -296,16 +316,6 @@ export const updateLead = async (
                 notif,
             });
         }
-
-        //  {
-        //         message: `Lead with id: ${id} changed status from ${initialStatus} to ${finalStatus}`,
-        //     }
-
-        // const l = await prisma.lead.update({
-        //     where: { id: parseInt(id) },
-        //     data: { statusId: data?.statusId },
-        // });
-
         res.send(lead);
     } catch (error) {
         console.log(error);

@@ -91,6 +91,7 @@ const getAllLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
                 status: { select: { name: true } },
+                StatusChangeReason: true,
             },
             where: {
                 statusId: parseInt(status)
@@ -128,6 +129,7 @@ const getAllLeadOfUser = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
                 status: { select: { name: true } },
+                StatusChangeReason: { orderBy: { createdAt: "desc" } },
             },
             where: {
                 statusId: parseInt(status)
@@ -190,9 +192,8 @@ exports.getSingleLead = getSingleLead;
 const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { id } = req.params;
-    const { title, firstName, middleName, lastName, address, city, country, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, } = req.body;
+    const { title, firstName, middleName, lastName, address, city, country, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, reason, } = req.body;
     try {
-        console.log(req.body);
         let initialStatus = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.initialStatus;
         let finalStatus = "";
         const lead = yield prismaClient_1.prisma.lead.update({
@@ -221,10 +222,25 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             },
         });
         finalStatus = (_b = lead === null || lead === void 0 ? void 0 : lead.status) === null || _b === void 0 ? void 0 : _b.name;
+        let statusChangeReason;
+        if (reason) {
+            statusChangeReason = yield prismaClient_1.prisma.statusChangeReason.create({
+                data: {
+                    reason,
+                    leadId: lead === null || lead === void 0 ? void 0 : lead.id,
+                    userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                    fromStatus: initialStatus,
+                    toStatus: finalStatus,
+                },
+            });
+        }
+        const content = reason
+            ? `Lead created on ${new Date(lead === null || lead === void 0 ? void 0 : lead.saleDate).toDateString()} changed status from ${initialStatus === null || initialStatus === void 0 ? void 0 : initialStatus.toUpperCase()} to ${finalStatus === null || finalStatus === void 0 ? void 0 : finalStatus.toUpperCase()} \n\nREASON:\n ${reason}`
+            : `Lead created on ${new Date(lead === null || lead === void 0 ? void 0 : lead.saleDate).toDateString()} changed status from ${initialStatus === null || initialStatus === void 0 ? void 0 : initialStatus.toUpperCase()} to ${finalStatus === null || finalStatus === void 0 ? void 0 : finalStatus.toUpperCase()}`;
         const notif = yield prismaClient_1.prisma.notification.create({
             data: {
                 type: "important",
-                content: `Lead created on ${new Date(lead === null || lead === void 0 ? void 0 : lead.saleDate).toDateString()} changed status from ${initialStatus === null || initialStatus === void 0 ? void 0 : initialStatus.toUpperCase()} to ${finalStatus === null || finalStatus === void 0 ? void 0 : finalStatus.toUpperCase()}`,
+                content,
                 title: "lead status changed",
                 saleDate: lead === null || lead === void 0 ? void 0 : lead.saleDate,
                 userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
@@ -235,13 +251,6 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 notif,
             });
         }
-        //  {
-        //         message: `Lead with id: ${id} changed status from ${initialStatus} to ${finalStatus}`,
-        //     }
-        // const l = await prisma.lead.update({
-        //     where: { id: parseInt(id) },
-        //     data: { statusId: data?.statusId },
-        // });
         res.send(lead);
     }
     catch (error) {

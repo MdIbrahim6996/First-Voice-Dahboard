@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getAllHoliday } from "../../controllers/holiday.controller";
+import { getAllUserHoliday } from "../../controllers/holiday.controller";
 
 const router = Router();
 
-router.get("/", getAllHoliday);
+router.get("/", getAllUserHoliday);
 
 export default router;

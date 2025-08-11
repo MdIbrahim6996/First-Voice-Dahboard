@@ -12,7 +12,7 @@ const app: Application = express();
 //MIDDLEWARES
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173","https://first-voice-dahboard.onrender.com"],
         credentials: true,
         optionsSuccessStatus: 200,
     })

@@ -46,8 +46,8 @@ export const superadminRoutes: RouteObject = {
         {
             path: "leads",
             async lazy() {
-                let UserLeads = await import("../pages/User/Leads/Leads");
-                return { Component: UserLeads.default };
+                let Leads = await import("../pages/Leads/Leads");
+                return { Component: Leads.default };
             },
         },
         {

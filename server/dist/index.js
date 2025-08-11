@@ -13,7 +13,7 @@ const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 //MIDDLEWARES
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://first-voice-dahboard.onrender.com"],
     credentials: true,
     optionsSuccessStatus: 200,
 }));
@@ -25,12 +25,11 @@ app.get("/api/v1/health-check", (_, res) => res.send({ message: "ok" }));
 app.use("/api/v1", routes_1.default);
 if (process.env.NODE_ENV === "production") {
     // Serve front-end app for all unmatched routes
-    app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "client", "dist")));
+    app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
     app.get("/{*any}", (req, res) => {
         res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
     });
 }
-console.log(path_1.default.join(path_1.default.resolve(), "../client", "dist"));
 app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
 app.get("/{*any}", (req, res) => {
     res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));

@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteHoliday, getAllHoliday } from "../../api/holiday";
 import CreateHolidayModal from "../../components/Modal/CreateHolidayModal";
 import DeleteModal from "../../components/Modal/DeleteModal";
+import EditHolidayModal from "../../components/Modal/EditHolidayModal";
 
 const AddHoliday = () => {
     const [show, setShow] = useState({
@@ -13,11 +14,15 @@ const AddHoliday = () => {
         delete: false,
     });
     const [id, setId] = useState<number>();
+    const [details, setDetails] = useState({});
+    const [title, setTitle] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     const queryClient = useQueryClient();
-    const { data: holidays } = useQuery({
+    const { data: holidays, refetch } = useQuery({
         queryKey: ["holiday"],
-        queryFn: getAllHoliday,
+        queryFn: () => getAllHoliday(title, startDate, endDate),
     });
 
     const deleteMutation = useMutation({
@@ -42,6 +47,8 @@ const AddHoliday = () => {
                                 <input
                                     type="text"
                                     name="title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e?.target?.value)}
                                     id="title"
                                     placeholder="Christmas"
                                     className="border border-gray-400 px-3 py-1 rounded-md outline-none"
@@ -52,6 +59,10 @@ const AddHoliday = () => {
                                 <input
                                     type="date"
                                     name="startDate"
+                                    value={startDate}
+                                    onChange={(e) =>
+                                        setStartDate(e?.target?.value)
+                                    }
                                     id="startDate"
                                     className="border border-gray-400 px-3 py-1 rounded-md outline-none"
                                 />
@@ -61,16 +72,31 @@ const AddHoliday = () => {
                                 <input
                                     type="date"
                                     name="endDate"
+                                    value={endDate}
+                                    onChange={(e) =>
+                                        setEndDate(e?.target?.value)
+                                    }
                                     id="endDate"
                                     className="border border-gray-400 px-3 py-1 rounded-md outline-none"
                                 />
                             </div>
                         </div>
                         <div className="mb-10 mt-3 flex items-center gap-2 text-sm">
-                            <button className="bg-green-500 text-white px-10 py-1 rounded-md cursor-pointer">
+                            <button
+                                onClick={() => refetch()}
+                                className="bg-green-500 text-white px-10 py-1 rounded-md cursor-pointer"
+                            >
                                 Search
                             </button>
-                            <button className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer">
+                            <button
+                                onClick={() => {
+                                    setTitle("");
+                                    setStartDate("");
+                                    setEndDate("");
+                                    refetch();
+                                }}
+                                className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer"
+                            >
                                 Reset Filters
                             </button>
                         </div>
@@ -165,13 +191,15 @@ const AddHoliday = () => {
                                         </td>
                                         <td className="px-6 py-4 flex gap-1 items-center justify-center">
                                             <button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setId(item?.id);
+                                                    setDetails(item);
                                                     setShow({
                                                         create: false,
                                                         edit: true,
                                                         delete: false,
-                                                    })
-                                                }
+                                                    });
+                                                }}
                                                 className="font-medium text-white bg-green-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
                                             >
                                                 <MdEdit />
@@ -209,7 +237,9 @@ const AddHoliday = () => {
                 />
             )}
             {show.edit && (
-                <CreateHolidayModal
+                <EditHolidayModal
+                    details={details}
+                    id={id!}
                     handleClose={() =>
                         setShow({
                             create: false,

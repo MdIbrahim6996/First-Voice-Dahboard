@@ -53,8 +53,6 @@ const Leads = () => {
         queryFn: () => getAllLead(status, process, saleDate, fromDate, toDate),
     });
 
-    console.log(leads);
-
     const headers = [
         { label: "ACCOUNT NAME", key: "accountName" },
         { label: "ADDRESS", key: "address" },
@@ -81,6 +79,11 @@ const Leads = () => {
 
     const resetFilters = () => {
         setStatus(0);
+        setProcess(0);
+        setSaleDate("");
+        setFromDate("");
+        setToDate("");
+        refetch();
     };
     return (
         <>
@@ -143,12 +146,18 @@ const Leads = () => {
                                     defaultValue="1"
                                     className="border outline-none border-gray-400 px-3 py-1 rounded-md"
                                 >
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="5">6</option>
+                                    <option value="" selected disabled>
+                                        Select Lead User
+                                    </option>
+                                    {filteredUsers?.map((item: any) => (
+                                        <option
+                                            key={item?.id}
+                                            value={item?.id}
+                                            className="uppercase"
+                                        >
+                                            {item?.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="flex flex-col space-y-1">
@@ -156,12 +165,17 @@ const Leads = () => {
                                 <select
                                     name="closerUser"
                                     id="closerUser"
-                                    defaultValue="1"
                                     className="border outline-none border-gray-400 px-3 py-1 rounded-md"
                                 >
-                                    <option>Select A Closer User</option>
+                                    <option value="" selected disabled>
+                                        Select Closer User
+                                    </option>
                                     {filteredUsers?.map((item: any) => (
-                                        <option key={item?.id} value={item?.id}>
+                                        <option
+                                            key={item?.id}
+                                            value={item?.id}
+                                            className="uppercase"
+                                        >
                                             {item?.name}
                                         </option>
                                     ))}
@@ -172,6 +186,7 @@ const Leads = () => {
                                 <input
                                     type="date"
                                     name="saleDate"
+                                    value={saleDate}
                                     id="saleDate"
                                     onChange={(e) =>
                                         setSaleDate(e.target.value)
@@ -184,6 +199,7 @@ const Leads = () => {
                                 <input
                                     type="date"
                                     name="fromDate"
+                                    value={fromDate}
                                     id="fromDate"
                                     onChange={(e) =>
                                         setFromDate(e.target.value)
@@ -196,6 +212,7 @@ const Leads = () => {
                                 <input
                                     type="date"
                                     name="toDate"
+                                    value={toDate}
                                     id="toDate"
                                     onChange={(e) => setToDate(e.target.value)}
                                     className="border border-gray-400 px-3 py-1 rounded-md outline-none"
