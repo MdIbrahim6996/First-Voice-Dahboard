@@ -35,9 +35,13 @@ const Leads = () => {
     });
     console.log(leads);
 
-    const resetFilters = () => {
+    const resetFilters = async () => {
         setStatus(0);
-        window.location.reload();
+        setSaleDate("");
+        setFromDate("");
+        setToDate("");
+        // window.location.reload();
+        refetch();
     };
     return (
         <>
@@ -54,6 +58,7 @@ const Leads = () => {
                                 <input
                                     type="date"
                                     name="saleDate"
+                                    value={saleDate}
                                     id="saleDate"
                                     onChange={(e) =>
                                         setSaleDate(e.target.value)
@@ -66,6 +71,7 @@ const Leads = () => {
                                 <input
                                     type="date"
                                     name="fromDate"
+                                    value={fromDate}
                                     id="fromDate"
                                     onChange={(e) =>
                                         setFromDate(e.target.value)
@@ -78,6 +84,7 @@ const Leads = () => {
                                 <input
                                     type="date"
                                     name="toDate"
+                                    value={toDate}
                                     id="toDate"
                                     onChange={(e) => setToDate(e.target.value)}
                                     className="border border-gray-400 px-3 py-1 rounded-md outline-none"
@@ -92,7 +99,7 @@ const Leads = () => {
                                 Search
                             </button>
                             <button
-                                onClick={() => resetFilters()}
+                                onClick={resetFilters}
                                 className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer"
                             >
                                 Reset Filters

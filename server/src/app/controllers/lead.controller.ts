@@ -36,8 +36,7 @@ export const createLead = async (
         cvv,
     } = req.body;
     const date = new Date();
-    console.log(date);
-    console.log(date.toISOString().substring(0, 10));
+
     try {
         const status = await prisma.status.findFirst({
             where: { name: "pending" },
@@ -55,7 +54,7 @@ export const createLead = async (
                 country,
                 pincode,
                 password,
-                dateOfBirth: new Date(dateOfBirth),
+                dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : Prisma.skip,
                 phone,
                 processId: parseInt(process),
                 planId: parseInt(plan),
@@ -327,10 +326,10 @@ export const deleteLead = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { id } = req.params;
-    const lead = await prisma.lead.delete({ where: { id: parseInt(id) } });
-    res.send(lead);
     try {
+        const { id } = req.params;
+        const lead = await prisma.lead.delete({ where: { id: parseInt(id) } });
+        res.send(lead);
     } catch (error) {
         console.log(error);
         next(error);

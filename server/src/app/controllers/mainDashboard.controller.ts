@@ -1,25 +1,24 @@
 import { NextFunction, Request, Response } from "express";
+import { prisma } from "../lib/prismaClient";
 
-export const createMainDashboard = async (
+export const getTopSellers = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    try {
-        res.send("create main");
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-};
+    const currentDay = new Date();
+    currentDay.setUTCHours(0, 0, 0, 0);
 
-export const getAllMainDashboard = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+    const nextDay = new Date();
+    nextDay.setUTCHours(0, 0, 0, 0);
+    nextDay.setUTCDate(nextDay.getUTCDate() + 1);
     try {
-        res.send("get all main");
+        const seller = await prisma.leadCount.findMany({
+            where: { updatedAt: { gte: currentDay, lte: nextDay } },
+            orderBy: [{ count: "desc" }, { updatedAt: "desc" }],
+            include: { user: { select: { name: true } } },
+        });
+        res.send(seller);
     } catch (error) {
         console.log(error);
         next(error);

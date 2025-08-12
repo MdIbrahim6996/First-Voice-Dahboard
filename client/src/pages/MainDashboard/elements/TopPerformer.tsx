@@ -1,12 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
+import { getTopSellers } from "../../../api/mainDashboard";
 
 const TopPerformer = () => {
+    const { data } = useQuery({
+        queryKey: ["top-sellers"],
+        queryFn: getTopSellers,
+    });
+    const first = data ? data[0] : {};
+    const second = data ? data[1] : {};
+    const third = data ? data[2] : {};
+
+    console.log(first);
     return (
         <div className="p-5">
             <div className="mb-5  text-gray-900 bg-white ">
                 <motion.p
-                    // initial={{ opacity: 0, y: 20 }}
-                    // animate={{ opacity: 1, y: 0 }}
                     initial={{
                         opacity: 0,
                         scale: 1.2,
@@ -19,7 +28,6 @@ const TopPerformer = () => {
                     className="text-3xl font-semibold uppercase origin-center text-center"
                 >
                     Top Performers
-                    {/* Lorem, ipsum dolor. */}
                 </motion.p>
                 <motion.p
                     initial={{ opacity: 0, y: -20 }}
@@ -40,10 +48,22 @@ const TopPerformer = () => {
                     transition={{ duration: 0.5, delay: 0.5 }}
                     className="bg-blue-700 p-5 rounded-md text-white text-center mt-20"
                 >
-                    <img src="/trophy-1.svg" alt="" className="mx-auto mb-5" />
-                    <p className="text-3xl font-bold uppercase">user 2</p>
-                    <p className="text-xl font-bold uppercase mt-2">(user 2)</p>
-                    <p className="text-5xl font-bold uppercase mt-5">4 sales</p>
+                    <div>
+                        <img
+                            src="/trophy-1.svg"
+                            alt=""
+                            className="mx-auto mb-5"
+                        />
+                        <p className="text-3xl font-bold uppercase">
+                            {second?.user?.name}
+                        </p>
+                        <p className="text-xl font-bold uppercase mt-2">
+                            (user 2)
+                        </p>
+                        <p className="text-5xl font-bold uppercase mt-5">
+                            {second?.count} sales
+                        </p>
+                    </div>
                 </motion.article>
                 <motion.article
                     initial={{ opacity: 0, y: 50 }}
@@ -52,9 +72,13 @@ const TopPerformer = () => {
                     className="bg-blue-700 p-5 rounded-md text-white text-center h-fit"
                 >
                     <img src="/trophy-1.svg" alt="" className="mx-auto mb-5" />
-                    <p className="text-3xl font-bold uppercase">user 1</p>
+                    <p className="text-3xl font-bold uppercase">
+                        {first?.user?.name}
+                    </p>
                     <p className="text-xl font-bold uppercase mt-2">(user 1)</p>
-                    <p className="text-5xl font-bold uppercase mt-5">5 sales</p>
+                    <p className="text-5xl font-bold uppercase mt-5">
+                        {first?.count} sales
+                    </p>
                 </motion.article>
                 <motion.article
                     initial={{ opacity: 0, y: 50 }}
@@ -63,9 +87,13 @@ const TopPerformer = () => {
                     className="bg-blue-700 p-5 rounded-md text-white text-center mt-20"
                 >
                     <img src="/trophy-1.svg" alt="" className="mx-auto mb-5" />
-                    <p className="text-3xl font-bold uppercase">user 3</p>
+                    <p className="text-3xl font-bold uppercase">
+                        {third?.user?.name}
+                    </p>
                     <p className="text-xl font-bold uppercase mt-2">(user 3)</p>
-                    <p className="text-5xl font-bold uppercase mt-5">2 sales</p>
+                    <p className="text-5xl font-bold uppercase mt-5">
+                        {third?.count ? third?.count : 0} sales
+                    </p>
                 </motion.article>
             </div>
         </div>

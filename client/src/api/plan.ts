@@ -30,7 +30,7 @@ export const getAllPlan = async () => {
 };
 export const getPlanInfo = async (id: number, time: string) => {
     try {
-        const { data } = await axiosInstance.get(`/plan/${id}?time=${time}`);
+        const { data } = await axiosInstance.get(`/superadmin/plan/${id}?time=${time}`);
         return data;
     } catch (error) {
         console.log(error);

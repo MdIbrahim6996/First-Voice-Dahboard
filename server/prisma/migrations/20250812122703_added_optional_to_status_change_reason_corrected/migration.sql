@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "StatusChangeReason" ALTER COLUMN "userId" DROP NOT NULL,
+ALTER COLUMN "leadId" DROP NOT NULL;

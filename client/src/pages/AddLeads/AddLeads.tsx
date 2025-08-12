@@ -41,6 +41,8 @@ const AddLeads = () => {
     const filterPlan = (id: number) =>
         plan?.filter((item: any) => id == item?.processId);
 
+    const filterUser = user?.filter((item: any) => item?.role === "user");
+
     const { mutate: createLeadMutation, isPending } = useMutation({
         mutationFn: (formData) => createLead(formData),
         onSuccess: (data) => {
@@ -109,7 +111,7 @@ const AddLeads = () => {
                     <div className="grid grid-cols-4 gap-x-4 my-5">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="title" className="font-semibold">
-                                Title
+                                Title <span className="text-red-500">*</span>
                             </label>
                             <select
                                 {...register("title", {
@@ -135,7 +137,8 @@ const AddLeads = () => {
                                 htmlFor="firstName"
                                 className="font-semibold"
                             >
-                                First Name
+                                First Name{" "}
+                                <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
@@ -161,22 +164,16 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("middleName", {
-                                    required: "Please Enter Middle Name.",
-                                })}
+                                {...register("middleName")}
                                 id="middleName"
                                 placeholder="Middle Name"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.middleName && (
-                                <p className="text-red-500">
-                                    {errors?.middleName?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="lastName" className="font-semibold">
-                                Last Name
+                                Last Name{" "}
+                                <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
@@ -198,7 +195,7 @@ const AddLeads = () => {
                     <div className="grid grid-cols-4 gap-x-4 my-5">
                         <div className="flex flex-col text-sm">
                             <label htmlFor="centre" className="font-semibold">
-                                Centre
+                                Centre <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
@@ -220,18 +217,11 @@ const AddLeads = () => {
                                 Address
                             </label>
                             <textarea
-                                {...register("address", {
-                                    required: "Please Enter Address.",
-                                })}
+                                {...register("address")}
                                 id="address"
                                 placeholder="Address"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.address && (
-                                <p className="text-red-500">
-                                    {errors?.address?.message}
-                                </p>
-                            )}
                         </div>
                     </div>
 
@@ -242,18 +232,11 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("city", {
-                                    required: "Please Enter City Name.",
-                                })}
+                                {...register("city")}
                                 id="city"
                                 placeholder="West Bridgford"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.city && (
-                                <p className="text-red-500">
-                                    {errors?.city?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="country" className="font-semibold">
@@ -261,22 +244,15 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("country", {
-                                    required: "Please Enter Country Name.",
-                                })}
+                                {...register("country")}
                                 id="country"
                                 placeholder="Nottinghamshire"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.country && (
-                                <p className="text-red-500">
-                                    {errors?.country?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="pinCode" className="font-semibold">
-                                Pin Code
+                                Pin Code <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
@@ -299,18 +275,11 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="password"
-                                {...register("password", {
-                                    required: "Please Enter Password.",
-                                })}
+                                {...register("password")}
                                 id="password"
                                 placeholder="***********"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.password && (
-                                <p className="text-red-500">
-                                    {errors?.password?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="dob" className="font-semibold">
@@ -318,24 +287,18 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="date"
-                                {...register("dateOfBirth", {
-                                    required: "Please Enter Date of Birth.",
-                                })}
+                                {...register("dateOfBirth")}
                                 id="dob"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.dateOfBirth && (
-                                <p className="text-red-500">
-                                    {errors?.dateOfBirth?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label
                                 htmlFor="phoneNumber"
                                 className="font-semibold"
                             >
-                                Phone Number
+                                Phone Number{" "}
+                                <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="tel"
@@ -423,18 +386,16 @@ const AddLeads = () => {
                                     required: "Please Select a Closer.",
                                 })}
                                 id="closer"
-                                defaultValue="1"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
                                 <option disabled selected value="">
                                     Select a Closer
                                 </option>
-                                {user?.map((item: any) => (
+                                {filterUser?.map((item: any) => (
                                     <option key={item?.id} value={item?.id}>
                                         {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
-                                <option value={10}>Miss</option>
                             </select>
                             {errors?.closer && (
                                 <p className="text-red-500">
@@ -473,10 +434,16 @@ const AddLeads = () => {
                                 defaultValue="1"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option value="Mr.">Mr.</option>
-                                <option value="Mrs.">Mrs.</option>
-                                <option value="Miss">Miss</option>
-                                <option value="Ms">Ms</option>
+                                <option value="US DOLLAR">US DOLLAR</option>
+                                <option value="BRITISH POUND">
+                                    BRITISH POUND
+                                </option>
+                                <option value="AUSTRALIAN DOLLAR">
+                                    AUSTRALIAN DOLLAR
+                                </option>
+                                <option value="NEW ZEALAND DOLLAR">
+                                    NEW ZEALAND DOLLAR
+                                </option>
                             </select>
                             {errors?.currency && (
                                 <p className="text-red-500">
@@ -492,18 +459,11 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("bankName", {
-                                    required: "Please Enter Bank Name.",
-                                })}
+                                {...register("bankName")}
                                 id="bankName"
                                 placeholder="West Bridgford"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.bankName && (
-                                <p className="text-red-500">
-                                    {errors?.bankName?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label
@@ -514,18 +474,11 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("accountName", {
-                                    required: "Please Enter Account Name.",
-                                })}
+                                {...register("accountName")}
                                 id="accountName"
                                 placeholder="Nottinghamshire"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.accountName && (
-                                <p className="text-red-500">
-                                    {errors?.accountName?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label
@@ -536,18 +489,11 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("accountNumber", {
-                                    required: "Please Enter Account Number.",
-                                })}
+                                {...register("accountNumber")}
                                 id="accountNumber"
                                 placeholder="700001"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.accountNumber && (
-                                <p className="text-red-500">
-                                    {errors?.accountNumber?.message}
-                                </p>
-                            )}
                         </div>
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="sort" className="font-semibold">
@@ -555,18 +501,11 @@ const AddLeads = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("sort", {
-                                    required: "Please Enter Sort Code.",
-                                })}
+                                {...register("sort")}
                                 id="sort"
                                 placeholder="***********"
                                 className="border border-gray-400 px-3 py-1 rounded outline-none"
                             />
-                            {errors?.sort && (
-                                <p className="text-red-500">
-                                    {errors?.sort?.message}
-                                </p>
-                            )}
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-x-4 gap-y-4 my-5">

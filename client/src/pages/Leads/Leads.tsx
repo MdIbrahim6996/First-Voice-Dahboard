@@ -1,9 +1,9 @@
 import { MdDelete, MdEdit } from "react-icons/md";
 import { FaEye, FaFileCsv } from "react-icons/fa";
 import { motion } from "motion/react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllStatus } from "../../api/status";
-import { getAllLead } from "../../api/lead";
+import { deleteLead, getAllLead } from "../../api/lead";
 import { getAllProcess } from "../../api/process";
 import { useState } from "react";
 import { getAllUser } from "../../api/user";
@@ -22,6 +22,7 @@ const Leads = () => {
     const [toDate, setToDate] = useState("");
     const [status, setStatus] = useState(0);
     const [detail, setDetail] = useState({});
+    const [id, setId] = useState<number>();
 
     const [show, setShow] = useState({
         edit: false,
@@ -51,6 +52,13 @@ const Leads = () => {
     const { data: leads, refetch } = useQuery({
         queryKey: ["leads", status],
         queryFn: () => getAllLead(status, process, saleDate, fromDate, toDate),
+    });
+
+    const { mutate } = useMutation({
+        mutationFn: (id: number) => deleteLead(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["leads"] });
+        },
     });
 
     const headers = [
@@ -376,6 +384,7 @@ const Leads = () => {
                                                         delete: false,
                                                         view: false,
                                                     });
+
                                                     setDetail(item);
                                                 }}
                                                 className="font-medium text-white bg-green-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
@@ -395,13 +404,14 @@ const Leads = () => {
                                                 <FaEye />
                                             </button>
                                             <button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setId(item?.id);
                                                     setShow({
                                                         edit: false,
                                                         delete: true,
                                                         view: false,
-                                                    })
-                                                }
+                                                    });
+                                                }}
                                                 className="font-medium text-white bg-red-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
                                             >
                                                 <MdDelete />
@@ -464,7 +474,7 @@ const Leads = () => {
                     handleClose={() =>
                         setShow({ edit: false, view: false, delete: false })
                     }
-                    handleDelete={() => {}}
+                    handleDelete={() => mutate(id!)}
                 />
             )}
             {show.edit && (

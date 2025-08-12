@@ -87,13 +87,13 @@ model Lead {
   pincode            String
   password           String?
   dateOfBirth        DateTime?
-  phone              String?
+  phone              String
   processId          Int?
   planId             Int?
   closerId           Int?
   fee                Int?
   currency           String?
-  bankName           String
+  bankName           String?
   accountName        String?
   sort               String?
   applianceId        Int?
@@ -148,10 +148,10 @@ model StatusChangeReason {
   reason     String
   fromStatus String?
   toStatus   String?
-  userId     Int
-  user       User    @relation(fields: [userId], references: [id])
-  leadId     Int
-  lead       Lead    @relation(fields: [leadId], references: [id])
+  userId     Int?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  leadId     Int?
+  lead       Lead?    @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

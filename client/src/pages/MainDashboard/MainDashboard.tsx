@@ -6,7 +6,6 @@ import EnergyBoilers from "./elements/EnergyBoilers";
 const MainDashboard = () => {
     return (
         <div className="overflow-hidden">
-            {/* <TopPerformer /> */}
             <Carousel>
                 <TopPerformer />
                 <EnergyBoilers />

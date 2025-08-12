@@ -27,6 +27,7 @@ const EditLeadModal = ({
             address: item?.address,
             city: item?.city,
             country: item?.country,
+            centre: item?.centre,
             pincode: item?.pincode,
             phone: item?.phone,
             fee: item?.fee,
@@ -47,9 +48,6 @@ const EditLeadModal = ({
         queryKey: ["status"],
         queryFn: getAllStatus,
     });
-
-    console.log(item?.statusId, statusCheck);
-    console.log(typeof item?.statusId, typeof statusCheck);
 
     const editMutation = useMutation({
         mutationFn: updateLead,
@@ -146,7 +144,8 @@ const EditLeadModal = ({
                                     htmlFor="title"
                                     className="font-semibold"
                                 >
-                                    Title
+                                    Title{" "}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <select
                                     {...register("title", {
@@ -172,7 +171,8 @@ const EditLeadModal = ({
                                     htmlFor="firstName"
                                     className="font-semibold"
                                 >
-                                    First Name
+                                    First Name{" "}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -198,25 +198,19 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("middleName", {
-                                        required: "Please Enter Middle Name.",
-                                    })}
+                                    {...register("middleName")}
                                     id="middleName"
                                     placeholder="Middle Name"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.middleName && (
-                                    <p className="text-red-500">
-                                        {errors?.middleName?.message}
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label
                                     htmlFor="lastName"
                                     className="font-semibold"
                                 >
-                                    Last Name
+                                    Last Name{" "}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -236,12 +230,13 @@ const EditLeadModal = ({
                         </div>
 
                         <div className="grid grid-cols-4 gap-x-4 my-5">
-                            {/* <div className="flex flex-col text-sm">
+                            <div className="flex flex-col text-sm">
                                 <label
                                     htmlFor="centre"
                                     className="font-semibold"
                                 >
-                                    Centre
+                                    Centre{" "}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -257,7 +252,7 @@ const EditLeadModal = ({
                                         {errors?.centre?.message}
                                     </p>
                                 )}
-                            </div> */}
+                            </div>
                             <div className="flex flex-col text-sm col-span-4">
                                 <label
                                     htmlFor="address"
@@ -266,18 +261,11 @@ const EditLeadModal = ({
                                     Address
                                 </label>
                                 <textarea
-                                    {...register("address", {
-                                        required: "Please Enter Address.",
-                                    })}
+                                    {...register("address")}
                                     id="address"
                                     placeholder="Address"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.address && (
-                                    <p className="text-red-500">
-                                        {errors?.address?.message}
-                                    </p>
-                                )}
                             </div>
                         </div>
 
@@ -288,18 +276,11 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("city", {
-                                        required: "Please Enter City Name.",
-                                    })}
+                                    {...register("city")}
                                     id="city"
                                     placeholder="West Bridgford"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.city && (
-                                    <p className="text-red-500">
-                                        {errors?.city?.message}
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label
@@ -310,42 +291,29 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("country", {
-                                        required: "Please Enter Country Name.",
-                                    })}
+                                    {...register("country")}
                                     id="country"
                                     placeholder="Nottinghamshire"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.country && (
-                                    <p className="text-red-500">
-                                        {errors?.country?.message}
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label
                                     htmlFor="pinCode"
                                     className="font-semibold"
                                 >
-                                    Pin Code
+                                    Pin Code{" "}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("pincode", {
-                                        required: "Please Enter Pincode.",
-                                    })}
+                                    {...register("pincode")}
                                     id="pinCode"
                                     placeholder="700001"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.pincode && (
-                                    <p className="text-red-500">
-                                        {errors?.pincode?.message}
-                                    </p>
-                                )}
                             </div>
-                            {/* <div className="flex flex-col text-sm space-y-0.5">
+                            <div className="flex flex-col text-sm space-y-0.5">
                                 <label
                                     htmlFor="password"
                                     className="font-semibold"
@@ -354,43 +322,30 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="password"
-                                    {...register("password", {
-                                        required: "Please Enter Password.",
-                                    })}
+                                    {...register("password")}
                                     id="password"
                                     placeholder="***********"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.password && (
-                                    <p className="text-red-500">
-                                        {errors?.password?.message}
-                                    </p>
-                                )}
-                            </div> */}
+                            </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label htmlFor="dob" className="font-semibold">
                                     Date of Birth
                                 </label>
                                 <input
                                     type="date"
-                                    {...register("dateOfBirth", {
-                                        required: "Please Enter Date of Birth.",
-                                    })}
+                                    {...register("dateOfBirth")}
                                     id="dob"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.dateOfBirth && (
-                                    <p className="text-red-500">
-                                        {errors?.dateOfBirth?.message}
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label
                                     htmlFor="phoneNumber"
                                     className="font-semibold"
                                 >
-                                    Phone Number
+                                    Phone Number{" "}
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="tel"
@@ -421,18 +376,11 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="number"
-                                    {...register("fee", {
-                                        required: "Please Enter Fee Amount.",
-                                    })}
+                                    {...register("fee")}
                                     id="fee"
                                     placeholder="$49"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.fee && (
-                                    <p className="text-red-500">
-                                        {errors?.fee?.message}
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label
@@ -449,10 +397,16 @@ const EditLeadModal = ({
                                     defaultValue="1"
                                     className="border outline-none border-gray-400 px-3 py-1 rounded"
                                 >
-                                    <option value="Mr.">Mr.</option>
-                                    <option value="Mrs.">Mrs.</option>
-                                    <option value="Miss">Miss</option>
-                                    <option value="Ms">Ms</option>
+                                    <option value="US DOLLAR">US DOLLAR</option>
+                                    <option value="BRITISH POUND">
+                                        BRITISH POUND
+                                    </option>
+                                    <option value="AUSTRALIAN DOLLAR">
+                                        AUSTRALIAN DOLLAR
+                                    </option>
+                                    <option value="NEW ZEALAND DOLLAR">
+                                        NEW ZEALAND DOLLAR
+                                    </option>
                                 </select>
                                 {errors?.currency && (
                                     <p className="text-red-500">
@@ -471,18 +425,11 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("bankName", {
-                                        required: "Please Enter Bank Name.",
-                                    })}
+                                    {...register("bankName")}
                                     id="bankName"
                                     placeholder="West Bridgford"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.bankName && (
-                                    <p className="text-red-500">
-                                        {errors?.bankName?.message}
-                                    </p>
-                                )}
                             </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label
@@ -493,20 +440,13 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("accountName", {
-                                        required: "Please Enter Account Name.",
-                                    })}
+                                    {...register("accountName")}
                                     id="accountName"
                                     placeholder="Nottinghamshire"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.accountName && (
-                                    <p className="text-red-500">
-                                        {errors?.accountName?.message}
-                                    </p>
-                                )}
                             </div>
-                            {/* <div className="flex flex-col text-sm space-y-0.5">
+                            <div className="flex flex-col text-sm space-y-0.5">
                                 <label
                                     htmlFor="accountNumber"
                                     className="font-semibold"
@@ -515,31 +455,21 @@ const EditLeadModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("accountNumber", {
-                                        required:
-                                            "Please Enter Account Number.",
-                                    })}
+                                    {...register("accountNumber")}
                                     id="accountNumber"
                                     placeholder="700001"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
-                                {errors?.accountNumber && (
-                                    <p className="text-red-500">
-                                        {errors?.accountNumber?.message}
-                                    </p>
-                                )}
-                            </div> */}
+                            </div>
                             <div className="flex flex-col text-sm space-y-0.5">
                                 <label htmlFor="sort" className="font-semibold">
                                     SORT Code
                                 </label>
                                 <input
                                     type="text"
-                                    {...register("sort", {
-                                        required: "Please Enter Sort Code.",
-                                    })}
+                                    {...register("sort")}
                                     id="sort"
-                                    placeholder="***********"
+                                    placeholder="Sort Code"
                                     className="border border-gray-400 px-3 py-1 rounded outline-none"
                                 />
                                 {errors?.sort && (

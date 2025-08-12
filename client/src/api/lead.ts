@@ -31,6 +31,18 @@ export const updateLead = async (formData: any) => {
         return error;
     }
 };
+export const deleteLead = async (id: number) => {
+    try {
+        const { data } = await axios.delete(`${SERVER_URL}/lead/${id}`);
+        return data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
+    }
+};
 
 //User
 export const getAllLeadOfUser = async (

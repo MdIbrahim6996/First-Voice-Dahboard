@@ -24,7 +24,7 @@ const PlanInfoModal = ({
         datasets: [
             {
                 data: planInfo?.map((item: any) => item?.count),
-                backgroundColor: planInfo.map((item: any) =>
+                backgroundColor: planInfo?.map((item: any) =>
                     returnColors(item?.name)
                 ),
             },
@@ -37,7 +37,7 @@ const PlanInfoModal = ({
         datasets: [
             {
                 data: planInfo?.map((item: any) => item?.count),
-                backgroundColor: planInfo.map((item: any) =>
+                backgroundColor: planInfo?.map((item: any) =>
                     returnColors(item?.name)
                 ),
             },
@@ -49,19 +49,19 @@ const PlanInfoModal = ({
         labels: monthNames?.map((item) => item?.substring(0, 3)),
         datasets: [
             {
-                label: "success",
+                label: "SUCCESS",
                 data: planInfo?.map((item: any) => item?.success),
-                backgroundColor: "#ACE1AF",
+                backgroundColor: returnColors("success"),
             },
             {
-                label: "pending",
+                label: "PENDING",
                 data: planInfo?.map((item: any) => item?.pending),
-                backgroundColor: "#FFFE71",
+                backgroundColor: returnColors("pending"),
             },
             {
-                label: "cancelled",
+                label: "CANCELLED",
                 data: planInfo?.map((item: any) => item?.cancelled),
-                backgroundColor: "#C81D11",
+                backgroundColor: returnColors("cancelled"),
             },
         ],
     };

@@ -89,12 +89,13 @@ const AddHoliday = () => {
                                 Search
                             </button>
                             <button
-                                onClick={() => {
-                                    setTitle("");
-                                    setStartDate("");
-                                    setEndDate("");
-                                    refetch();
-                                }}
+                                // onClick={() => {
+                                //     setTitle("");
+                                //     setStartDate("");
+                                //     setEndDate("");
+                                //     refetch();
+                                // }}
+                                onClick={() => window.location.reload()}
                                 className="bg-sky-500 text-white px-10 py-1 rounded-md cursor-pointer"
                             >
                                 Reset Filters
