@@ -123,6 +123,9 @@ export const getAllLead = async (
                 statusId: parseInt(status as string)
                     ? parseInt(status as string)
                     : Prisma.skip,
+                processId: parseInt(process as string)
+                    ? parseInt(process as string)
+                    : Prisma.skip,
                 saleDate: {
                     gte: saleDate ? newSaleDate : Prisma.skip,
                     lt: saleDate ? nextDay : Prisma.skip,

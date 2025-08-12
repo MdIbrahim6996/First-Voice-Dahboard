@@ -122,7 +122,9 @@ const Leads = () => {
                                     }
                                     className="border outline-none border-gray-400 px-3 py-1 rounded-md"
                                 >
-                                    <option value={0}>Select A Process</option>
+                                    <option value={0} selected disabled>
+                                        Select A Process
+                                    </option>
                                     {processData?.map((item: any) => (
                                         <option key={item?.id} value={item?.id}>
                                             {item?.name?.toUpperCase()}

@@ -137,9 +137,7 @@ const AddHoliday = () => {
                             transition={{ duration: 0.5, delay: 0.25 }}
                             className="mt-1 text-sm font-normal text-gray-700 w-[50%]"
                         >
-                            Browse a list of Flowbite products designed to help
-                            you work and play, stay organized, get answers, keep
-                            in touch, grow your business, and more.
+                            All the Important Dates You Need to Know.
                         </motion.p>
                     </div>
                     <motion.div
