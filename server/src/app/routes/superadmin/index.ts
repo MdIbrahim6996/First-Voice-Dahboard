@@ -6,6 +6,7 @@ import planRoute from "./plan.route";
 import processRoute from "./process.route";
 import leadRoute from "./lead.route";
 import mainDashboardRoute from "./mainDashboard.route";
+import userRoute from "./user.route";
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.use("/attendance", attendanceRoute);
 router.use("/plan", planRoute);
 router.use("/process", processRoute);
 router.use("/lead", leadRoute);
+router.use("/user", userRoute);
 // router.use("/profile", profileRoute);
 
 export default router;

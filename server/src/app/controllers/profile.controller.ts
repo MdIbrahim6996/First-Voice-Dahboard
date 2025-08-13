@@ -120,3 +120,66 @@ export const getUserMonthWiseAttendance = async (
         next(error);
     }
 };
+
+export const getProfileCardInfo = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { userId } = req.params;
+
+    const currentStartDay = new Date();
+    currentStartDay.setUTCHours(0, 0, 0, 0);
+
+    const nextStartDay = new Date();
+    nextStartDay.setDate(nextStartDay.getDate() + 1);
+    nextStartDay.setUTCHours(0, 0, 0, 0);
+
+    const currentStartMonth = new Date();
+    currentStartMonth.setDate(1);
+    currentStartMonth.setUTCHours(0, 0, 0, 0);
+
+    const nextStartMonth = new Date();
+    nextStartMonth.setMonth(nextStartMonth.getMonth() + 1);
+    nextStartMonth.setDate(1);
+    nextStartMonth.setUTCHours(0, 0, 0, 0);
+
+    try {
+        const todayLead = await prisma.lead.count({
+            where: {
+                closerId: parseInt(userId),
+                saleDate: { gte: currentStartDay, lte: nextStartDay },
+            },
+        });
+        const totalLead = await prisma.lead.count({
+            where: {
+                closerId: parseInt(userId),
+                saleDate: { gte: currentStartMonth, lte: nextStartMonth },
+            },
+        });
+        const totalSuccessLead = await prisma.lead.count({
+            where: {
+                closerId: parseInt(userId),
+                status: { name: "success" },
+                saleDate: { gte: currentStartMonth, lte: nextStartMonth },
+            },
+        });
+        const totalAttendance = await prisma.attendance.count({
+            where: {
+                userId: parseInt(userId),
+                dateTime: { gte: currentStartMonth, lte: nextStartMonth },
+            },
+        });
+        const spd = totalSuccessLead / totalAttendance;
+        res.send({
+            todayLead,
+            totalSuccessLead,
+            totalLead,
+            spd: spd ? spd?.toFixed(2) : 0,
+            totalAttendance,
+        });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};

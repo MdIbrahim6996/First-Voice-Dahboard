@@ -27,7 +27,6 @@ export const createEmployeeAttendance = async (
             orderBy: { dateTime: "desc" },
         });
 
-        console.log(existingAttendance);
 
         if (currentDate === existingAttendance[0]?.dateTime?.getDate()) {
             throw new Error("Your Attendance has already been marked.");
@@ -249,19 +248,6 @@ export const getEmployeeMonthlyAttendance = async (
     }
 };
 
-export const createAttendance = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    res.send("createAttendance");
-    try {
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-};
-
 export const getAllAttendance = async (
     req: Request,
     res: Response,
@@ -283,42 +269,6 @@ export const getAllAttendance = async (
             },
         });
         res.send(attendances);
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-};
-export const getSingleAttendance = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    res.send("getSingleAttendance");
-    try {
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-};
-export const updateAttendance = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    res.send("updateAttendance");
-    try {
-    } catch (error) {
-        console.log(error);
-        next(error);
-    }
-};
-export const deleteAttendance = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    res.send("deleteAttendance");
-    try {
     } catch (error) {
         console.log(error);
         next(error);

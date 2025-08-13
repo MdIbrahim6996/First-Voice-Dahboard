@@ -16,9 +16,22 @@ export const getTopSellers = async (
         const seller = await prisma.leadCount.findMany({
             where: { updatedAt: { gte: currentDay, lte: nextDay } },
             orderBy: [{ count: "desc" }, { updatedAt: "desc" }],
-            include: { user: { select: { name: true } } },
+            include: { user: { select: { name: true, alias: true } } },
         });
         res.send(seller);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+};
+export const getProcessLeadCount = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const leadCount = await prisma.process.findMany({});
+        res.send(leadCount);
     } catch (error) {
         console.log(error);
         next(error);

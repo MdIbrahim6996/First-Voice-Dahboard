@@ -14,11 +14,12 @@ export const registerController = async (
         if (existingUser) {
             throw new Error("User Already Exist.");
         }
+
         const hanshedPassword = await bcrypt.hash(password, 10);
-        const user = await prisma.user.create({
-            data: { email, password: hanshedPassword, role, name },
-        });
-        res.send(user);
+        // const user = await prisma.user.create({
+        //     data: { email, password: hanshedPassword, role, name },
+        // });
+        res.send("user");
     } catch (error) {
         console.log(error);
         next(error);
@@ -37,6 +38,9 @@ export const loginController = async (
         });
         if (!existingUser) {
             throw new Error("User Does not Exist.");
+        }
+        if (existingUser?.isBlocked) {
+            throw new Error("You Have Been Blocked By Admin.");
         }
         const matchedPassword = await bcrypt.compare(
             password,

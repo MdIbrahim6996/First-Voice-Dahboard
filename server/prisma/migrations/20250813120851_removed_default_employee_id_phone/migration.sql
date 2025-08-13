@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "employeeId" DROP DEFAULT,
+ALTER COLUMN "phone" DROP DEFAULT;

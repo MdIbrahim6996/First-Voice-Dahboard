@@ -14,13 +14,16 @@ model User {
   id                 Int                  @id @default(autoincrement())
   email              String               @unique
   name               String
-  employeeId         String               @default("")
-  phone              String               @default("")
+  alias              String               @unique
+  employeeId         String               @unique
+  phone              String
   isBlocked          Boolean              @default(false)
   password           String
   role               String               @default("user")
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
+  processId          Int?
+  process            Process?             @relation(fields: [processId], references: [id])
   attendances        Attendance[]
   Lead               Lead[]
   Notification       Notification[]
@@ -35,6 +38,7 @@ model Process {
   updatedAt DateTime @updatedAt
   Lead      Lead[]
   plans     Plan[]
+  User      User[]
 }
 
 model Plan {
@@ -149,9 +153,9 @@ model StatusChangeReason {
   fromStatus String?
   toStatus   String?
   userId     Int?
-  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user       User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
   leadId     Int?
-  lead       Lead?    @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  lead       Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
