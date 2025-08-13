@@ -32,7 +32,7 @@ const NotificationToast = ({ data }: INotificationProps) => {
                 <p className="capitalize font-semibold text-xl underline">
                     {data?.title}
                 </p>
-                <p>{data?.content}</p>
+                <p className="whitespace-pre-wrap mb-2">{data?.content}</p>
                 <p>
                     Sale Date:{" "}
                     <span className="font-semibold">

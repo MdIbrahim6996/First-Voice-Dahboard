@@ -3,8 +3,9 @@ import { motion } from "motion/react";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 
-import { getUserInfo } from "../../../../api/user";
+import { getProfileCardInfo, getUserInfo } from "../../../../api/user";
 import { useState } from "react";
+import { formatNumber, returnColors } from "../../../../utils/utils";
 
 const ProfileComp = ({ userId }: { userId: number }) => {
     const [time, setTime] = useState("thisMonth");
@@ -13,11 +14,19 @@ const ProfileComp = ({ userId }: { userId: number }) => {
         queryKey: [`profile-${userId}`, time],
         queryFn: () => getUserInfo(userId, time),
     });
+
+    const { data: cardData } = useQuery({
+        queryKey: [`profile-${userId}`],
+        queryFn: () => getProfileCardInfo(userId!),
+    });
+
     const piedata = {
         datasets: [
             {
                 data: leadData?.map((item: any) => item?.count),
-                backgroundColor: ["#FFFE71", "#C81D11", "#ACE1AF"],
+                backgroundColor: leadData.map((item: any) =>
+                    returnColors(item?.status)
+                ),
             },
         ],
         labels: leadData?.map((item: any) => item?.status?.toUpperCase()),
@@ -46,26 +55,34 @@ const ProfileComp = ({ userId }: { userId: number }) => {
                         </select>
                     </div>
                 </div>
-                <div className="grid grid-cols-5 gap-3 mb-5">
-                    <article className="bg-sky-400 text-white p-2 rounded-md text-center shadow-xl bg-gradient-to-b from-teal-400 to-yellow-200">
+                <div className="grid grid-cols-5 gap-3 mb-10">
+                    <article className="bg-sky-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-teal-400 to-yellow-200">
+                        <p className="text-2xl capitalize">today's sale</p>
+                        <p className="mt-2 text-3xl">
+                            {formatNumber(cardData?.todayLead)}
+                        </p>
+                    </article>
+                    <article className="bg-green-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-fuchsia-600 to-pink-300">
+                        <p className="text-2xl capitalize">Month's Sale</p>
+                        <p className="mt-2 text-2xl">
+                            {formatNumber(cardData?.totalSuccessLead)}
+                        </p>
+                    </article>
+                    <article className="bg-red-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-t from-emerald-300 to-emerald-900">
+                        <p className="text-2xl capitalize">Gross Sales</p>
+                        <p className="mt-2 text-2xl">
+                            {formatNumber(cardData?.totalLead)}
+                        </p>
+                    </article>
+                    <article className="bg-blue-700 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-red-500 to-orange-300">
+                        <p className="text-2xl capitalize">SPD</p>
+                        <p className="mt-2 text-2xl">{cardData?.spd}</p>
+                    </article>
+                    <article className="bg-sky-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-bl from-[#e879f9] via-[#4ade80]">
                         <p className="text-2xl capitalize">attendance</p>
-                        <p className="mt-2 text-2xl">20</p>
-                    </article>
-                    <article className="bg-green-400 text-white p-2 rounded-md text-center shadow-xl bg-gradient-to-b from-fuchsia-600 to-pink-300">
-                        <p className="text-2xl capitalize">Performance</p>
-                        <p className="mt-2 text-2xl">20</p>
-                    </article>
-                    <article className="bg-red-400 text-white p-2 rounded-md text-center shadow-xl bg-gradient-to-t from-emerald-300 to-emerald-900">
-                        <p className="text-2xl capitalize">Sales Closed</p>
-                        <p className="mt-2 text-2xl">20</p>
-                    </article>
-                    <article className="bg-blue-700 text-white p-2 rounded-md text-center shadow-xl bg-gradient-to-b from-red-500 to-orange-300">
-                        <p className="text-2xl capitalize">attendance</p>
-                        <p className="mt-2 text-2xl">20</p>
-                    </article>
-                    <article className="bg-sky-400 text-white p-2 rounded-md text-center shadow-xl bg-gradient-to-b from-teal-400 to-yellow-200">
-                        <p className="text-2xl capitalize">attendance</p>
-                        <p className="mt-2 text-2xl">20</p>
+                        <p className="mt-2 text-3xl">
+                            {formatNumber(cardData?.totalAttendance)}
+                        </p>
                     </article>
                 </div>
 

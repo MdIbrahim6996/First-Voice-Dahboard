@@ -149,16 +149,22 @@ const Leads = () => {
                                         });
                                     }}
                                     className={`${
-                                        item?.name.toLowerCase() === "success"
+                                        item?.name?.toLowerCase() === "success"
                                             ? "bg-green-500"
                                             : ""
                                     } ${
-                                        item?.name.toLowerCase() === "cancelled"
+                                        item?.name?.toLowerCase() ===
+                                        "cancelled"
                                             ? "bg-red-500"
                                             : ""
                                     } ${
-                                        item?.name.toLowerCase() === "pending"
+                                        item?.name?.toLowerCase() === "pending"
                                             ? "bg-yellow-500"
+                                            : ""
+                                    } ${
+                                        item?.name?.toLowerCase() ===
+                                        "rework/warmup"
+                                            ? "bg-sky-500"
                                             : ""
                                     } bg-gray-500 text-white text-xs font-semibold px-6 py-1 rounded-md capitalize cursor-pointer`}
                                 >
@@ -221,12 +227,17 @@ const Leads = () => {
                                                 } ${
                                                     item?.status?.name?.toLowerCase() ===
                                                     "pending"
-                                                        ? "bg-blue-500"
+                                                        ? "bg-yellow-500"
                                                         : ""
                                                 } ${
                                                     item?.status?.name?.toLowerCase() ===
                                                     "cancelled"
                                                         ? "bg-red-500"
+                                                        : ""
+                                                } ${
+                                                    item?.name?.toLowerCase() ===
+                                                    "rework/warmup"
+                                                        ? "bg-sky-500"
                                                         : ""
                                                 } px-3 py-1 text-xs rounded font-semibold text-white`}
                                             >

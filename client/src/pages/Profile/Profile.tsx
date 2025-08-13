@@ -5,9 +5,9 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { getUserMonthWiseAttendance } from "../../api/userAttendance";
-import { getUserInfo } from "../../api/user";
+import { getProfileCardInfo, getUserInfo } from "../../api/user";
 import { monthNames } from "../../constants/appConstant";
-import { returnColors } from "../../utils/utils";
+import { formatNumber, returnColors } from "../../utils/utils";
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
@@ -22,8 +22,10 @@ const Profile = () => {
         queryKey: [`profile-${user?.user?.id}`, time],
         queryFn: () => getUserInfo(user?.user?.id!, time),
     });
-
-    console.log(leadData);
+    const { data: cardData } = useQuery({
+        queryKey: [`profile-${user?.user?.id}`],
+        queryFn: () => getProfileCardInfo(user?.user?.id!),
+    });
 
     const piedata = {
         datasets: [
@@ -105,24 +107,32 @@ const Profile = () => {
                     </div>
                     <div className="grid grid-cols-5 gap-3 mb-10">
                         <article className="bg-sky-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-teal-400 to-yellow-200">
-                            <p className="text-2xl capitalize">attendance</p>
-                            <p className="mt-2 text-3xl">20</p>
+                            <p className="text-2xl capitalize">today's sale</p>
+                            <p className="mt-2 text-3xl">
+                                {formatNumber(cardData?.todayLead)}
+                            </p>
                         </article>
                         <article className="bg-green-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-fuchsia-600 to-pink-300">
-                            <p className="text-2xl capitalize">Performance</p>
-                            <p className="mt-2 text-2xl">20</p>
+                            <p className="text-2xl capitalize">Month's Sale</p>
+                            <p className="mt-2 text-2xl">
+                                {formatNumber(cardData?.totalSuccessLead)}
+                            </p>
                         </article>
                         <article className="bg-red-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-t from-emerald-300 to-emerald-900">
-                            <p className="text-2xl capitalize">Sales Closed</p>
-                            <p className="mt-2 text-2xl">20</p>
+                            <p className="text-2xl capitalize">Gross Sales</p>
+                            <p className="mt-2 text-2xl">
+                                {formatNumber(cardData?.totalLead)}
+                            </p>
                         </article>
                         <article className="bg-blue-700 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-red-500 to-orange-300">
-                            <p className="text-2xl capitalize">attendance</p>
-                            <p className="mt-2 text-2xl">20</p>
+                            <p className="text-2xl capitalize">SPD</p>
+                            <p className="mt-2 text-2xl">{cardData?.spd}</p>
                         </article>
-                        <article className="bg-sky-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-b from-teal-400 to-yellow-200">
+                        <article className="bg-sky-400 text-white p-3 rounded-md text-center shadow-xl bg-gradient-to-bl from-[#e879f9] via-[#4ade80]">
                             <p className="text-2xl capitalize">attendance</p>
-                            <p className="mt-2 text-3xl">20</p>
+                            <p className="mt-2 text-3xl">
+                                {formatNumber(cardData?.totalAttendance)}
+                            </p>
                         </article>
                     </div>
                 </motion.div>
@@ -149,8 +159,7 @@ const Profile = () => {
                         <div className="h-[20rem] mx-auto w-fit">
                             <Pie data={piedata} />
                         </div>
-                        {/* <div className="flex justify-between divide-x divide-gray-400 mt-4"> */}
-                        <div className="grid grid-cols-3 gap-2 divide- divide-gray-400 mt-4">
+                        <div className="grid grid-cols-2 gap-2 mt-4">
                             {leadData?.map((item: any) => (
                                 <div className="w-full text-center border border-slate-300 p-1 rounded-md">
                                     <p className="text-xl font-semibold">

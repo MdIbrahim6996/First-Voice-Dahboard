@@ -3,13 +3,18 @@ import toast from "react-hot-toast";
 
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { createUser } from "../../api/user";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllProcess } from "../../api/process";
+import { useState } from "react";
+import { MdRemoveRedEye } from "react-icons/md";
 
 type Inputs = {
     employeeId: string;
     name: string;
+    alias: string;
     phone: string;
     role: string;
+    process: number;
     email: string;
     password: string;
 };
@@ -21,14 +26,23 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
         formState: { errors },
     } = useForm<Inputs>();
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const queryClient = useQueryClient();
+
+    const { data: process } = useQuery({
+        queryKey: ["process"],
+        queryFn: getAllProcess,
+    });
 
     const createMutation = useMutation({
         mutationFn: (formData) => createUser(formData),
-        onSuccess: () => {
-            toast.success("User Created Successfully!");
-            queryClient.invalidateQueries({ queryKey: ["user"] });
-            handleClose();
+        onSuccess: (data) => {
+            if (data?.id) {
+                toast.success("User Created Successfully!");
+                queryClient.invalidateQueries({ queryKey: ["user"] });
+                handleClose();
+            }
         },
     });
 
@@ -53,6 +67,7 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="px-6 py-5 space-y-3"
+                    autoComplete="off"
                 >
                     <div>
                         <label
@@ -83,13 +98,34 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
                             type="text"
                             placeholder="Name"
                             {...register("name", {
-                                required: "Please Enter Employee Id.",
+                                required: "Please Enter Name.",
                             })}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
                         {errors.name && (
                             <p className="text-red-500 text-sm">
                                 {errors?.name?.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="alias"
+                            className="text-sm font-semibold"
+                        >
+                            Alias
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Alias"
+                            {...register("alias", {
+                                required: "Please Enter Alias Name.",
+                            })}
+                            className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
+                        />
+                        {errors.alias && (
+                            <p className="text-red-500 text-sm">
+                                {errors?.alias?.message}
                             </p>
                         )}
                     </div>
@@ -147,14 +183,46 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
                             })}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
-                            <option value="">Select a Role</option>
-                            <option value="admin">admin</option>
-                            <option value="superadmin">superadmin</option>
-                            <option value="user">user</option>
+                            <option value="" selected disabled>
+                                Select a Role
+                            </option>
+                            <option value="admin">ADMIN</option>
+                            <option value="superadmin">SUPERADMIN</option>
+                            <option value="user">USER</option>
+                            <option value="user">CLOSER</option>
                         </select>
                         {errors.role && (
                             <p className="text-red-500 text-sm">
                                 {errors?.role?.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="process"
+                            className="text-sm font-semibold"
+                        >
+                            Process
+                        </label>
+                        <select
+                            id="process"
+                            {...register("process", {
+                                required: "Please Select a Process.",
+                            })}
+                            className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
+                        >
+                            <option value="" selected disabled>
+                                Select a Process
+                            </option>
+                            {process?.map((item: any) => (
+                                <option value={item?.id} className="uppercase">
+                                    {item?.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.process && (
+                            <p className="text-red-500 text-sm">
+                                {errors?.process?.message}
                             </p>
                         )}
                     </div>
@@ -181,14 +249,23 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
                         >
                             Password
                         </label>
-                        <input
-                            type="password"
-                            placeholder="*********"
-                            {...register("password", {
-                                required: "Please Enter Password.",
-                            })}
-                            className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
-                        />
+                        <div className="flex items-center justify-between border border-gray-400 rounded-md">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="*********"
+                                {...register("password", {
+                                    required: "Please Enter Password.",
+                                })}
+                                className="w-full px-2 py-1  outline-none"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="text-black/70 mr-2"
+                            >
+                                <MdRemoveRedEye />
+                            </button>
+                        </div>
                         {errors.password && (
                             <p className="text-red-500 text-sm">
                                 {errors?.password?.message}

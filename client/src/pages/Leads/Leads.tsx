@@ -10,6 +10,7 @@ import { getAllUser } from "../../api/user";
 import { CSVLink } from "react-csv";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import EditLeadModal from "../../components/Modal/EditLeadModal";
+import { returnColors } from "../../utils/utils";
 
 const Leads = () => {
     // const [phone, setPhone] = useState("");
@@ -305,6 +306,11 @@ const Leads = () => {
                                             "pending"
                                                 ? "bg-yellow-500"
                                                 : ""
+                                        } ${
+                                            item?.name.toLowerCase() ===
+                                            "rework/warmup"
+                                                ? "bg-sky-500"
+                                                : ""
                                         } bg-gray-500 text-white text-xs font-semibold px-6 py-1 rounded-md capitalize cursor-pointer`}
                                     >
                                         {item?.name}
@@ -389,7 +395,7 @@ const Leads = () => {
 
                                                     setDetail(item);
                                                 }}
-                                                className="font-medium text-white bg-green-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
+                                                className="font-medium text-white bg-green-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1 cursor-pointer"
                                             >
                                                 <MdEdit />
                                             </button>
@@ -401,7 +407,7 @@ const Leads = () => {
                                                         view: true,
                                                     })
                                                 }
-                                                className="font-medium text-white bg-blue-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
+                                                className="font-medium text-white bg-blue-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1 cursor-pointer"
                                             >
                                                 <FaEye />
                                             </button>
@@ -414,7 +420,7 @@ const Leads = () => {
                                                         view: false,
                                                     });
                                                 }}
-                                                className="font-medium text-white bg-red-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1"
+                                                className="font-medium text-white bg-red-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1 cursor-pointer"
                                             >
                                                 <MdDelete />
                                             </button>
@@ -429,12 +435,17 @@ const Leads = () => {
                                                 } ${
                                                     item?.status?.name?.toLowerCase() ===
                                                     "pending"
-                                                        ? "bg-blue-500"
+                                                        ? "bg-yellow-500"
                                                         : ""
                                                 } ${
                                                     item?.status?.name?.toLowerCase() ===
                                                     "cancelled"
                                                         ? "bg-red-500"
+                                                        : ""
+                                                } ${
+                                                    item?.status?.name?.toLowerCase() ===
+                                                    "rework/warmup"
+                                                        ? "bg-sky-500"
                                                         : ""
                                                 } px-3 py-1 text-xs rounded font-semibold text-white`}
                                             >

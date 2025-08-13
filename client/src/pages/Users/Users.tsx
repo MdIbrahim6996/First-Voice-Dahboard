@@ -18,6 +18,7 @@ const Users = () => {
         delete: false,
     });
     const [id, setId] = useState<number>();
+    const [detail, setDetail] = useState({});
 
     const queryClient = useQueryClient();
 
@@ -188,7 +189,7 @@ const Users = () => {
                                         <td className="px-6 py-4 flex flex-col gap-1 items-center justify-center">
                                             <button
                                                 onClick={() => {
-                                                    setId(item.id);
+                                                    setDetail(item);
                                                     setShow({
                                                         create: false,
                                                         edit: true,
@@ -280,7 +281,7 @@ const Users = () => {
                             delete: false,
                         })
                     }
-                    id={id!}
+                    detail={detail}
                 />
             )}
             {show.view && (

@@ -145,9 +145,9 @@ const Sidebar = () => {
                 <div className="absolute bottom-0 bg-white rounded-md w-full text-blue-700 p-2 hover:-translate-y-1 transition duration-300">
                     <div className="flex gap-1.5 items-center">
                         <img
-                            src="/profile.jpg"
+                            src="/profile.png"
                             alt=""
-                            className="w-10 h-10 rounded-full bg-blue-500"
+                            className="w-10 h-10 rounded-full border border-slate-300"
                         />
                         <div>
                             <p>{user?.user?.email}</p>

@@ -6,7 +6,7 @@ import { createLead } from "../../api/lead";
 import { getAllProcess } from "../../api/process";
 import { getAllPlan } from "../../api/plan";
 import type { LeadsFormInput } from "../../types/form.types";
-import { getAllUser } from "../../api/user";
+import { getAllUserforUsers } from "../../api/user";
 
 const AddLeads = () => {
     const date = new Date();
@@ -33,7 +33,7 @@ const AddLeads = () => {
 
     const { data: user } = useQuery({
         queryKey: ["user"],
-        queryFn: getAllUser,
+        queryFn: getAllUserforUsers,
     });
 
     const processValue = watch("process") ? watch("process") : 1;
@@ -42,6 +42,7 @@ const AddLeads = () => {
         plan?.filter((item: any) => id == item?.processId);
 
     const filterUser = user?.filter((item: any) => item?.role === "user");
+    console.log(filterUser);
 
     const { mutate: createLeadMutation, isPending } = useMutation({
         mutationFn: (formData) => createLead(formData),

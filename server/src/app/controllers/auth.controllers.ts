@@ -40,6 +40,7 @@ export const loginController = async (
             throw new Error("User Does not Exist.");
         }
         if (existingUser?.isBlocked) {
+            res.status(401);
             throw new Error("You Have Been Blocked By Admin.");
         }
         const matchedPassword = await bcrypt.compare(

@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { getSingleUser } from "../../api/user";
+import { updateUser } from "../../api/user";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type Inputs = {
     employeeId: string;
@@ -10,29 +11,38 @@ type Inputs = {
     role: string;
     email: string;
     password: string;
+    block: boolean;
 };
 
 const EditUserModal = ({
     handleClose,
-    id,
+    detail,
 }: {
     handleClose: () => void;
-    id: number;
+    detail: any;
 }) => {
-    const { data: user } = useQuery({
-        queryKey: ["user", id],
-        queryFn: () => getSingleUser(id),
+    console.log(detail);
+    const { register, handleSubmit } = useForm<Inputs>({
+        defaultValues: { ...detail, password: "", block: detail?.isBlocked },
+    });
+    const queryClient = useQueryClient();
+
+    const { mutate } = useMutation({
+        mutationKey: ["updateUser"],
+        mutationFn: updateUser,
+        onSuccess: (data) => {
+            if (data?.id) {
+                toast.success("User Updated Successfully.");
+                queryClient.invalidateQueries({
+                    queryKey: ["user"],
+                });
+                handleClose();
+            }
+        },
     });
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<Inputs>({ defaultValues: { ...user, password: "" } });
-
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        //@ts-ignore
-        createMutation.mutate(data);
+        mutate({ ...data, id: detail?.id });
     };
 
     return (
@@ -51,6 +61,7 @@ const EditUserModal = ({
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="px-6 py-5 space-y-3"
+                    autoComplete="off"
                 >
                     <div>
                         <label
@@ -62,16 +73,9 @@ const EditUserModal = ({
                         <input
                             type="text"
                             placeholder="Employee Id"
-                            {...register("employeeId", {
-                                required: "Please Enter Employee Id.",
-                            })}
+                            {...register("employeeId")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
-                        {errors.employeeId && (
-                            <p className="text-red-500 text-sm">
-                                {errors?.employeeId?.message}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <label htmlFor="name" className="text-sm font-semibold">
@@ -80,16 +84,9 @@ const EditUserModal = ({
                         <input
                             type="text"
                             placeholder="Name"
-                            {...register("name", {
-                                required: "Please Enter Employee Id.",
-                            })}
+                            {...register("name")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
-                        {errors.name && (
-                            <p className="text-red-500 text-sm">
-                                {errors?.name?.message}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <label
@@ -101,16 +98,9 @@ const EditUserModal = ({
                         <input
                             type="email"
                             placeholder="Email"
-                            {...register("email", {
-                                required: "Please Enter Email Address.",
-                            })}
+                            {...register("email")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
-                        {errors.email && (
-                            <p className="text-red-500 text-sm">
-                                {errors?.email?.message}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <label
@@ -123,16 +113,9 @@ const EditUserModal = ({
                             type="tel"
                             maxLength={10}
                             placeholder="(033) 2345 9675"
-                            {...register("phone", {
-                                required: "Please Enter Phone Number.",
-                            })}
+                            {...register("phone")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
-                        {errors.phone && (
-                            <p className="text-red-500 text-sm">
-                                {errors?.phone?.message}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <label htmlFor="role" className="text-sm font-semibold">
@@ -140,9 +123,7 @@ const EditUserModal = ({
                         </label>
                         <select
                             id="role"
-                            {...register("role", {
-                                required: "Please Select a Role.",
-                            })}
+                            {...register("role")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
                             <option value="">Select a Role</option>
@@ -150,26 +131,21 @@ const EditUserModal = ({
                             <option value="superadmin">superadmin</option>
                             <option value="user">user</option>
                         </select>
-                        {errors.role && (
-                            <p className="text-red-500 text-sm">
-                                {errors?.role?.message}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <label
                             htmlFor="aloowLogin"
                             className="text-sm font-semibold"
                         >
-                            Allow Login
+                            Block
                         </label>
                         <select
-                            name="aloowLogin"
-                            id="aloowLogin"
+                            {...register("block")}
+                            id="block"
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
-                            <option value="true">true</option>
                             <option value="false">false</option>
+                            <option value="true">true</option>
                         </select>
                     </div>
                     <div>
@@ -182,16 +158,9 @@ const EditUserModal = ({
                         <input
                             type="password"
                             placeholder="*********"
-                            {...register("password", {
-                                required: "Please Enter Password.",
-                            })}
+                            {...register("password")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
-                        {errors.password && (
-                            <p className="text-red-500 text-sm">
-                                {errors?.password?.message}
-                            </p>
-                        )}
                     </div>
                     <div className="mt-4 text-center">
                         <button

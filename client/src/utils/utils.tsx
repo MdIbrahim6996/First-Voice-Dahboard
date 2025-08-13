@@ -6,7 +6,12 @@ export const returnColors = (status: string) => {
             return "#ACE1AF";
         case "cancelled":
             return "#C81D11";
+        case "rework/warmup":
+            return "#0070BB";
         default:
             return "";
     }
 };
+
+export const formatNumber = (number: number) =>
+        number < 10 ? `0${number}` : number;

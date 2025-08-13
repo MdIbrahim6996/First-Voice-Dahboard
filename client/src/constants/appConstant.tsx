@@ -42,7 +42,7 @@ export const userLinks = [
     },
     {
         id: 4,
-        title: "Add-Lead",
+        title: "Add Lead",
         link: "/user/add-lead",
         icon: <RiFileAddFill className="text-xl" />,
     },
@@ -54,7 +54,7 @@ export const userLinks = [
     },
     {
         id: 6,
-        title: "Holiday-Calendar",
+        title: "Holiday Calendar",
         link: "/user/holiday-calendar",
         icon: <MdCalendarMonth className="text-xl" />,
     },
@@ -86,7 +86,7 @@ export const adminLinks = [
     },
     {
         id: 4,
-        title: "Add-Lead",
+        title: "Add Lead",
         link: "/admin/add-lead",
         icon: <RiFileAddFill className="text-xl" />,
     },
@@ -110,27 +110,27 @@ export const adminLinks = [
     },
 ];
 export const superAdminLinks = [
-    {
-        id: 1,
-        title: "Dashboard",
-        link: "/superadmin/dashboard",
-        icon: <MdDashboard className="text-xl" />,
-    },
+    // {
+    //     id: 1,
+    //     title: "Dashboard",
+    //     link: "/superadmin/dashboard",
+    //     icon: <MdDashboard className="text-xl" />,
+    // },
     {
         id: 2,
-        title: "MainDashboard",
+        title: "Main Dashboard",
         link: "/superadmin/main-dashboard",
         icon: <MdSpaceDashboard className="text-xl" />,
     },
-    {
-        id: 3,
-        title: "Attendance",
-        link: "/superadmin/attendance",
-        icon: <IoBookSharp className="text-xl" />,
-    },
+    // {
+    //     id: 3,
+    //     title: "Attendance",
+    //     link: "/superadmin/attendance",
+    //     icon: <IoBookSharp className="text-xl" />,
+    // },
     {
         id: 4,
-        title: "Add-Lead",
+        title: "Add Lead",
         link: "/superadmin/add-lead",
         icon: <RiFileAddFill className="text-xl" />,
     },
@@ -188,10 +188,10 @@ export const superAdminLinks = [
         link: "/superadmin/status",
         icon: <MdPerson className="text-xl" />,
     },
-    {
-        id: 14,
-        title: "Profile",
-        link: "/superadmin/profile",
-        icon: <CgProfile className="text-xl" />,
-    },
+    // {
+    //     id: 14,
+    //     title: "Profile",
+    //     link: "/superadmin/profile",
+    //     icon: <CgProfile className="text-xl" />,
+    // },
 ];

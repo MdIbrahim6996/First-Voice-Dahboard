@@ -10,8 +10,6 @@ const TopPerformer = () => {
     const first = data ? data[0] : {};
     const second = data ? data[1] : {};
     const third = data ? data[2] : {};
-
-    console.log(first);
     return (
         <div className="p-5">
             <div className="mb-5  text-gray-900 bg-white ">
@@ -33,11 +31,11 @@ const TopPerformer = () => {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.25 }}
-                    className="mt-1 text-sm font-normal text-gray-700 w-[50%] mx-auto"
+                    className="mt-1 text-sm font-normal text-center text-gray-700 w-[50%] mx-auto"
                 >
-                    Browse a list of Flowbite products designed to help you work
-                    and play, stay organized, get answers, keep in touch, grow
-                    your business, and more.
+                    Recognizing and celebrating the exceptional dedication,
+                    skill, and consistent results of our top-performing team
+                    members.
                 </motion.p>
             </div>
 
@@ -47,6 +45,7 @@ const TopPerformer = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.5 }}
                     className="bg-blue-700 p-5 rounded-md text-white text-center mt-20"
+                    style={{ visibility: second ? "visible" : "hidden" }}
                 >
                     <div>
                         <img
@@ -58,39 +57,47 @@ const TopPerformer = () => {
                             {second?.user?.name}
                         </p>
                         <p className="text-xl font-bold uppercase mt-2">
-                            (user 2)
+                            ({second?.user?.alias})
                         </p>
                         <p className="text-5xl font-bold uppercase mt-5">
                             {second?.count} sales
                         </p>
                     </div>
                 </motion.article>
+
                 <motion.article
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.25 }}
                     className="bg-blue-700 p-5 rounded-md text-white text-center h-fit"
+                    style={{ visibility: first ? "visible" : "hidden" }}
                 >
                     <img src="/trophy-1.svg" alt="" className="mx-auto mb-5" />
                     <p className="text-3xl font-bold uppercase">
                         {first?.user?.name}
                     </p>
-                    <p className="text-xl font-bold uppercase mt-2">(user 1)</p>
+                    <p className="text-xl font-bold uppercase mt-2">
+                        ({first?.user?.alias})
+                    </p>
                     <p className="text-5xl font-bold uppercase mt-5">
                         {first?.count} sales
                     </p>
                 </motion.article>
+
                 <motion.article
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.75 }}
                     className="bg-blue-700 p-5 rounded-md text-white text-center mt-20"
+                    style={{ visibility: third ? "visible" : "hidden" }}
                 >
                     <img src="/trophy-1.svg" alt="" className="mx-auto mb-5" />
                     <p className="text-3xl font-bold uppercase">
                         {third?.user?.name}
                     </p>
-                    <p className="text-xl font-bold uppercase mt-2">(user 3)</p>
+                    <p className="text-xl font-bold uppercase mt-2">
+                        ({third?.user?.alias})
+                    </p>
                     <p className="text-5xl font-bold uppercase mt-5">
                         {third?.count ? third?.count : 0} sales
                     </p>
