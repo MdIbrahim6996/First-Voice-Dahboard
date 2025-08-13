@@ -16,8 +16,6 @@ const pusher_1 = require("../lib/pusher");
 const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, firstName, middleName, lastName, centre, address, city, country, pincode, password, dateOfBirth, phone, process, plan, closer, fee, currency, bankName, accountName, comment, cardNumber, expiryDateYear, expiryDateMonth, cvv, } = req.body;
     const date = new Date();
-    console.log(date);
-    console.log(date.toISOString().substring(0, 10));
     try {
         const status = yield prismaClient_1.prisma.status.findFirst({
             where: { name: "pending" },
@@ -34,7 +32,7 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 country,
                 pincode,
                 password,
-                dateOfBirth: new Date(dateOfBirth),
+                dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : client_1.Prisma.skip,
                 phone,
                 processId: parseInt(process),
                 planId: parseInt(plan),
@@ -96,6 +94,9 @@ const getAllLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             where: {
                 statusId: parseInt(status)
                     ? parseInt(status)
+                    : client_1.Prisma.skip,
+                processId: parseInt(process)
+                    ? parseInt(process)
                     : client_1.Prisma.skip,
                 saleDate: {
                     gte: saleDate ? newSaleDate : client_1.Prisma.skip,
@@ -260,10 +261,10 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.updateLead = updateLead;
 const deleteLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const lead = yield prismaClient_1.prisma.lead.delete({ where: { id: parseInt(id) } });
-    res.send(lead);
     try {
+        const { id } = req.params;
+        const lead = yield prismaClient_1.prisma.lead.delete({ where: { id: parseInt(id) } });
+        res.send(lead);
     }
     catch (error) {
         console.log(error);

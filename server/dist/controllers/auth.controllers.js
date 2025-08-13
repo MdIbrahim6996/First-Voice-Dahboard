@@ -35,10 +35,10 @@ const registerController = (req, res, next) => __awaiter(void 0, void 0, void 0,
             throw new Error("User Already Exist.");
         }
         const hanshedPassword = yield bcrypt_1.default.hash(password, 10);
-        const user = yield prismaClient_1.prisma.user.create({
-            data: { email, password: hanshedPassword, role, name },
-        });
-        res.send(user);
+        // const user = await prisma.user.create({
+        //     data: { email, password: hanshedPassword, role, name },
+        // });
+        res.send("user");
     }
     catch (error) {
         console.log(error);
@@ -54,6 +54,10 @@ const loginController = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         });
         if (!existingUser) {
             throw new Error("User Does not Exist.");
+        }
+        if (existingUser === null || existingUser === void 0 ? void 0 : existingUser.isBlocked) {
+            res.status(401);
+            throw new Error("You Have Been Blocked By Admin.");
         }
         const matchedPassword = yield bcrypt_1.default.compare(password, existingUser.password);
         if (matchedPassword) {

@@ -9,24 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMainDashboard = exports.createMainDashboard = void 0;
-const createMainDashboard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getProcessLeadCount = exports.getTopSellers = void 0;
+const prismaClient_1 = require("../lib/prismaClient");
+const getTopSellers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentDay = new Date();
+    currentDay.setUTCHours(0, 0, 0, 0);
+    const nextDay = new Date();
+    nextDay.setUTCHours(0, 0, 0, 0);
+    nextDay.setUTCDate(nextDay.getUTCDate() + 1);
     try {
-        res.send("create main");
+        const seller = yield prismaClient_1.prisma.leadCount.findMany({
+            where: { updatedAt: { gte: currentDay, lte: nextDay } },
+            orderBy: [{ count: "desc" }, { updatedAt: "desc" }],
+            include: { user: { select: { name: true, alias: true } } },
+        });
+        res.send(seller);
     }
     catch (error) {
         console.log(error);
         next(error);
     }
 });
-exports.createMainDashboard = createMainDashboard;
-const getAllMainDashboard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getTopSellers = getTopSellers;
+const getProcessLeadCount = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.send("get all main");
+        const leadCount = yield prismaClient_1.prisma.process.findMany({});
+        res.send(leadCount);
     }
     catch (error) {
         console.log(error);
         next(error);
     }
 });
-exports.getAllMainDashboard = getAllMainDashboard;
+exports.getProcessLeadCount = getProcessLeadCount;

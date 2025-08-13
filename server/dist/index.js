@@ -10,10 +10,16 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const routes_1 = __importDefault(require("./routes"));
 const errorHandler_1 = require("./middlewares/errorHandler");
 const path_1 = __importDefault(require("path"));
+const cluster_1 = __importDefault(require("cluster"));
+const os_1 = __importDefault(require("os"));
+const numCPUs = os_1.default.cpus().length;
 const app = (0, express_1.default)();
 //MIDDLEWARES
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "https://first-voice-dahboard.onrender.com"],
+    origin: [
+        "http://localhost:5173",
+        "https://first-voice-dahboard.onrender.com",
+    ],
     credentials: true,
     optionsSuccessStatus: 200,
 }));
@@ -39,6 +45,22 @@ app.use(errorHandler_1.notFound);
 app.use(errorHandler_1.errorHandler);
 const PORT = 4000;
 app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+if (numCPUs > 1) {
+    if (cluster_1.default.isPrimary) {
+        for (let i = 0; i < numCPUs; i++) {
+            cluster_1.default.fork();
+        }
+        cluster_1.default.on("exit", function (worker) {
+            console.log("Worker", worker.id, " has exited.");
+        });
+    }
+    else {
+        app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+    }
+}
+else {
+    app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+}
 // const obj = {
 //     "07": [
 //         {

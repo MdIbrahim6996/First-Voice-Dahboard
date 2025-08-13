@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAttendance = exports.updateAttendance = exports.getSingleAttendance = exports.getAllAttendance = exports.createAttendance = exports.getEmployeeMonthlyAttendance = exports.getEmployeePeriodwiseAttendance = exports.getUserAllAttendance = exports.getEmployeeAttendance = exports.createEmployeeAttendance = void 0;
+exports.getAllAttendance = exports.getEmployeeMonthlyAttendance = exports.getEmployeePeriodwiseAttendance = exports.getUserAllAttendance = exports.getEmployeeAttendance = exports.createEmployeeAttendance = void 0;
 const prismaClient_1 = require("../lib/prismaClient");
 const groupBy_1 = __importDefault(require("lodash/groupBy"));
 const client_1 = require("@prisma/client");
@@ -34,7 +34,6 @@ const createEmployeeAttendance = (req, res, next) => __awaiter(void 0, void 0, v
             where: { userId: parseInt(id) },
             orderBy: { dateTime: "desc" },
         });
-        console.log(existingAttendance);
         if (currentDate === ((_b = (_a = existingAttendance[0]) === null || _a === void 0 ? void 0 : _a.dateTime) === null || _b === void 0 ? void 0 : _b.getDate())) {
             throw new Error("Your Attendance has already been marked.");
         }
@@ -215,23 +214,23 @@ const getEmployeeMonthlyAttendance = (req, res, next) => __awaiter(void 0, void 
     }
 });
 exports.getEmployeeMonthlyAttendance = getEmployeeMonthlyAttendance;
-const createAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("createAttendance");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.createAttendance = createAttendance;
 const getAllAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const attendances = yield prismaClient_1.prisma.attendance.findMany({
-        orderBy: { dateTime: "desc" },
-        include: { user: { select: { name: true } } },
-    });
-    res.send(attendances);
+    const { name, startDate, endDate } = req.query;
     try {
+        const attendances = yield prismaClient_1.prisma.attendance.findMany({
+            orderBy: { dateTime: "desc" },
+            include: { user: { select: { name: true } } },
+            where: {
+                user: { name: name ? name : client_1.Prisma.skip },
+                dateTime: {
+                    gte: startDate
+                        ? new Date(startDate)
+                        : client_1.Prisma.skip,
+                    lte: endDate ? new Date(endDate) : client_1.Prisma.skip,
+                },
+            },
+        });
+        res.send(attendances);
     }
     catch (error) {
         console.log(error);
@@ -239,33 +238,3 @@ const getAllAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.getAllAttendance = getAllAttendance;
-const getSingleAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("getSingleAttendance");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.getSingleAttendance = getSingleAttendance;
-const updateAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("updateAttendance");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.updateAttendance = updateAttendance;
-const deleteAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("deleteAttendance");
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
-exports.deleteAttendance = deleteAttendance;

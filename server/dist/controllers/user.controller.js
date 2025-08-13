@@ -16,25 +16,39 @@ exports.deleteUser = exports.updateUser = exports.getSingleUser = exports.getAll
 const prismaClient_1 = require("../lib/prismaClient");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, employeeId, phone, password, isBlocked, role } = req.body;
-    const existingUser = yield prismaClient_1.prisma.user.findFirst({ where: { email } });
-    if (existingUser) {
-        throw new Error("User Already Exist.");
-    }
-    const hanshedPassword = yield bcrypt_1.default.hash(password, 10);
-    const user = yield prismaClient_1.prisma.user.create({
-        data: {
-            name,
-            email,
-            password: hanshedPassword,
-            employeeId,
-            phone,
-            role,
-            isBlocked,
-        },
-    });
-    res.send(user);
     try {
+        const { name, alias, email, employeeId, phone, password, block, role, process, } = req.body;
+        const existingUser = yield prismaClient_1.prisma.user.findFirst({ where: { email } });
+        if (existingUser) {
+            throw new Error("User With This Email Already Exist.");
+        }
+        const existingUserwithEmployeeId = yield prismaClient_1.prisma.user.findFirst({
+            where: { employeeId },
+        });
+        if (existingUserwithEmployeeId) {
+            throw new Error("User With This Employee ID Already Exist.");
+        }
+        const existingUserwithAlias = yield prismaClient_1.prisma.user.findFirst({
+            where: { alias },
+        });
+        if (existingUserwithAlias) {
+            throw new Error("User With This Alias Already Exist.");
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const user = yield prismaClient_1.prisma.user.create({
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                employeeId,
+                phone,
+                role,
+                isBlocked: block === "false" ? false : true,
+                alias,
+                processId: parseInt(process),
+            },
+        });
+        res.send(user);
     }
     catch (error) {
         console.log(error);
@@ -43,7 +57,9 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.createUser = createUser;
 const getAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield prismaClient_1.prisma.user.findMany();
+    const users = yield prismaClient_1.prisma.user.findMany({
+        orderBy: { createdAt: "desc" },
+    });
     res.send(users);
     try {
     }
@@ -66,8 +82,30 @@ const getSingleUser = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.getSingleUser = getSingleUser;
 const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("updateUser");
+    const { id } = req.params;
+    console.log(id);
+    const { name, alias, email, employeeId, phone, password, block, role, process, } = req.body;
     try {
+        const existingUser = yield prismaClient_1.prisma.user.findFirst({ where: { email } });
+        if (!existingUser) {
+            throw new Error("User Doesn't Exist.");
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const user = yield prismaClient_1.prisma.user.update({
+            where: { id: parseInt(id) },
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                employeeId,
+                phone,
+                role,
+                isBlocked: block === "false" ? false : true,
+                alias,
+                processId: parseInt(process),
+            },
+        });
+        res.send(user);
     }
     catch (error) {
         console.log(error);

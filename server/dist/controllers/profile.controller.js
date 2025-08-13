@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserMonthWiseAttendance = exports.getUserInfo = void 0;
+exports.getProfileCardInfo = exports.getUserMonthWiseAttendance = exports.getUserInfo = void 0;
 const prismaClient_1 = require("../lib/prismaClient");
 const lodash_1 = require("lodash");
 const arrayGouping_1 = require("../utils/arrayGouping");
@@ -103,3 +103,58 @@ const getUserMonthWiseAttendance = (req, res, next) => __awaiter(void 0, void 0,
     }
 });
 exports.getUserMonthWiseAttendance = getUserMonthWiseAttendance;
+const getProfileCardInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const currentStartDay = new Date();
+    currentStartDay.setUTCHours(0, 0, 0, 0);
+    const nextStartDay = new Date();
+    nextStartDay.setDate(nextStartDay.getDate() + 1);
+    nextStartDay.setUTCHours(0, 0, 0, 0);
+    const currentStartMonth = new Date();
+    currentStartMonth.setDate(1);
+    currentStartMonth.setUTCHours(0, 0, 0, 0);
+    const nextStartMonth = new Date();
+    nextStartMonth.setMonth(nextStartMonth.getMonth() + 1);
+    nextStartMonth.setDate(1);
+    nextStartMonth.setUTCHours(0, 0, 0, 0);
+    try {
+        const todayLead = yield prismaClient_1.prisma.lead.count({
+            where: {
+                closerId: parseInt(userId),
+                saleDate: { gte: currentStartDay, lte: nextStartDay },
+            },
+        });
+        const totalLead = yield prismaClient_1.prisma.lead.count({
+            where: {
+                closerId: parseInt(userId),
+                saleDate: { gte: currentStartMonth, lte: nextStartMonth },
+            },
+        });
+        const totalSuccessLead = yield prismaClient_1.prisma.lead.count({
+            where: {
+                closerId: parseInt(userId),
+                status: { name: "success" },
+                saleDate: { gte: currentStartMonth, lte: nextStartMonth },
+            },
+        });
+        const totalAttendance = yield prismaClient_1.prisma.attendance.count({
+            where: {
+                userId: parseInt(userId),
+                dateTime: { gte: currentStartMonth, lte: nextStartMonth },
+            },
+        });
+        const spd = totalSuccessLead / totalAttendance;
+        res.send({
+            todayLead,
+            totalSuccessLead,
+            totalLead,
+            spd: spd ? spd === null || spd === void 0 ? void 0 : spd.toFixed(2) : 0,
+            totalAttendance,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+exports.getProfileCardInfo = getProfileCardInfo;

@@ -4,4 +4,5 @@ const express_1 = require("express");
 const profile_controller_1 = require("../controllers/profile.controller");
 const router = (0, express_1.Router)();
 router.get("/:userId", profile_controller_1.getUserInfo);
+router.get("/card/:userId", profile_controller_1.getProfileCardInfo);
 exports.default = router;

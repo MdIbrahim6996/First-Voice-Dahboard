@@ -10,7 +10,6 @@ import { getAllUser } from "../../api/user";
 import { CSVLink } from "react-csv";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import EditLeadModal from "../../components/Modal/EditLeadModal";
-import { returnColors } from "../../utils/utils";
 
 const Leads = () => {
     // const [phone, setPhone] = useState("");
