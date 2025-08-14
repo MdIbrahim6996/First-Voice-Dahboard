@@ -14,7 +14,10 @@ export const getTopSellers = async (
     nextDay.setUTCDate(nextDay.getUTCDate() + 1);
     try {
         const seller = await prisma.leadCount.findMany({
-            where: { updatedAt: { gte: currentDay, lte: nextDay } },
+            where: {
+                updatedAt: { gte: currentDay, lte: nextDay },
+                userId: { not: null },
+            },
             orderBy: [{ count: "desc" }, { updatedAt: "desc" }],
             include: { user: { select: { name: true, alias: true } } },
         });

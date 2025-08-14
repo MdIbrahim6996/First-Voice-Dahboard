@@ -8,7 +8,8 @@ import {
 type UserData = {
     user: {
         id: number;
-        name: number;
+        name: string;
+        alias: string;
         email: string;
         password: string;
         role: string;

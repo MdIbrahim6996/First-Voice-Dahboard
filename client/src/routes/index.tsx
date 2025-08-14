@@ -16,15 +16,15 @@ export const router = createBrowserRouter([
         path: "/",
         element: <RootLayout />,
         children: [
-            {
-                path: "",
-                async lazy() {
-                    let Dashboard = await import(
-                        "../pages/Dashboard/Dashboard"
-                    );
-                    return { Component: Dashboard.default };
-                },
-            },
+            // {
+            //     path: "",
+            //     async lazy() {
+            //         let Dashboard = await import(
+            //             "../pages/Dashboard/Dashboard"
+            //         );
+            //         return { Component: Dashboard.default };
+            //     },
+            // },
             { ...userRoutes },
             { ...adminRoutes },
             { ...superadminRoutes },

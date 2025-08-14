@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     createEmployeeAttendance,
     getAllAttendance,
+    getEmployeeMonthlyAttendance,
     getUserAllAttendance,
 } from "../../controllers/attendance.controller";
 
@@ -11,6 +12,7 @@ const router = Router();
 // router.get("/:id", getEmployeePeriodwiseAttendance);
 
 router.post("/:id", createEmployeeAttendance);
+router.get("/monthly", getEmployeeMonthlyAttendance);
 router.get("/:id", getUserAllAttendance);
 router.get("/", getAllAttendance);
 

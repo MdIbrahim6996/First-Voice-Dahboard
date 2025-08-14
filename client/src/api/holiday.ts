@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 // SUPERADMIN
 export const createHoliday = async (formData: any) => {
     try {
-        const { data } = await axiosInstance.post(`/holiday`, {
+        const { data } = await axiosInstance.post(`/superadmin/holiday`, {
             ...formData,
         });
         return data;
@@ -60,7 +60,9 @@ export const getAllHoliday = async (
 // SUPERADMIN
 export const deleteHoliday = async (id: number) => {
     try {
-        const { data } = await axiosInstance.delete(`/holiday/${id}`);
+        const { data } = await axiosInstance.delete(
+            `/superadmin/holiday/${id}`
+        );
         return data;
     } catch (error) {
         console.log(error);

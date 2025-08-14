@@ -39,7 +39,7 @@ export const createUser = async (
         if (existingUserwithAlias) {
             throw new Error("User With This Alias Already Exist.");
         }
-
+        console.log(req.body);
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
             data: {
@@ -119,7 +119,7 @@ export const updateUser = async (
             data: {
                 name,
                 email,
-                password: hashedPassword,
+                password: password ? hashedPassword : Prisma.skip,
                 employeeId,
                 phone,
                 role,
@@ -139,10 +139,10 @@ export const deleteUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { id } = req.params;
-    const user = await prisma.user.delete({ where: { id: parseInt(id) } });
-    res.send(user);
     try {
+        const { id } = req.params;
+        const user = await prisma.user.delete({ where: { id: parseInt(id) } });
+        res.send(user);
     } catch (error) {
         console.log(error);
         next(error);

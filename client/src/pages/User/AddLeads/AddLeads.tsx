@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
-import { createSuperAdminLead } from "../../api/lead";
-import { getAllProcess } from "../../api/process";
-import { getAllPlan } from "../../api/plan";
-import type { LeadsFormInput } from "../../types/form.types";
-import { getAllUserforUsers } from "../../api/user";
+import { createUserLead } from "../../../api/lead";
+import { getAllProcess, getAllProcessforUser } from "../../../api/process";
+import { getAllPlan, getAllPlanforUser } from "../../../api/plan";
+import type { LeadsFormInput } from "../../../types/form.types";
+import { getAllUserforUsers } from "../../../api/user";
 import { useEffect } from "react";
 
 const AddLeads = () => {
@@ -20,25 +20,17 @@ const AddLeads = () => {
         handleSubmit,
         watch,
         reset,
-        control,
-    } = useForm<LeadsFormInput>({
-        defaultValues: { appliances: [{ age: 0, name: "", make: "" }] },
-    });
-
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: "appliances",
-    });
+    } = useForm<LeadsFormInput>();
 
     const queryClient = useQueryClient();
 
     const { data: process } = useQuery({
         queryKey: ["process"],
-        queryFn: getAllProcess,
+        queryFn: getAllProcessforUser,
     });
     const { data: plan } = useQuery({
         queryKey: ["plan"],
-        queryFn: getAllPlan,
+        queryFn: getAllPlanforUser,
     });
 
     const { data: user } = useQuery({
@@ -48,7 +40,6 @@ const AddLeads = () => {
 
     const processValue = watch("process") ? watch("process") : 1;
     const paymentMethod = watch("paymentMethod");
-    console.log(paymentMethod);
 
     const filterPlan = (id: number) =>
         plan?.filter((item: any) => id == item?.processId);
@@ -56,7 +47,7 @@ const AddLeads = () => {
     const filterUser = user?.filter((item: any) => item?.role === "user");
 
     const { mutate: createLeadMutation, isPending } = useMutation({
-        mutationFn: (formData) => createSuperAdminLead(formData),
+        mutationFn: (formData) => createUserLead(formData),
         onSuccess: (data) => {
             if (data?.id) {
                 toast.success("Lead Created Successfully!");
@@ -84,7 +75,6 @@ const AddLeads = () => {
     }, [register, unregister, paymentMethod]);
 
     const onSubmit: SubmitHandler<LeadsFormInput> = (data) => {
-        console.log(data);
         //@ts-ignore
         createLeadMutation(data);
     };
@@ -365,7 +355,7 @@ const AddLeads = () => {
                                     Select a Process
                                 </option>
                                 {process?.map((item: any) => (
-                                    <option value={item?.id}>
+                                    <option key={item?.id} value={item?.id}>
                                         {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
@@ -392,7 +382,7 @@ const AddLeads = () => {
                                     Select a Plan
                                 </option>
                                 {filterPlan(processValue)?.map((item: any) => (
-                                    <option value={item?.id}>
+                                    <option value={item?.id} key={item?.id}>
                                         {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
@@ -758,83 +748,50 @@ const AddLeads = () => {
                         </div>
                     )}
 
-                    {fields?.map((field, index) => {
-                        return (
-                            <div key={field.id} className="mb-3">
-                                <div className="grid grid-cols-3 gap-x-4 gap-y-4">
-                                    <div className="flex flex-col text-sm space-y-0.5">
-                                        <label
-                                            htmlFor="appliance"
-                                            className="font-semibold"
-                                        >
-                                            Appliance
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="appliance"
-                                            id="appliance"
-                                            placeholder="Nottinghamshire"
-                                            className="border border-gray-400 px-3 py-1 rounded outline-none"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col text-sm space-y-0.5">
-                                        <label
-                                            htmlFor="makeOfAppliance"
-                                            className="font-semibold"
-                                        >
-                                            Make of Appliance
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="makeOfAppliance"
-                                            id="makeOfAppliance"
-                                            placeholder="700001"
-                                            className="border border-gray-400 px-3 py-1 rounded outline-none"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col text-sm space-y-0.5">
-                                        <label
-                                            htmlFor="age"
-                                            className="font-semibold"
-                                        >
-                                            Age
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="age"
-                                            id="age"
-                                            placeholder="***********"
-                                            className="border border-gray-400 px-3 py-1 rounded-md outline-none"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="space-x-1">
-                                    <button
-                                        type="button"
-                                        className="bg-green-500 uppercase px-2 py-0.5 text-white rounded text-xs"
-                                        onClick={() =>
-                                            append({
-                                                age: 0,
-                                                make: "",
-                                                name: "",
-                                            })
-                                        }
-                                    >
-                                        add
-                                    </button>
-                                    {index > 0 && (
-                                        <button
-                                            type="button"
-                                            className="bg-red-500 uppercase px-2 py-0.5 text-white rounded text-xs"
-                                            onClick={() => remove(index)}
-                                        >
-                                            remove
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
+                    {/* <div className="grid grid-cols-3 gap-x-4 gap-y-4 my-5">
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label
+                                htmlFor="appliance"
+                                className="font-semibold"
+                            >
+                                Appliance
+                            </label>
+                            <input
+                                type="text"
+                                name="appliance"
+                                id="appliance"
+                                placeholder="Nottinghamshire"
+                                className="border border-gray-400 px-3 py-1 rounded outline-none"
+                            />
+                        </div>
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label
+                                htmlFor="makeOfAppliance"
+                                className="font-semibold"
+                            >
+                                Make of Appliance
+                            </label>
+                            <input
+                                type="text"
+                                name="makeOfAppliance"
+                                id="makeOfAppliance"
+                                placeholder="700001"
+                                className="border border-gray-400 px-3 py-1 rounded outline-none"
+                            />
+                        </div>
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label htmlFor="age" className="font-semibold">
+                                Age
+                            </label>
+                            <input
+                                type="text"
+                                name="age"
+                                id="age"
+                                placeholder="***********"
+                                className="border border-gray-400 px-3 py-1 rounded-md outline-none"
+                            />
+                        </div>
+                    </div> */}
                     <div className="mb-4">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="comments" className="font-semibold">

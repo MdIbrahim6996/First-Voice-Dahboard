@@ -37,6 +37,11 @@ const StatusChangeInfoModal = ({ item, handleClose }: StatusChangeReason) => {
                                             "pending"
                                                 ? "bg-yellow-500"
                                                 : ""
+                                        } ${
+                                            unit?.fromStatus.toLowerCase() ===
+                                            "rework/warmup"
+                                                ? "bg-sky-500"
+                                                : ""
                                         } bg-gray-500 text-white text-xs font-semibold px-6 py-1 mr-2 rounded-md capitalize cursor-pointer`}
                                     >
                                         {unit?.fromStatus}
@@ -57,6 +62,11 @@ const StatusChangeInfoModal = ({ item, handleClose }: StatusChangeReason) => {
                                             unit?.toStatus.toLowerCase() ===
                                             "pending"
                                                 ? "bg-yellow-500"
+                                                : ""
+                                        } ${
+                                            unit?.toStatus.toLowerCase() ===
+                                            "rework/warmup"
+                                                ? "bg-sky-500"
                                                 : ""
                                         } bg-gray-500 text-white text-xs font-semibold px-6 py-1 ml-2 rounded-md capitalize cursor-pointer`}
                                     >

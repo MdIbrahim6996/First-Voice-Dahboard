@@ -71,7 +71,7 @@ const Profile = () => {
                         transition={{ duration: 0.5 }}
                         className="text-3xl font-semibold uppercase origin-center w-fit"
                     >
-                        Good Day, {user?.user.name}
+                        Good Day, {user?.user.alias}
                     </motion.p>
                     <motion.p
                         initial={{ opacity: 0, y: -20 }}
@@ -161,7 +161,10 @@ const Profile = () => {
                         </div>
                         <div className="grid grid-cols-2 gap-2 mt-4">
                             {leadData?.map((item: any) => (
-                                <div className="w-full text-center border border-slate-300 p-1 rounded-md">
+                                <div
+                                    key={item?.status}
+                                    className="w-full text-center border border-slate-300 p-1 rounded-md"
+                                >
                                     <p className="text-xl font-semibold">
                                         {item?.count}
                                     </p>

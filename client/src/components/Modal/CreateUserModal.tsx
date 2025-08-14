@@ -16,6 +16,7 @@ type Inputs = {
     role: string;
     process: number;
     email: string;
+    block: boolean;
     password: string;
 };
 
@@ -231,15 +232,17 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
                             htmlFor="aloowLogin"
                             className="text-sm font-semibold"
                         >
-                            Allow Login
+                            Block This User
                         </label>
                         <select
-                            name="aloowLogin"
+                            {...register("block")}
                             id="aloowLogin"
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
                             <option value="true">true</option>
-                            <option value="false">false</option>
+                            <option selected value="false">
+                                false
+                            </option>
                         </select>
                     </div>
                     <div>

@@ -34,8 +34,6 @@ const Users = () => {
         },
     });
 
-    console.log(user);
-
     const headers = [
         { label: "EMAIL", key: "email" },
         { label: "EMPLOYEE ID", key: "employeeId" },

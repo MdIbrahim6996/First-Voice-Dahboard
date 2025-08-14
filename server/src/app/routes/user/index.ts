@@ -8,6 +8,7 @@ import processRouter from "./process.route";
 import planRouter from "./plan.route";
 import dashboardRouter from "./dashboard.route";
 import userRouter from "./user.route";
+import statusRouter from "./status.route";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/lead", leadRouter);
 router.use("/process", processRouter);
 router.use("/plan", planRouter);
 router.use("/user", userRouter);
+router.use("/status", statusRouter);
 
 export default router;

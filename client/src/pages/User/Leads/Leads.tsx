@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext, useState } from "react";
-import { getAllStatus } from "../../../api/status";
+import { getAllStatusforUser } from "../../../api/status";
 import { getAllLeadOfUser } from "../../../api/lead";
 import { AuthContext } from "../../../context/authContext";
 import StatusChangeInfoModal from "../../../components/Modal/StatusChangeInfoModal";
@@ -19,7 +19,7 @@ const Leads = () => {
 
     const { data: statusData } = useQuery({
         queryKey: ["status"],
-        queryFn: getAllStatus,
+        queryFn: getAllStatusforUser,
     });
 
     const { data: leads, refetch } = useQuery({
@@ -33,7 +33,6 @@ const Leads = () => {
                 toDate
             ),
     });
-    console.log(leads);
 
     const resetFilters = async () => {
         setStatus(0);
@@ -142,6 +141,7 @@ const Leads = () => {
                         <div className="flex gap-x-1 mb-5">
                             {statusData?.map((item: any) => (
                                 <button
+                                    key={item?.id}
                                     onClick={() => {
                                         setStatus(item?.id);
                                         queryClient.invalidateQueries({
@@ -208,6 +208,7 @@ const Leads = () => {
                             <tbody>
                                 {leads?.map((item: any, i: number) => (
                                     <tr
+                                        key={item?.id}
                                         className={` capitalize text-center border-b :border-gray-700 border-gray-200`}
                                     >
                                         <th

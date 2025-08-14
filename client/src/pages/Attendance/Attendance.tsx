@@ -9,7 +9,7 @@ const Attendance = () => {
     const { user } = useContext(AuthContext);
     const userId = user?.user?.id;
     const { data } = useQuery({
-        queryKey: ["user-attendance"],
+        queryKey: ["user-attendance", userId],
         queryFn: () => getSingleEmployeeEveryAttendance(userId!),
     });
 

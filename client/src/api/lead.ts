@@ -3,11 +3,15 @@ import { SERVER_URL } from "../constants/apiConstant";
 import { axiosInstance } from "../lib/axiosInstance";
 import toast from "react-hot-toast";
 
-export const createLead = async (formData: any) => {
+//SUPERADMIN
+export const createSuperAdminLead = async (formData: any) => {
     try {
-        const { data } = await axios.post(`${SERVER_URL}/lead`, {
-            ...formData,
-        });
+        const { data } = await axiosInstance.post(
+            `${SERVER_URL}/superadmin/lead`,
+            {
+                ...formData,
+            }
+        );
         return data;
     } catch (error) {
         console.log(error);
@@ -17,11 +21,15 @@ export const createLead = async (formData: any) => {
         return error;
     }
 };
+//SUPERADMIN
 export const updateLead = async (formData: any) => {
     try {
-        const { data } = await axios.put(`${SERVER_URL}/lead/${formData?.id}`, {
-            ...formData,
-        });
+        const { data } = await axiosInstance.put(
+            `${SERVER_URL}/lead/${formData?.id}`,
+            {
+                ...formData,
+            }
+        );
         return data;
     } catch (error) {
         console.log(error);
@@ -31,9 +39,31 @@ export const updateLead = async (formData: any) => {
         return error;
     }
 };
+//SUPERADMIN
 export const deleteLead = async (id: number) => {
     try {
-        const { data } = await axios.delete(`${SERVER_URL}/lead/${id}`);
+        const { data } = await axiosInstance.delete(`${SERVER_URL}/lead/${id}`);
+        return data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
+    }
+};
+//SUPERADMIN
+export const getAllLead = async (
+    status: number,
+    process: number,
+    saleDate: string,
+    fromDate: string,
+    toDate: string
+) => {
+    try {
+        const { data } = await axiosInstance.get(
+            `${SERVER_URL}/superadmin/lead?status=${status}&process=${process}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
+        );
         return data;
     } catch (error) {
         console.log(error);
@@ -44,6 +74,21 @@ export const deleteLead = async (id: number) => {
     }
 };
 
+// USER
+export const createUserLead = async (formData: any) => {
+    try {
+        const { data } = await axiosInstance.post(`${SERVER_URL}/user/lead`, {
+            ...formData,
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
+    }
+};
 //User
 export const getAllLeadOfUser = async (
     userId: number,
@@ -55,26 +100,6 @@ export const getAllLeadOfUser = async (
     try {
         const { data } = await axiosInstance.get(
             `${SERVER_URL}/user/lead/${userId}?status=${status}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
-        );
-        return data;
-    } catch (error) {
-        console.log(error);
-        if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
-        }
-        return error;
-    }
-};
-export const getAllLead = async (
-    status: number,
-    process: number,
-    saleDate: string,
-    fromDate: string,
-    toDate: string
-) => {
-    try {
-        const { data } = await axios.get(
-            `${SERVER_URL}/lead?status=${status}&process=${process}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
         );
         return data;
     } catch (error) {

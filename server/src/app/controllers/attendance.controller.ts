@@ -27,7 +27,6 @@ export const createEmployeeAttendance = async (
             orderBy: { dateTime: "desc" },
         });
 
-
         if (currentDate === existingAttendance[0]?.dateTime?.getDate()) {
             throw new Error("Your Attendance has already been marked.");
         }
@@ -199,6 +198,7 @@ export const getEmployeeMonthlyAttendance = async (
             by: ["userId"],
             _count: { _all: true },
             where: {
+                userId: { not: null },
                 dateTime: {
                     gte: new Date(
                         `${year}-${parseInt(month as string) + 1}-01`
@@ -212,6 +212,7 @@ export const getEmployeeMonthlyAttendance = async (
             by: ["userId"],
             _count: { _all: true },
             where: {
+                userId: { not: null },
                 isLate: true,
                 dateTime: {
                     gte: new Date(
@@ -226,6 +227,7 @@ export const getEmployeeMonthlyAttendance = async (
             by: ["userId"],
             _count: { _all: true },
             where: {
+                userId: { not: null },
                 isLate: false,
                 dateTime: {
                     gte: new Date(
@@ -238,7 +240,13 @@ export const getEmployeeMonthlyAttendance = async (
         });
 
         const userData = await prisma.user.findMany({
-            where: { id: { in: attendance.map((item) => item.userId) } },
+            where: {
+                id: {
+                    in: attendance.map((item) =>
+                        item.userId ? item?.userId : 0
+                    ),
+                },
+            },
             select: { id: true, name: true },
         });
         res.send({ attendance, isLateCount, onTimeCount, userData });
@@ -260,6 +268,7 @@ export const getAllAttendance = async (
             include: { user: { select: { name: true } } },
             where: {
                 user: { name: name ? (name as string) : Prisma.skip },
+                userId: { not: null },
                 dateTime: {
                     gte: startDate
                         ? new Date(startDate as string)

@@ -38,7 +38,6 @@ const Dashboard = () => {
         queryFn: () => getDailyLeadCount(user?.user?.id!),
     });
 
-    console.log(leadCount);
     return (
         <div className="overflow-hidden">
             <div className="p-5">
@@ -99,7 +98,10 @@ const Dashboard = () => {
                             </thead>
                             <tbody>
                                 {leadCount?.map((item: any) => (
-                                    <tr className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200">
+                                    <tr
+                                        key={item?.id}
+                                        className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200"
+                                    >
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"

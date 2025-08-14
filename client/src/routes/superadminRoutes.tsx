@@ -9,15 +9,10 @@ export const superadminRoutes: RouteObject = {
         {
             path: "",
             async lazy() {
-                let Dashboard = await import("../pages/Dashboard/Dashboard");
-                return { Component: Dashboard.default };
-            },
-        },
-        {
-            path: "dashboard",
-            async lazy() {
-                let Dashboard = await import("../pages/Dashboard/Dashboard");
-                return { Component: Dashboard.default };
+                let MainDashboard = await import(
+                    "../pages/MainDashboard/MainDashboard"
+                );
+                return { Component: MainDashboard.default };
             },
         },
         {
@@ -99,13 +94,6 @@ export const superadminRoutes: RouteObject = {
             async lazy() {
                 let Status = await import("../pages/Status/Status");
                 return { Component: Status.default };
-            },
-        },
-        {
-            path: "profile",
-            async lazy() {
-                let Profile = await import("../pages/Profile/Profile");
-                return { Component: Profile.default };
             },
         },
         {

@@ -137,7 +137,7 @@ const EditUserModal = ({
                             htmlFor="aloowLogin"
                             className="text-sm font-semibold"
                         >
-                            Block
+                            Block This User
                         </label>
                         <select
                             {...register("block")}

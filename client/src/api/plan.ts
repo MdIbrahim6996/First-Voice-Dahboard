@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 export const createPlan = async (formData: any) => {
     try {
-        const { data } = await axiosInstance.post(`/plan`, {
+        const { data } = await axiosInstance.post(`/superadmin/plan`, {
             ...formData,
         });
         return data;
@@ -18,7 +18,7 @@ export const createPlan = async (formData: any) => {
 };
 export const getAllPlan = async () => {
     try {
-        const { data } = await axiosInstance.get(`/plan`);
+        const { data } = await axiosInstance.get(`/superadmin/plan`);
         return data;
     } catch (error) {
         console.log(error);
@@ -30,7 +30,9 @@ export const getAllPlan = async () => {
 };
 export const getPlanInfo = async (id: number, time: string) => {
     try {
-        const { data } = await axiosInstance.get(`/superadmin/plan/${id}?time=${time}`);
+        const { data } = await axiosInstance.get(
+            `/superadmin/plan/${id}?time=${time}`
+        );
         return data;
     } catch (error) {
         console.log(error);
@@ -42,7 +44,20 @@ export const getPlanInfo = async (id: number, time: string) => {
 };
 export const deletePlan = async (id: number) => {
     try {
-        const { data } = await axiosInstance.delete(`/plan/${id}`);
+        const { data } = await axiosInstance.delete(`/superadmin/plan/${id}`);
+        return data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
+    }
+};
+
+export const getAllPlanforUser = async () => {
+    try {
+        const { data } = await axiosInstance.get(`/user/plan`);
         return data;
     } catch (error) {
         console.log(error);

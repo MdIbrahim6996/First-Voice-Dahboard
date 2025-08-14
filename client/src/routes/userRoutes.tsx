@@ -30,7 +30,7 @@ export const userRoutes: RouteObject = {
         {
             path: "add-lead",
             async lazy() {
-                let AddLeads = await import("../pages/AddLeads/AddLeads");
+                let AddLeads = await import("../pages/User/AddLeads/AddLeads");
                 return { Component: AddLeads.default };
             },
         },

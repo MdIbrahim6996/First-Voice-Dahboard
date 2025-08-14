@@ -5,12 +5,8 @@ import { axiosInstance } from "../lib/axiosInstance";
 export const getAllNotifs = async (userId: number) => {
     try {
         const { data } = await axiosInstance.get(
-            `/user/notification/${userId}`,
-            { withCredentials: true }
+            `/user/notification/${userId}`
         );
-        if (!data) {
-            throw new Error("sdfsdfds");
-        }
         return data;
     } catch (error) {
         console.log(error);

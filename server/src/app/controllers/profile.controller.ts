@@ -67,7 +67,7 @@ export const getUserInfo = async (
             const data = await prisma.lead.groupBy({
                 by: ["statusId"],
                 where: {
-                    closerId: parseInt(userId),
+                    leadByUserId: parseInt(userId),
                     statusId: item?.id,
                     saleDate: {
                         gte: filterDate.startDate,
@@ -147,19 +147,19 @@ export const getProfileCardInfo = async (
     try {
         const todayLead = await prisma.lead.count({
             where: {
-                closerId: parseInt(userId),
+                leadByUserId: parseInt(userId),
                 saleDate: { gte: currentStartDay, lte: nextStartDay },
             },
         });
         const totalLead = await prisma.lead.count({
             where: {
-                closerId: parseInt(userId),
+                leadByUserId: parseInt(userId),
                 saleDate: { gte: currentStartMonth, lte: nextStartMonth },
             },
         });
         const totalSuccessLead = await prisma.lead.count({
             where: {
-                closerId: parseInt(userId),
+                leadByUserId: parseInt(userId),
                 status: { name: "success" },
                 saleDate: { gte: currentStartMonth, lte: nextStartMonth },
             },
@@ -170,7 +170,8 @@ export const getProfileCardInfo = async (
                 dateTime: { gte: currentStartMonth, lte: nextStartMonth },
             },
         });
-        const spd = totalSuccessLead / totalAttendance;
+        let spd;
+        if (totalAttendance > 0) spd = totalSuccessLead / totalAttendance;
         res.send({
             todayLead,
             totalSuccessLead,

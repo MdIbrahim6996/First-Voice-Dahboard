@@ -19,6 +19,10 @@ const MonthlyAttendance = () => {
         monthlyAttendance?.isLateCount.find((item: any) => item.userId === id);
     const getUserOnTimeCountDetails = (id: string) =>
         monthlyAttendance?.onTimeCount.find((item: any) => item.userId === id);
+
+    const resetFilters = () => {
+        setYear(date.getFullYear());
+    };
     return (
         <div className="overflow-hidden">
             <div className="p-5">

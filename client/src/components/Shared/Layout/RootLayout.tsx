@@ -50,6 +50,12 @@ const RootLayout = () => {
     useEffect(() => {
         refetch();
     });
+    useEffect(() => {
+        if (user?.user?.role === "user" || user?.user?.role === "closer")
+            navigate("/user");
+        else if (user?.user?.role === "admin") navigate("/admin");
+        else if (user?.user?.role === "superadmin") navigate("/superadmin");
+    }, []);
     return (
         <>
             <ErrorBoundary FallbackComponent={() => <FallbackRenderer />}>

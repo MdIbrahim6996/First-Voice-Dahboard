@@ -9,6 +9,40 @@ export const createLead = async (
     res: Response,
     next: NextFunction
 ) => {
+    //     {
+    //   title: 'Mr.',
+    //   firstName: 'dsfdsf',
+    //   middleName: '',
+    //   lastName: 'dfdsf',
+    //   centre: 'dsfsdf',
+    //   address: '',
+    //   city: '',
+    //   county: '',
+    //   pincode: 'sdfsdf',
+    //   password: '',
+    //   dateOfBirth: '',
+    //   phone: '3242343242',
+    //   process: '1',
+    //   plan: '1',
+    //   closer: '6',
+    //   verifier: '6',
+    //   paymentMethod: 'demandDraft',
+    //   shift: 'UNITED KINGDOM (UK)',
+    //   bank: {
+    //     bankName: 'dsfsdf',
+    //     accountName: 'dsfsdf',
+    //     accountNumber: 'sdfsdf',
+    //     sort: 'sdfsdf'
+    //   },
+    //     card: {
+    //     name: 'fsdf',
+    //     bankName: 'sdf',
+    //     cardNumber: 'sdf',
+    //     expiry: 'dsf',
+    //     cvv: 'sdf'
+    //   }
+    // }
+    console.log(req.user);
     const {
         title,
         firstName,
@@ -17,7 +51,7 @@ export const createLead = async (
         centre,
         address,
         city,
-        country,
+        county,
         pincode,
         password,
         dateOfBirth,
@@ -25,16 +59,16 @@ export const createLead = async (
         process,
         plan,
         closer,
+        verifier,
+        bank,
         fee,
         currency,
         bankName,
         accountName,
         comment,
-        cardNumber,
-        expiryDateYear,
-        expiryDateMonth,
-        cvv,
+        card,
     } = req.body;
+    console.log(req.body);
     const date = new Date();
 
     try {
@@ -51,25 +85,39 @@ export const createLead = async (
                 centre,
                 address,
                 city,
-                country,
+                county,
                 pincode,
                 password,
                 dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : Prisma.skip,
                 phone,
                 processId: parseInt(process),
                 planId: parseInt(plan),
+                leadByUserId: req?.user?.id!,
                 closerId: parseInt(closer),
-                fee: parseInt(fee),
-                currency,
-                bankName,
-                accountName,
+                verifierId: parseInt(verifier),
+                // paymentMethod,
+                // shift,
+
+                // fee: parseInt(fee),
+                // currency,
+                // BANK
+                bankName: bank?.bankName ? bank?.bankName : Prisma.skip,
+                accountName: bank?.accountName
+                    ? bank?.accountName
+                    : Prisma.skip,
+                accountNumber: bank?.accountNumber
+                    ? bank?.accountNumber
+                    : Prisma.skip,
+                sort: bank?.sort ? bank?.sort : Prisma.skip,
+                // CARD
+                cardName: card?.name ? card?.name : Prisma.skip,
+                cardBankName: card?.bankName ? card?.bankName : Prisma.skip,
+                cardNumber: card?.cardNumber ? card?.cardNumber : Prisma.skip,
+                expiry: card?.expiry ? card?.expiry : Prisma.skip,
+                cardCvv: card?.cvv ? card?.cvv : Prisma.skip,
                 statusId: status?.id,
-                // comment,
-                // cardNumber,
-                // cvv,
-                // expiryDateMonth,
-                // expiryDateYear,
             },
+            include: { status: { select: { name: true } } },
         });
         console.log(lead?.closerId);
 
@@ -172,7 +220,7 @@ export const getAllLeadOfUser = async (
                     gte: saleDate ? newSaleDate : Prisma.skip,
                     lt: saleDate ? nextDay : Prisma.skip,
                 },
-                closerId: parseInt(userId as string)
+                leadByUserId: parseInt(userId as string)
                     ? parseInt(userId as string)
                     : Prisma.skip,
                 createdAt: {
@@ -240,7 +288,7 @@ export const updateLead = async (
         lastName,
         address,
         city,
-        country,
+        county,
         pincode,
         phone,
         fee,
@@ -268,7 +316,7 @@ export const updateLead = async (
                 lastName: lastName ? lastName : Prisma.skip,
                 address: address ? address : Prisma.skip,
                 city: city ? city : Prisma.skip,
-                country: country ? country : Prisma.skip,
+                county: county ? county : Prisma.skip,
                 pincode: pincode ? pincode : Prisma.skip,
                 fee: fee ? fee : Prisma.skip,
                 currency: currency ? currency : Prisma.skip,
@@ -310,11 +358,11 @@ export const updateLead = async (
                 title: "lead status changed",
 
                 saleDate: lead?.saleDate,
-                userId: lead?.closerId as number,
+                userId: lead?.leadByUserId as number,
             },
         });
         if (notif?.id) {
-            pusher.trigger("lead", `status-change-${lead?.closerId}`, {
+            pusher.trigger("lead", `status-change-${lead?.leadByUserId}`, {
                 notif,
             });
         }
