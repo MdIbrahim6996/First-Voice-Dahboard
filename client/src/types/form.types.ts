@@ -15,6 +15,7 @@ export type LeadsFormInput = {
     password: string;
     dateOfBirth: string;
     phone: string;
+    comment: string;
     poa: boolean;
 
     process: number;

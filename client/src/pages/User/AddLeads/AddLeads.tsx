@@ -792,13 +792,14 @@ const AddLeads = () => {
                             />
                         </div>
                     </div> */}
+
                     <div className="mb-4">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="comments" className="font-semibold">
                                 Comments
                             </label>
                             <textarea
-                                name="comment"
+                                {...register("comment")}
                                 rows={5}
                                 id="comments"
                                 placeholder="Comments if Any"

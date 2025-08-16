@@ -63,10 +63,6 @@ export const createLead = async (
         bank,
         paymentMethod,
         shift,
-        fee,
-        currency,
-        bankName,
-        accountName,
         comment,
         card,
     } = req.body;
@@ -99,7 +95,7 @@ export const createLead = async (
                 verifierId: parseInt(verifier),
                 paymentMethod,
                 shift,
-                comment,
+                comment: comment ? comment : Prisma.skip,
 
                 // BANK
                 bankName: bank?.bankName ? bank?.bankName : Prisma.skip,

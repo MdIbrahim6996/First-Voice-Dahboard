@@ -40,9 +40,16 @@ const LeadDetailModal = ({
                             transition={{ duration: 0.5 }}
                             autoComplete="off"
                         >
-                            <p className="mb-4 text-2xl font-semibold italic text-black/80 underline">
-                                Customer Information
-                            </p>
+                            <div className="flex items-center justify-between">
+                                <p className="mb-4 text-2xl font-semibold italic text-black/80 underline">
+                                    Customer Information
+                                </p>
+                                <p className="bg-blue-600 text-white rounded px-3 py-0.5 text-sm">
+                                    {new Date(details?.createdAt)
+                                        .toDateString()
+                                        .substring(0, 10)}
+                                </p>
+                            </div>
 
                             <div className="grid grid-cols-4 gap-x-4 my-5">
                                 <div className="flex flex-col text-sm space-y-0.5">
@@ -502,6 +509,8 @@ const LeadDetailModal = ({
                                     </label>
                                     <textarea
                                         name="comment"
+                                        readOnly
+                                        value={details?.comment}
                                         rows={5}
                                         id="comments"
                                         placeholder="Comments if Any"

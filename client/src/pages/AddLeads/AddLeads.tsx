@@ -843,7 +843,7 @@ const AddLeads = () => {
                                 Comments
                             </label>
                             <textarea
-                                name="comment"
+                                {...register("comment")}
                                 rows={5}
                                 id="comments"
                                 placeholder="Comments if Any"
