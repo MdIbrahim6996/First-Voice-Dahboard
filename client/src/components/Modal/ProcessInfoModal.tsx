@@ -20,6 +20,7 @@ const ProcessInfoModal = ({
         queryFn: () => getProcessInfo(id, selectedDate),
     });
     console.log(processInfo);
+    console.log(processInfo);
     const thisMonthdata = {
         datasets: [
             {
@@ -48,19 +49,24 @@ const ProcessInfoModal = ({
         labels: monthNames?.map((item) => item?.substring(0, 3)),
         datasets: [
             {
-                label: "success",
+                label: "SUCCESS",
                 data: processInfo?.map((item: any) => item?.success),
-                backgroundColor: "#ACE1AF",
+                backgroundColor: returnColors("success"),
             },
             {
-                label: "pending",
+                label: "PENDING",
                 data: processInfo?.map((item: any) => item?.pending),
-                backgroundColor: "#FFFE71",
+                backgroundColor: returnColors("pending"),
             },
             {
-                label: "cancelled",
+                label: "CANCELLED",
                 data: processInfo?.map((item: any) => item?.cancelled),
-                backgroundColor: "#C81D11",
+                backgroundColor: returnColors("cancelled"),
+            },
+            {
+                label: "REWORK/WARMUP",
+                data: processInfo?.map((item: any) => item?.rework),
+                backgroundColor: returnColors("rework/warmup"),
             },
         ],
     };

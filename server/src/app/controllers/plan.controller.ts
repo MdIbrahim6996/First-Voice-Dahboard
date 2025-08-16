@@ -121,6 +121,7 @@ export const getPlanInfo = async (
                 let success = 0;
                 let pending = 0;
                 let cancelled = 0;
+                let rework = 0;
                 const index = parseInt(item[0] as string);
                 const internalArray = item[1] as Array<{
                     status: {
@@ -135,10 +136,12 @@ export const getPlanInfo = async (
                     if (element?.status?.name === "pending") pending++;
                     if (element?.status?.name === "success") success++;
                     if (element?.status?.name === "cancelled") cancelled++;
+                    if (element?.status?.name === "rework/warmup") rework++;
                     graphData[index - 1] = {
                         pending,
                         success,
                         cancelled,
+                        rework,
                     };
                 });
             });

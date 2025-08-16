@@ -404,7 +404,7 @@ const AddLeads = () => {
                                 id="closer"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option disabled selected value="">
+                                <option selected value="">
                                     Select a Closer
                                 </option>
                                 {filterUser?.map((item: any) => (
@@ -425,12 +425,12 @@ const AddLeads = () => {
                             </label>
                             <select
                                 {...register("verifier", {
-                                    required: "Please Select a Closer.",
+                                    required: "Please Select a Verifier.",
                                 })}
                                 id="verifier"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
                             >
-                                <option disabled selected value="">
+                                <option selected value="">
                                     Select a Verifier
                                 </option>
                                 {filterUser?.map((item: any) => (
@@ -439,9 +439,9 @@ const AddLeads = () => {
                                     </option>
                                 ))}
                             </select>
-                            {errors?.closer && (
+                            {errors?.verifier && (
                                 <p className="text-red-500">
-                                    {errors?.closer?.message}
+                                    {errors?.verifier?.message}
                                 </p>
                             )}
                         </div>

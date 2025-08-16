@@ -25,7 +25,7 @@ export const createSuperAdminLead = async (formData: any) => {
 export const updateLead = async (formData: any) => {
     try {
         const { data } = await axiosInstance.put(
-            `${SERVER_URL}/lead/${formData?.id}`,
+            `${SERVER_URL}/superadmin/lead/${formData?.id}`,
             {
                 ...formData,
             }
@@ -42,7 +42,9 @@ export const updateLead = async (formData: any) => {
 //SUPERADMIN
 export const deleteLead = async (id: number) => {
     try {
-        const { data } = await axiosInstance.delete(`${SERVER_URL}/lead/${id}`);
+        const { data } = await axiosInstance.delete(
+            `${SERVER_URL}/superadmin/lead/${id}`
+        );
         return data;
     } catch (error) {
         console.log(error);

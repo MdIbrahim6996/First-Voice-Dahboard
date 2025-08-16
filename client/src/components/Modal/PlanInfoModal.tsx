@@ -31,7 +31,6 @@ const PlanInfoModal = ({
         ],
         labels: planInfo?.map((item: any) => item?.name?.toUpperCase()),
     };
-    console.log(planInfo);
 
     const piedata = {
         datasets: [
@@ -62,6 +61,11 @@ const PlanInfoModal = ({
                 label: "CANCELLED",
                 data: planInfo?.map((item: any) => item?.cancelled),
                 backgroundColor: returnColors("cancelled"),
+            },
+            {
+                label: "REWORK/WARMUP",
+                data: planInfo?.map((item: any) => item?.rework),
+                backgroundColor: returnColors("rework/warmup"),
             },
         ],
     };

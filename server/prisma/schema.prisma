@@ -104,6 +104,8 @@ model Lead {
   fee                Int?
   currency           String?
   shift              String?
+  paymentMethod      String?
+  comment            String?
   // Bank Details
   bankName           String?
   accountName        String?

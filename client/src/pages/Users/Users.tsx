@@ -27,6 +27,8 @@ const Users = () => {
         queryFn: getAllUser,
     });
 
+    console.log(user);
+
     const deleteMutation = useMutation({
         mutationFn: (id: number) => deleteUser(id),
         onSuccess: () => {
@@ -141,6 +143,12 @@ const Users = () => {
                                         scope="col"
                                         className="px-6 py-3 whitespace-nowrap"
                                     >
+                                        alias
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 whitespace-nowrap"
+                                    >
                                         Role
                                     </th>
                                     <th
@@ -159,30 +167,24 @@ const Users = () => {
                                         scope="col"
                                         className="px-6 py-3 whitespace-nowrap"
                                     >
-                                        Department
+                                        blocked
                                     </th>
                                     <th
                                         scope="col"
                                         className="px-6 py-3 whitespace-nowrap"
                                     >
-                                        Work Type
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 whitespace-nowrap"
-                                    >
-                                        Plan
+                                        Process
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {user?.map((item: any) => (
+                                {user?.map((item: any, i: number) => (
                                     <tr className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200">
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap :text-white"
                                         >
-                                            {item?.id}
+                                            {i + 1}
                                         </th>
                                         <td className="px-6 py-4 flex flex-col gap-1 items-center justify-center">
                                             <button
@@ -232,6 +234,9 @@ const Users = () => {
                                             {item?.name}
                                         </td>
                                         <td className="px-6 py-4">
+                                            {item?.alias}
+                                        </td>
+                                        <td className="px-6 py-4">
                                             {item?.role}
                                         </td>
                                         <td className="px-6 py-4">
@@ -241,13 +246,18 @@ const Users = () => {
                                             {item?.email}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {item?.process}
+                                            {item?.isBlocked ? (
+                                                <p className="bg-red-500 px-2 py-0.5 rounded text-xs text-white">
+                                                    blocked
+                                                </p>
+                                            ) : (
+                                                <p className="bg-green-500 px-2 py-0.5 rounded text-xs text-white">
+                                                    active
+                                                </p>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {item?.plan}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {item?.leadBy}
+                                            {item?.process?.name}
                                         </td>
                                     </tr>
                                 ))}

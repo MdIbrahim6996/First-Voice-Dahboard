@@ -1,17 +1,22 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { updateUser } from "../../api/user";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { getAllProcess } from "../../api/process";
+import { MdRemoveRedEye } from "react-icons/md";
 
 type Inputs = {
     employeeId: string;
     name: string;
+    alias: string;
     phone: string;
     role: string;
+    process: number;
     email: string;
-    password: string;
     block: boolean;
+    password: string;
 };
 
 const EditUserModal = ({
@@ -23,9 +28,21 @@ const EditUserModal = ({
 }) => {
     console.log(detail);
     const { register, handleSubmit } = useForm<Inputs>({
-        defaultValues: { ...detail, password: "", block: detail?.isBlocked },
+        defaultValues: {
+            ...detail,
+            password: "",
+            block: detail?.isBlocked,
+            process: detail?.processId,
+        },
     });
+    const [showPassword, setShowPassword] = useState(false);
+
     const queryClient = useQueryClient();
+
+    const { data: process } = useQuery({
+        queryKey: ["process"],
+        queryFn: getAllProcess,
+    });
 
     const { mutate } = useMutation({
         mutationKey: ["updateUser"],
@@ -73,7 +90,9 @@ const EditUserModal = ({
                         <input
                             type="text"
                             placeholder="Employee Id"
-                            {...register("employeeId")}
+                            {...register("employeeId", {
+                                required: "Please Enter Employee Id.",
+                            })}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
                     </div>
@@ -85,6 +104,20 @@ const EditUserModal = ({
                             type="text"
                             placeholder="Name"
                             {...register("name")}
+                            className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="alias"
+                            className="text-sm font-semibold"
+                        >
+                            Alias
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Alias"
+                            {...register("alias")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         />
                     </div>
@@ -126,26 +159,53 @@ const EditUserModal = ({
                             {...register("role")}
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
-                            <option value="">Select a Role</option>
-                            <option value="admin">admin</option>
-                            <option value="superadmin">superadmin</option>
-                            <option value="user">user</option>
+                            <option value="" selected disabled>
+                                Select a Role
+                            </option>
+                            <option value="admin">ADMIN</option>
+                            <option value="superadmin">SUPERADMIN</option>
+                            <option value="user">USER</option>
+                            <option value="user">CLOSER</option>
                         </select>
                     </div>
                     <div>
                         <label
-                            htmlFor="aloowLogin"
+                            htmlFor="process"
+                            className="text-sm font-semibold"
+                        >
+                            Process
+                        </label>
+                        <select
+                            id="process"
+                            {...register("process")}
+                            className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
+                        >
+                            <option value="" selected disabled>
+                                Select a Process
+                            </option>
+                            {process?.map((item: any) => (
+                                <option value={item?.id} className="uppercase">
+                                    {item?.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="allowLogin"
                             className="text-sm font-semibold"
                         >
                             Block This User
                         </label>
                         <select
                             {...register("block")}
-                            id="block"
+                            id="allowLogin"
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
-                            <option value="false">false</option>
                             <option value="true">true</option>
+                            <option selected value="false">
+                                false
+                            </option>
                         </select>
                     </div>
                     <div>
@@ -155,12 +215,21 @@ const EditUserModal = ({
                         >
                             Password
                         </label>
-                        <input
-                            type="password"
-                            placeholder="*********"
-                            {...register("password")}
-                            className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
-                        />
+                        <div className="flex items-center justify-between border border-gray-400 rounded-md">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="*********"
+                                {...register("password")}
+                                className="w-full px-2 py-1  outline-none"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="text-black/70 mr-2"
+                            >
+                                <MdRemoveRedEye />
+                            </button>
+                        </div>
                     </div>
                     <div className="mt-4 text-center">
                         <button
@@ -170,6 +239,7 @@ const EditUserModal = ({
                             Submit
                         </button>
                         <button
+                            type="button"
                             onClick={handleClose}
                             className="w-full cursor-pointer border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 rounded transition-colors"
                         >

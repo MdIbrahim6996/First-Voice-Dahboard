@@ -10,6 +10,7 @@ import { getAllUser } from "../../api/user";
 import { CSVLink } from "react-csv";
 import DeleteModal from "../../components/Modal/DeleteModal";
 import EditLeadModal from "../../components/Modal/EditLeadModal";
+import LeadDetailModal from "../../components/Modal/LeadDetailModal";
 
 const Leads = () => {
     // const [phone, setPhone] = useState("");
@@ -133,27 +134,10 @@ const Leads = () => {
                                 </select>
                             </div>
                             <div className="flex flex-col space-y-1">
-                                <label htmlFor="phone">Centre</label>
-                                <select
-                                    name="center"
-                                    id="center"
-                                    defaultValue="1"
-                                    className="border outline-none border-gray-400 px-3 py-1 rounded-md"
-                                >
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="5">6</option>
-                                </select>
-                            </div>
-                            <div className="flex flex-col space-y-1">
                                 <label htmlFor="leadUser">Lead User</label>
                                 <select
                                     name="leadUser"
                                     id="leadUser"
-                                    defaultValue="1"
                                     className="border outline-none border-gray-400 px-3 py-1 rounded-md"
                                 >
                                     <option value="" selected disabled>
@@ -179,6 +163,29 @@ const Leads = () => {
                                 >
                                     <option value="" selected disabled>
                                         Select Closer User
+                                    </option>
+                                    {filteredUsers?.map((item: any) => (
+                                        <option
+                                            key={item?.id}
+                                            value={item?.id}
+                                            className="uppercase"
+                                        >
+                                            {item?.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col space-y-1">
+                                <label htmlFor="verifierUser">
+                                    Verifier User
+                                </label>
+                                <select
+                                    name="verifierUser"
+                                    id="verifierUser"
+                                    className="border outline-none border-gray-400 px-3 py-1 rounded-md"
+                                >
+                                    <option value="" selected disabled>
+                                        Select Verifier User
                                     </option>
                                     {filteredUsers?.map((item: any) => (
                                         <option
@@ -399,13 +406,14 @@ const Leads = () => {
                                                 <MdEdit />
                                             </button>
                                             <button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setDetail(item);
                                                     setShow({
                                                         edit: false,
                                                         delete: false,
                                                         view: true,
-                                                    })
-                                                }
+                                                    });
+                                                }}
                                                 className="font-medium text-white bg-blue-500 rounded-md w-fit px-2 py-1 text-sm flex items-center gap-1 cursor-pointer"
                                             >
                                                 <FaEye />
@@ -495,6 +503,14 @@ const Leads = () => {
                         setShow({ edit: false, view: false, delete: false })
                     }
                     item={detail}
+                />
+            )}
+            {show.view && (
+                <LeadDetailModal
+                    handleClose={() =>
+                        setShow({ edit: false, view: false, delete: false })
+                    }
+                    details={detail}
                 />
             )}
         </>

@@ -67,6 +67,7 @@ export const getAllUser = async (
 ) => {
     const users = await prisma.user.findMany({
         orderBy: { createdAt: "desc" },
+        include: { process: { select: { name: true } } },
     });
     res.send(users);
     try {
@@ -95,7 +96,7 @@ export const updateUser = async (
     next: NextFunction
 ) => {
     const { id } = req.params;
-    console.log(id);
+    console.log(req.body);
     const {
         name,
         alias,
@@ -108,7 +109,9 @@ export const updateUser = async (
         process,
     } = req.body;
     try {
-        const existingUser = await prisma.user.findFirst({ where: { email } });
+        const existingUser = await prisma.user.findFirst({
+            where: { id: parseInt(id) },
+        });
         if (!existingUser) {
             throw new Error("User Doesn't Exist.");
         }
@@ -125,8 +128,9 @@ export const updateUser = async (
                 role,
                 isBlocked: block === "false" ? false : true,
                 alias,
-                processId: parseInt(process),
+                processId: process ? parseInt(process) : Prisma.skip,
             },
+            include: { process: { select: { name: true } } },
         });
         res.send(user);
     } catch (error) {

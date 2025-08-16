@@ -15,10 +15,13 @@ const MonthlyAttendance = () => {
         queryKey: ["monthly-attendance"],
         queryFn: () => getEmployeeMonthlyAttendance(year, month, name),
     });
+    console.log(monthlyAttendance);
     const getUserisLateCountDetails = (id: string) =>
         monthlyAttendance?.isLateCount.find((item: any) => item.userId === id);
     const getUserOnTimeCountDetails = (id: string) =>
         monthlyAttendance?.onTimeCount.find((item: any) => item.userId === id);
+    const getUserDetails = (id: string) =>
+        monthlyAttendance?.userData.find((item: any) => item.id === id);
 
     const resetFilters = () => {
         setYear(date.getFullYear());
@@ -171,10 +174,7 @@ const MonthlyAttendance = () => {
                                             {item?.userId}
                                         </th>
                                         <td className="px-6 py-4">
-                                            {
-                                                monthlyAttendance?.userData[i]
-                                                    ?.name
-                                            }
+                                            {getUserDetails(item?.userId)?.name}
                                         </td>
                                         <td className="px-6 py-4">2025</td>
                                         <td className="px-6 py-4">

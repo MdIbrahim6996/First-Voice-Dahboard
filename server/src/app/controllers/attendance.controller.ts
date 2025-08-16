@@ -40,7 +40,6 @@ export const createEmployeeAttendance = async (
             currentUTCTime > new Date(timeToCompare.setUTCHours(9, 0, 0, 0))
                 ? true
                 : false;
-        console.log(isLate);
         //9
 
         // CORRECT APPROACH

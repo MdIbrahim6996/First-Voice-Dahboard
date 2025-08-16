@@ -18,7 +18,7 @@ export const getTopSellers = async (
                 updatedAt: { gte: currentDay, lte: nextDay },
                 userId: { not: null },
             },
-            orderBy: [{ count: "desc" }, { updatedAt: "desc" }],
+            orderBy: [{ count: "desc" }, { updatedAt: "asc" }],
             include: { user: { select: { name: true, alias: true } } },
         });
         res.send(seller);

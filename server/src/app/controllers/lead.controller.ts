@@ -61,6 +61,8 @@ export const createLead = async (
         closer,
         verifier,
         bank,
+        paymentMethod,
+        shift,
         fee,
         currency,
         bankName,
@@ -95,11 +97,10 @@ export const createLead = async (
                 leadByUserId: req?.user?.id!,
                 closerId: parseInt(closer),
                 verifierId: parseInt(verifier),
-                // paymentMethod,
-                // shift,
+                paymentMethod,
+                shift,
+                comment,
 
-                // fee: parseInt(fee),
-                // currency,
                 // BANK
                 bankName: bank?.bankName ? bank?.bankName : Prisma.skip,
                 accountName: bank?.accountName
