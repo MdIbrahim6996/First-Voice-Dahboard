@@ -1,12 +1,17 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const attendance_controller_1 = require("../controllers/attendance.controller");
-const router = (0, express_1.Router)();
-router.get("/monthly", attendance_controller_1.getEmployeeMonthlyAttendance);
-router.post("/:id", attendance_controller_1.createEmployeeAttendance);
-router.get("/:id", attendance_controller_1.getEmployeePeriodwiseAttendance);
-router.get("/employee/:id", attendance_controller_1.getUserAllAttendance);
-router.get("/", attendance_controller_1.getAllAttendance);
-// router.get("/:id", getSingleAttendance);
-exports.default = router;
+// import { Router } from "express";
+// import {
+//     createEmployeeAttendance,
+//     getAllAttendance,
+//     getUserAllAttendance,
+//     getEmployeeMonthlyAttendance,
+//     getEmployeePeriodwiseAttendance,
+// } from "../controllers/attendance.controller";
+// const router = Router();
+// router.get("/monthly", getEmployeeMonthlyAttendance);
+// router.post("/:id", createEmployeeAttendance);
+// router.get("/:id", getEmployeePeriodwiseAttendance);
+// router.get("/employee/:id", getUserAllAttendance);
+// router.get("/", getAllAttendance);
+// // router.get("/:id", getSingleAttendance);
+// export default router;

@@ -14,7 +14,43 @@ const prismaClient_1 = require("../lib/prismaClient");
 const client_1 = require("@prisma/client");
 const pusher_1 = require("../lib/pusher");
 const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, firstName, middleName, lastName, centre, address, city, country, pincode, password, dateOfBirth, phone, process, plan, closer, fee, currency, bankName, accountName, comment, cardNumber, expiryDateYear, expiryDateMonth, cvv, } = req.body;
+    var _a;
+    //     {
+    //   title: 'Mr.',
+    //   firstName: 'dsfdsf',
+    //   middleName: '',
+    //   lastName: 'dfdsf',
+    //   centre: 'dsfsdf',
+    //   address: '',
+    //   city: '',
+    //   county: '',
+    //   pincode: 'sdfsdf',
+    //   password: '',
+    //   dateOfBirth: '',
+    //   phone: '3242343242',
+    //   process: '1',
+    //   plan: '1',
+    //   closer: '6',
+    //   verifier: '6',
+    //   paymentMethod: 'demandDraft',
+    //   shift: 'UNITED KINGDOM (UK)',
+    //   bank: {
+    //     bankName: 'dsfsdf',
+    //     accountName: 'dsfsdf',
+    //     accountNumber: 'sdfsdf',
+    //     sort: 'sdfsdf'
+    //   },
+    //     card: {
+    //     name: 'fsdf',
+    //     bankName: 'sdf',
+    //     cardNumber: 'sdf',
+    //     expiry: 'dsf',
+    //     cvv: 'sdf'
+    //   }
+    // }
+    console.log(req.user);
+    const { title, firstName, middleName, lastName, centre, address, city, county, pincode, password, dateOfBirth, phone, process, plan, closer, verifier, bank, paymentMethod, shift, comment, card, } = req.body;
+    console.log(req.body);
     const date = new Date();
     try {
         const status = yield prismaClient_1.prisma.status.findFirst({
@@ -29,25 +65,37 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 centre,
                 address,
                 city,
-                country,
+                county,
                 pincode,
                 password,
                 dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : client_1.Prisma.skip,
                 phone,
                 processId: parseInt(process),
                 planId: parseInt(plan),
+                leadByUserId: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.id,
                 closerId: parseInt(closer),
-                fee: parseInt(fee),
-                currency,
-                bankName,
-                accountName,
+                verifierId: parseInt(verifier),
+                paymentMethod,
+                shift,
+                comment: comment ? comment : client_1.Prisma.skip,
+                // BANK
+                bankName: (bank === null || bank === void 0 ? void 0 : bank.bankName) ? bank === null || bank === void 0 ? void 0 : bank.bankName : client_1.Prisma.skip,
+                accountName: (bank === null || bank === void 0 ? void 0 : bank.accountName)
+                    ? bank === null || bank === void 0 ? void 0 : bank.accountName
+                    : client_1.Prisma.skip,
+                accountNumber: (bank === null || bank === void 0 ? void 0 : bank.accountNumber)
+                    ? bank === null || bank === void 0 ? void 0 : bank.accountNumber
+                    : client_1.Prisma.skip,
+                sort: (bank === null || bank === void 0 ? void 0 : bank.sort) ? bank === null || bank === void 0 ? void 0 : bank.sort : client_1.Prisma.skip,
+                // CARD
+                cardName: (card === null || card === void 0 ? void 0 : card.name) ? card === null || card === void 0 ? void 0 : card.name : client_1.Prisma.skip,
+                cardBankName: (card === null || card === void 0 ? void 0 : card.bankName) ? card === null || card === void 0 ? void 0 : card.bankName : client_1.Prisma.skip,
+                cardNumber: (card === null || card === void 0 ? void 0 : card.cardNumber) ? card === null || card === void 0 ? void 0 : card.cardNumber : client_1.Prisma.skip,
+                expiry: (card === null || card === void 0 ? void 0 : card.expiry) ? card === null || card === void 0 ? void 0 : card.expiry : client_1.Prisma.skip,
+                cardCvv: (card === null || card === void 0 ? void 0 : card.cvv) ? card === null || card === void 0 ? void 0 : card.cvv : client_1.Prisma.skip,
                 statusId: status === null || status === void 0 ? void 0 : status.id,
-                // comment,
-                // cardNumber,
-                // cvv,
-                // expiryDateMonth,
-                // expiryDateYear,
             },
+            include: { status: { select: { name: true } } },
         });
         console.log(lead === null || lead === void 0 ? void 0 : lead.closerId);
         const dailyLeadCount = yield prismaClient_1.prisma.leadCount.upsert({
@@ -140,7 +188,7 @@ const getAllLeadOfUser = (req, res, next) => __awaiter(void 0, void 0, void 0, f
                     gte: saleDate ? newSaleDate : client_1.Prisma.skip,
                     lt: saleDate ? nextDay : client_1.Prisma.skip,
                 },
-                closerId: parseInt(userId)
+                leadByUserId: parseInt(userId)
                     ? parseInt(userId)
                     : client_1.Prisma.skip,
                 createdAt: {
@@ -193,7 +241,7 @@ exports.getSingleLead = getSingleLead;
 const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { id } = req.params;
-    const { title, firstName, middleName, lastName, address, city, country, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, reason, } = req.body;
+    const { title, firstName, middleName, lastName, address, city, county, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, reason, } = req.body;
     try {
         let initialStatus = (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.initialStatus;
         let finalStatus = "";
@@ -208,7 +256,7 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 lastName: lastName ? lastName : client_1.Prisma.skip,
                 address: address ? address : client_1.Prisma.skip,
                 city: city ? city : client_1.Prisma.skip,
-                country: country ? country : client_1.Prisma.skip,
+                county: county ? county : client_1.Prisma.skip,
                 pincode: pincode ? pincode : client_1.Prisma.skip,
                 fee: fee ? fee : client_1.Prisma.skip,
                 currency: currency ? currency : client_1.Prisma.skip,
@@ -244,11 +292,11 @@ const updateLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 content,
                 title: "lead status changed",
                 saleDate: lead === null || lead === void 0 ? void 0 : lead.saleDate,
-                userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                userId: lead === null || lead === void 0 ? void 0 : lead.leadByUserId,
             },
         });
         if (notif === null || notif === void 0 ? void 0 : notif.id) {
-            pusher_1.pusher.trigger("lead", `status-change-${lead === null || lead === void 0 ? void 0 : lead.closerId}`, {
+            pusher_1.pusher.trigger("lead", `status-change-${lead === null || lead === void 0 ? void 0 : lead.leadByUserId}`, {
                 notif,
             });
         }

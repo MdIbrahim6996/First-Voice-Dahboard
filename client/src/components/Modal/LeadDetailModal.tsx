@@ -10,8 +10,8 @@ const LeadDetailModal = ({
 
     handleClose: () => void;
 }) => {
-    const date = new Date();
-    const currentDate = date.toString().substring(4, 15);
+    // const date = new Date();
+    // const currentDate = date.toString().substring(4, 15);
 
     const { register, watch } = useForm<LeadsFormInput>({
         defaultValues: { ...details },

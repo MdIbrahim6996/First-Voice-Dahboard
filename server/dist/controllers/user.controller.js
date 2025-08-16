@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.getSingleUser = exports.getAllUser = exports.createUser = void 0;
 const prismaClient_1 = require("../lib/prismaClient");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const client_1 = require("@prisma/client");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, alias, email, employeeId, phone, password, block, role, process, } = req.body;
@@ -34,6 +35,7 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         if (existingUserwithAlias) {
             throw new Error("User With This Alias Already Exist.");
         }
+        console.log(req.body);
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const user = yield prismaClient_1.prisma.user.create({
             data: {
@@ -59,6 +61,7 @@ exports.createUser = createUser;
 const getAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield prismaClient_1.prisma.user.findMany({
         orderBy: { createdAt: "desc" },
+        include: { process: { select: { name: true } } },
     });
     res.send(users);
     try {
@@ -83,10 +86,12 @@ const getSingleUser = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 exports.getSingleUser = getSingleUser;
 const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    console.log(id);
+    console.log(req.body);
     const { name, alias, email, employeeId, phone, password, block, role, process, } = req.body;
     try {
-        const existingUser = yield prismaClient_1.prisma.user.findFirst({ where: { email } });
+        const existingUser = yield prismaClient_1.prisma.user.findFirst({
+            where: { id: parseInt(id) },
+        });
         if (!existingUser) {
             throw new Error("User Doesn't Exist.");
         }
@@ -96,14 +101,15 @@ const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             data: {
                 name,
                 email,
-                password: hashedPassword,
+                password: password ? hashedPassword : client_1.Prisma.skip,
                 employeeId,
                 phone,
                 role,
                 isBlocked: block === "false" ? false : true,
                 alias,
-                processId: parseInt(process),
+                processId: process ? parseInt(process) : client_1.Prisma.skip,
             },
+            include: { process: { select: { name: true } } },
         });
         res.send(user);
     }
@@ -114,10 +120,10 @@ const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.updateUser = updateUser;
 const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const user = yield prismaClient_1.prisma.user.delete({ where: { id: parseInt(id) } });
-    res.send(user);
     try {
+        const { id } = req.params;
+        const user = yield prismaClient_1.prisma.user.delete({ where: { id: parseInt(id) } });
+        res.send(user);
     }
     catch (error) {
         console.log(error);

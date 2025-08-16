@@ -19,8 +19,11 @@ const getTopSellers = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     nextDay.setUTCDate(nextDay.getUTCDate() + 1);
     try {
         const seller = yield prismaClient_1.prisma.leadCount.findMany({
-            where: { updatedAt: { gte: currentDay, lte: nextDay } },
-            orderBy: [{ count: "desc" }, { updatedAt: "desc" }],
+            where: {
+                updatedAt: { gte: currentDay, lte: nextDay },
+                userId: { not: null },
+            },
+            orderBy: [{ count: "desc" }, { updatedAt: "asc" }],
             include: { user: { select: { name: true, alias: true } } },
         });
         res.send(seller);

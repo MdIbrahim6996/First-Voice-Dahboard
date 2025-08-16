@@ -110,20 +110,24 @@ const getProcessInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 let success = 0;
                 let pending = 0;
                 let cancelled = 0;
+                let rework = 0;
                 const index = parseInt(item[0]);
                 const internalArray = item[1];
                 internalArray.forEach((element) => {
-                    var _a, _b, _c;
+                    var _a, _b, _c, _d;
                     if (((_a = element === null || element === void 0 ? void 0 : element.status) === null || _a === void 0 ? void 0 : _a.name) === "pending")
                         pending++;
                     if (((_b = element === null || element === void 0 ? void 0 : element.status) === null || _b === void 0 ? void 0 : _b.name) === "success")
                         success++;
                     if (((_c = element === null || element === void 0 ? void 0 : element.status) === null || _c === void 0 ? void 0 : _c.name) === "cancelled")
                         cancelled++;
+                    if (((_d = element === null || element === void 0 ? void 0 : element.status) === null || _d === void 0 ? void 0 : _d.name) === "rework/warmup")
+                        rework++;
                     graphData[index - 1] = {
                         pending,
                         success,
                         cancelled,
+                        rework,
                     };
                 });
             });

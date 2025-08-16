@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const lead_controller_1 = require("../../controllers/lead.controller");
+const status_controller_1 = require("../../controllers/status.controller");
 const router = (0, express_1.Router)();
-router.post("/", lead_controller_1.createLead);
-router.get("/:userId", lead_controller_1.getAllLeadOfUser);
+router.get("/", status_controller_1.getAllStatus);
 exports.default = router;

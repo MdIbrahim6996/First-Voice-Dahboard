@@ -44,7 +44,6 @@ const createEmployeeAttendance = (req, res, next) => __awaiter(void 0, void 0, v
         const isLate = currentUTCTime > new Date(timeToCompare.setUTCHours(9, 0, 0, 0))
             ? true
             : false;
-        console.log(isLate);
         //9
         // CORRECT APPROACH
         // const timeB = new Date();
@@ -171,6 +170,7 @@ const getEmployeeMonthlyAttendance = (req, res, next) => __awaiter(void 0, void 
             by: ["userId"],
             _count: { _all: true },
             where: {
+                userId: { not: null },
                 dateTime: {
                     gte: new Date(`${year}-${parseInt(month) + 1}-01`),
                     lt: new Date(`${year}-${parseInt(month) + 2}-01`),
@@ -182,6 +182,7 @@ const getEmployeeMonthlyAttendance = (req, res, next) => __awaiter(void 0, void 
             by: ["userId"],
             _count: { _all: true },
             where: {
+                userId: { not: null },
                 isLate: true,
                 dateTime: {
                     gte: new Date(`${year}-${parseInt(month) + 1}-01`),
@@ -194,6 +195,7 @@ const getEmployeeMonthlyAttendance = (req, res, next) => __awaiter(void 0, void 
             by: ["userId"],
             _count: { _all: true },
             where: {
+                userId: { not: null },
                 isLate: false,
                 dateTime: {
                     gte: new Date(`${year}-${parseInt(month) + 1}-01`),
@@ -203,7 +205,11 @@ const getEmployeeMonthlyAttendance = (req, res, next) => __awaiter(void 0, void 
             },
         });
         const userData = yield prismaClient_1.prisma.user.findMany({
-            where: { id: { in: attendance.map((item) => item.userId) } },
+            where: {
+                id: {
+                    in: attendance.map((item) => item.userId ? item === null || item === void 0 ? void 0 : item.userId : 0),
+                },
+            },
             select: { id: true, name: true },
         });
         res.send({ attendance, isLateCount, onTimeCount, userData });
@@ -222,6 +228,7 @@ const getAllAttendance = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             include: { user: { select: { name: true } } },
             where: {
                 user: { name: name ? name : client_1.Prisma.skip },
+                userId: { not: null },
                 dateTime: {
                     gte: startDate
                         ? new Date(startDate)

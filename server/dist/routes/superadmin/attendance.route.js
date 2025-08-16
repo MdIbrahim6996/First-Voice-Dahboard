@@ -6,6 +6,7 @@ const router = (0, express_1.Router)();
 // router.get("/monthly", getEmployeeMonthlyAttendance);
 // router.get("/:id", getEmployeePeriodwiseAttendance);
 router.post("/:id", attendance_controller_1.createEmployeeAttendance);
+router.get("/monthly", attendance_controller_1.getEmployeeMonthlyAttendance);
 router.get("/:id", attendance_controller_1.getUserAllAttendance);
 router.get("/", attendance_controller_1.getAllAttendance);
 // router.post("/", createAttendance);

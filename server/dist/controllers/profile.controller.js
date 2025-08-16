@@ -54,7 +54,7 @@ const getUserInfo = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             const data = yield prismaClient_1.prisma.lead.groupBy({
                 by: ["statusId"],
                 where: {
-                    closerId: parseInt(userId),
+                    leadByUserId: parseInt(userId),
                     statusId: item === null || item === void 0 ? void 0 : item.id,
                     saleDate: {
                         gte: filterDate.startDate,
@@ -120,19 +120,19 @@ const getProfileCardInfo = (req, res, next) => __awaiter(void 0, void 0, void 0,
     try {
         const todayLead = yield prismaClient_1.prisma.lead.count({
             where: {
-                closerId: parseInt(userId),
+                leadByUserId: parseInt(userId),
                 saleDate: { gte: currentStartDay, lte: nextStartDay },
             },
         });
         const totalLead = yield prismaClient_1.prisma.lead.count({
             where: {
-                closerId: parseInt(userId),
+                leadByUserId: parseInt(userId),
                 saleDate: { gte: currentStartMonth, lte: nextStartMonth },
             },
         });
         const totalSuccessLead = yield prismaClient_1.prisma.lead.count({
             where: {
-                closerId: parseInt(userId),
+                leadByUserId: parseInt(userId),
                 status: { name: "success" },
                 saleDate: { gte: currentStartMonth, lte: nextStartMonth },
             },
@@ -143,7 +143,9 @@ const getProfileCardInfo = (req, res, next) => __awaiter(void 0, void 0, void 0,
                 dateTime: { gte: currentStartMonth, lte: nextStartMonth },
             },
         });
-        const spd = totalSuccessLead / totalAttendance;
+        let spd;
+        if (totalAttendance > 0)
+            spd = totalSuccessLead / totalAttendance;
         res.send({
             todayLead,
             totalSuccessLead,
