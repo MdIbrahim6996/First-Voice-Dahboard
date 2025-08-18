@@ -147,7 +147,7 @@ const LeadDetailModal = ({
                                         County
                                     </label>
                                     <p className="border outline-none border-gray-400 px-3 py-1 h-full rounded uppercase">
-                                        {details?.city}
+                                        {details?.county}
                                     </p>
                                 </div>
                                 <div className="flex flex-col text-sm space-y-0.5">

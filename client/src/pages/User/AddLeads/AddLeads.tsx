@@ -83,6 +83,7 @@ const AddLeads = () => {
         //@ts-ignore
         createLeadMutation(data);
     };
+    const cardNumber = watch("card.cardNumber");
     return (
         <div className="overflow-y-scroll h-full">
             <div className="p-5">
@@ -709,9 +710,7 @@ const AddLeads = () => {
                                                 const numberValidation =
                                                     valid.number(data);
 
-                                                if (
-                                                    !numberValidation.isPotentiallyValid
-                                                ) {
+                                                if (!numberValidation.isValid) {
                                                     setCardName("");
                                                     return "Invalid Card.";
                                                 }
@@ -726,7 +725,7 @@ const AddLeads = () => {
                                             },
                                         })}
                                         id="cardNumber"
-                                        placeholder="4242 4242 4242"
+                                        placeholder="4242 4242 4242 4242"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.card?.cardNumber && (
@@ -734,7 +733,7 @@ const AddLeads = () => {
                                             {errors?.card?.cardNumber?.message}
                                         </p>
                                     )}
-                                    {cardName && (
+                                    {cardName && cardNumber.length > 0 && (
                                         <p className="text-green-600 uppercase ml-2">
                                             &#10003; {cardName}
                                         </p>

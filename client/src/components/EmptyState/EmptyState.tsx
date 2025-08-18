@@ -51,7 +51,7 @@ const EmptyState = () => {
 
             {/* Message */}
             <p className="mt-6 text-gray-700 font-medium capitalize text-center text-lg">
-                Oooh oh, Nothing to show here!
+                Uh oh, Nothing to show here!
             </p>
         </div>
     );
