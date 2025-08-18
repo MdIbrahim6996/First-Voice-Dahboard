@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteNotifs, getAllNotifs } from "../../api/notifications";
 import { AuthContext } from "../../context/authContext";
+import EmptyState from "../../components/EmptyState/EmptyState";
 
 const Notification = () => {
     const { user } = useContext(AuthContext);
@@ -99,10 +100,7 @@ const Notification = () => {
                                 </motion.article>
                             ))
                         ) : (
-                            // <div className="text-xl text-center font-semibold text-black/90 uppercase my-52 p-5 rounded shadow-xl">
-                            //     no notifications
-                            // </div>
-                            <></>
+                            <EmptyState />
                         )}
                     </div>
                 </div>

@@ -14,4 +14,8 @@ export const returnColors = (status: string) => {
 };
 
 export const formatNumber = (number: number) =>
-        number < 10 ? `0${number}` : number;
+    number < 10 ? `0${number}` : number;
+
+export const filterStatus = (status: any) => {
+    return status?.filter((item: any) => item?.name === "paid" || "refund");
+};

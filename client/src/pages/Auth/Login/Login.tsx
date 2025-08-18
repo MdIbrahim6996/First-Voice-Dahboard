@@ -57,7 +57,7 @@ const Login = () => {
                                 transition={{ duration: 0.5 }}
                                 className="text-4xl font-bold mb-4"
                             >
-                                First Voice IT Services
+                                First Voice Global Services
                             </motion.h1>
                             <motion.p
                                 initial={{ opacity: 0, y: 100 }}
@@ -65,7 +65,8 @@ const Login = () => {
                                 transition={{ duration: 0.5, delay: 0.2 }}
                                 className="mb-6"
                             >
-                                The most popular peer to peer lending at SEA
+                                Driving Global Growth Through Smarter Sales
+                                Solutions
                             </motion.p>
                             {/* <button className="bg-blue-600 hover:bg-blue-700 rounded-full px-6 py-2 font-semibold transition">
                         Read More

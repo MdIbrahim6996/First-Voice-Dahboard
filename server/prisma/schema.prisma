@@ -95,6 +95,7 @@ model Lead {
   password           String?
   dateOfBirth        DateTime?
   phone              String
+  poa                Boolean              @default(false)
   // Process Details
   processId          Int?
   planId             Int?

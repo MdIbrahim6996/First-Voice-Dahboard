@@ -42,7 +42,7 @@ export const createLead = async (
     //     cvv: 'sdf'
     //   }
     // }
-    console.log(req.user);
+    console.log(req.body);
     const {
         title,
         firstName,
@@ -58,6 +58,7 @@ export const createLead = async (
         phone,
         process,
         plan,
+        poa,
         closer,
         verifier,
         bank,
@@ -66,7 +67,6 @@ export const createLead = async (
         comment,
         card,
     } = req.body;
-    console.log(req.body);
     const date = new Date();
 
     try {
@@ -86,6 +86,7 @@ export const createLead = async (
                 county,
                 pincode,
                 password,
+                poa: poa === "true" ? true : false,
                 dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : Prisma.skip,
                 phone,
                 processId: parseInt(process),
@@ -120,16 +121,16 @@ export const createLead = async (
 
         const dailyLeadCount = await prisma.leadCount.upsert({
             where: {
-                userId: lead?.closerId as number,
+                userId: lead?.leadByUserId as number,
                 uniqueDate: {
                     date: date.getDate(),
                     month: date.getMonth() + 1,
                     year: date.getFullYear() - 1,
-                    userId: lead?.closerId as number,
+                    userId: lead?.leadByUserId as number,
                 },
             },
             create: {
-                userId: lead?.closerId as number,
+                userId: lead?.leadByUserId as number,
                 count: 1,
                 date: date.getDate(),
                 month: date.getMonth() + 1,
@@ -161,6 +162,7 @@ export const getAllLead = async (
                 process: { select: { name: true } },
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
+                verifier: { select: { name: true } },
                 status: { select: { name: true } },
                 StatusChangeReason: true,
             },

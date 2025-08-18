@@ -300,7 +300,7 @@ const LeadDetailModal = ({
                                 </div>
                             </div>
 
-                            {paymentMethod === "demandDraft" && (
+                            {paymentMethod === "directDebit" && (
                                 <div className="my-5">
                                     <p className="capitalize text underline font-semibold italic">
                                         bank account details

@@ -7,11 +7,14 @@ import { getAllProcessforUser } from "../../../api/process";
 import { getAllPlanforUser } from "../../../api/plan";
 import type { LeadsFormInput } from "../../../types/form.types";
 import { getAllUserforUsers } from "../../../api/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import valid from "card-validator";
 
 const AddLeads = () => {
     const date = new Date();
     const currentDate = date.toString().substring(4, 15);
+
+    const [cardName, setCardName] = useState("");
 
     const {
         register,
@@ -20,6 +23,7 @@ const AddLeads = () => {
         handleSubmit,
         watch,
         reset,
+        trigger,
     } = useForm<LeadsFormInput>();
 
     const queryClient = useQueryClient();
@@ -60,7 +64,7 @@ const AddLeads = () => {
     });
 
     useEffect(() => {
-        if (paymentMethod === "demandDraft") {
+        if (paymentMethod === "directDebit") {
             unregister("card");
             register("bank");
         } else {
@@ -71,6 +75,7 @@ const AddLeads = () => {
             register("card");
         } else {
             unregister("card");
+            unregister("bank");
         }
     }, [register, unregister, paymentMethod]);
 
@@ -285,6 +290,8 @@ const AddLeads = () => {
                                 </p>
                             )}
                         </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-x-4 gap-y-4 my-5">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="password" className="font-semibold">
                                 Password
@@ -329,6 +336,30 @@ const AddLeads = () => {
                             {errors?.phone && (
                                 <p className="text-red-500">
                                     {errors?.phone?.message}
+                                </p>
+                            )}
+                        </div>
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label htmlFor="poa" className="font-semibold">
+                                Power Of Attorney
+                            </label>
+                            <select
+                                {...register("poa", {
+                                    required: "Please Select Yes/No.",
+                                })}
+                                id="poa"
+                                defaultValue={""}
+                                className="border outline-none border-gray-400 px-3 py-1 rounded"
+                            >
+                                <option disabled selected value="">
+                                    Select Yes/No.
+                                </option>
+                                <option value={"true"}>YES</option>
+                                <option value={"false"}>NO</option>
+                            </select>
+                            {errors?.poa && (
+                                <p className="text-red-500">
+                                    {errors?.poa?.message}
                                 </p>
                             )}
                         </div>
@@ -445,25 +476,6 @@ const AddLeads = () => {
                                 </p>
                             )}
                         </div>
-                        {/* <div className="flex flex-col text-sm space-y-0.5">
-                            <label htmlFor="fee" className="font-semibold">
-                                Fee
-                            </label>
-                            <input
-                                type="number"
-                                {...register("fee", {
-                                    required: "Please Enter Fee Amount.",
-                                })}
-                                id="fee"
-                                placeholder="$49"
-                                className="border border-gray-400 px-3 py-1 rounded outline-none"
-                            />
-                            {errors?.fee && (
-                                <p className="text-red-500">
-                                    {errors?.fee?.message}
-                                </p>
-                            )}
-                        </div> */}
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 gap-y-4 my-5">
@@ -476,7 +488,7 @@ const AddLeads = () => {
                             </label>
                             <select
                                 {...register("paymentMethod", {
-                                    required: "Please Select a Process.",
+                                    required: "Please Select a Payment Method.",
                                 })}
                                 id="paymentMethod"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
@@ -485,8 +497,8 @@ const AddLeads = () => {
                                     Select a Payment Method
                                 </option>
                                 <option value="cash/cheque">Cash/Cheque</option>
-                                <option value="demandDraft">
-                                    Demand Draft (DD)
+                                <option value="directDebit">
+                                    Direct Debit (DD)
                                 </option>
                                 <option value="card">Card</option>
                             </select>
@@ -513,7 +525,9 @@ const AddLeads = () => {
                                 <option value="UNITED STATES (US)">
                                     UNITED STATES (US)
                                 </option>
-                                <option value="AUSTRALIA">AUSTRALIA</option>
+                                <option value="AUSTRALIA">
+                                    AUSTRALIA (AU)
+                                </option>
                             </select>
                             {errors?.shift && (
                                 <p className="text-red-500">
@@ -523,7 +537,7 @@ const AddLeads = () => {
                         </div>
                     </div>
 
-                    {paymentMethod === "demandDraft" && (
+                    {paymentMethod === "directDebit" && (
                         <div className="my-5">
                             <p className="capitalize text underline font-semibold italic">
                                 bank account details
@@ -667,7 +681,7 @@ const AddLeads = () => {
                                             required: "Please Enter Bank Name.",
                                         })}
                                         id="cardBankName"
-                                        placeholder="Nottinghamshire"
+                                        placeholder="Bank of UK"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.card?.bankName && (
@@ -685,9 +699,31 @@ const AddLeads = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={16}
                                         {...register("card.cardNumber", {
+                                            onChange: () =>
+                                                trigger("card.cardNumber"),
                                             required:
                                                 "Please Enter Card Number.",
+                                            validate: (data) => {
+                                                const numberValidation =
+                                                    valid.number(data);
+
+                                                if (
+                                                    !numberValidation.isPotentiallyValid
+                                                ) {
+                                                    setCardName("");
+                                                    return "Invalid Card.";
+                                                }
+
+                                                if (numberValidation.card) {
+                                                    setCardName(
+                                                        numberValidation.card
+                                                            .type
+                                                    );
+                                                    return true;
+                                                }
+                                            },
                                         })}
                                         id="cardNumber"
                                         placeholder="4242 4242 4242"
@@ -696,6 +732,11 @@ const AddLeads = () => {
                                     {errors?.card?.cardNumber && (
                                         <p className="text-red-500">
                                             {errors?.card?.cardNumber?.message}
+                                        </p>
+                                    )}
+                                    {cardName && (
+                                        <p className="text-green-600 uppercase ml-2">
+                                            &#10003; {cardName}
                                         </p>
                                     )}
                                 </div>
@@ -708,12 +749,29 @@ const AddLeads = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={7}
                                         {...register("card.expiry", {
                                             required:
                                                 "Please Enter Card Expiry.",
+                                            onChange: () =>
+                                                trigger("card.expiry"),
+                                            validate: (data) => {
+                                                const dateValidation =
+                                                    valid.expirationDate(data);
+
+                                                if (
+                                                    !dateValidation.isPotentiallyValid
+                                                ) {
+                                                    return "Invalid Date.";
+                                                }
+
+                                                if (dateValidation.isValid) {
+                                                    return true;
+                                                }
+                                            },
                                         })}
                                         id="expiry"
-                                        placeholder="4242 4242 4242"
+                                        placeholder="05/30"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.card?.expiry && (
@@ -731,11 +789,12 @@ const AddLeads = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={3}
                                         {...register("card.cvv", {
                                             required: "Please Enter CVV.",
                                         })}
                                         id="cvv"
-                                        placeholder="4242 4242 4242"
+                                        placeholder="424"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.card?.cvv && (
