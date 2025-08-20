@@ -48,9 +48,8 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     //     cvv: 'sdf'
     //   }
     // }
-    console.log(req.user);
-    const { title, firstName, middleName, lastName, centre, address, city, county, pincode, password, dateOfBirth, phone, process, plan, closer, verifier, bank, paymentMethod, shift, comment, card, } = req.body;
     console.log(req.body);
+    const { title, firstName, middleName, lastName, centre, address, city, county, pincode, password, dateOfBirth, phone, process, plan, poa, closer, verifier, bank, paymentMethod, shift, comment, card, } = req.body;
     const date = new Date();
     try {
         const status = yield prismaClient_1.prisma.status.findFirst({
@@ -68,6 +67,7 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 county,
                 pincode,
                 password,
+                poa: poa === "true" ? true : false,
                 dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : client_1.Prisma.skip,
                 phone,
                 processId: parseInt(process),
@@ -100,16 +100,16 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         console.log(lead === null || lead === void 0 ? void 0 : lead.closerId);
         const dailyLeadCount = yield prismaClient_1.prisma.leadCount.upsert({
             where: {
-                userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                userId: lead === null || lead === void 0 ? void 0 : lead.leadByUserId,
                 uniqueDate: {
                     date: date.getDate(),
                     month: date.getMonth() + 1,
                     year: date.getFullYear() - 1,
-                    userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                    userId: lead === null || lead === void 0 ? void 0 : lead.leadByUserId,
                 },
             },
             create: {
-                userId: lead === null || lead === void 0 ? void 0 : lead.closerId,
+                userId: lead === null || lead === void 0 ? void 0 : lead.leadByUserId,
                 count: 1,
                 date: date.getDate(),
                 month: date.getMonth() + 1,
@@ -126,7 +126,7 @@ const createLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.createLead = createLead;
 const getAllLead = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { status, process, saleDate, fromDate, toDate } = req.query;
+    const { status, phone, process, leadUser, closerUser, verifierUser, saleDate, fromDate, toDate, } = req.query;
     try {
         const newSaleDate = new Date(saleDate);
         const nextDay = new Date(saleDate);
@@ -136,6 +136,8 @@ const getAllLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 process: { select: { name: true } },
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
+                leadBy: { select: { name: true } },
+                verifier: { select: { name: true } },
                 status: { select: { name: true } },
                 StatusChangeReason: true,
             },
@@ -143,8 +145,18 @@ const getAllLead = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 statusId: parseInt(status)
                     ? parseInt(status)
                     : client_1.Prisma.skip,
+                phone: phone ? phone : client_1.Prisma.skip,
                 processId: parseInt(process)
                     ? parseInt(process)
+                    : client_1.Prisma.skip,
+                leadByUserId: parseInt(leadUser)
+                    ? parseInt(leadUser)
+                    : client_1.Prisma.skip,
+                closerId: parseInt(closerUser)
+                    ? parseInt(closerUser)
+                    : client_1.Prisma.skip,
+                verifierId: parseInt(verifierUser)
+                    ? parseInt(verifierUser)
                     : client_1.Prisma.skip,
                 saleDate: {
                     gte: saleDate ? newSaleDate : client_1.Prisma.skip,

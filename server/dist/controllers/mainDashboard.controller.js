@@ -35,8 +35,34 @@ const getTopSellers = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.getTopSellers = getTopSellers;
 const getProcessLeadCount = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const date = new Date();
+    date.setUTCHours(0, 0, 0, 0);
+    const date2 = new Date();
+    date2.setUTCDate(date.getDate() + 1);
+    date2.setUTCHours(0, 0, 0, 0);
     try {
-        const leadCount = yield prismaClient_1.prisma.process.findMany({});
+        const leadCount = yield prismaClient_1.prisma.process.findMany({
+            include: {
+                User: {
+                    omit: {
+                        email: true,
+                        employeeId: true,
+                        phone: true,
+                        createdAt: true,
+                        isBlocked: true,
+                        password: true,
+                        updatedAt: true,
+                        processId: true,
+                    },
+                    include: {
+                        LeadCount: {
+                            select: { count: true },
+                            where: { createdAt: { gte: date, lte: date2 } },
+                        },
+                    },
+                },
+            },
+        });
         res.send(leadCount);
     }
     catch (error) {

@@ -5,6 +5,7 @@ const mainDashboard_controller_1 = require("../controllers/mainDashboard.control
 const router = (0, express_1.Router)();
 // router.post("/", createMainDashboard);
 router.get("/", mainDashboard_controller_1.getTopSellers);
+router.get("/process-lead-count", mainDashboard_controller_1.getProcessLeadCount);
 // router.get("/:id");
 // router.put("/:id");
 // router.delete("/:id");

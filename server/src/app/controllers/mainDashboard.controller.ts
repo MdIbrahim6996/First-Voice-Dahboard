@@ -17,6 +17,7 @@ export const getTopSellers = async (
             where: {
                 updatedAt: { gte: currentDay, lte: nextDay },
                 userId: { not: null },
+                count: { gt: 0 },
             },
             orderBy: [{ count: "desc" }, { updatedAt: "asc" }],
             include: { user: { select: { name: true, alias: true } } },

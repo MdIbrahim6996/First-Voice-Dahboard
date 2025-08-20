@@ -19,6 +19,7 @@ const client_1 = require("@prisma/client");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, alias, email, employeeId, phone, password, block, role, process, } = req.body;
+        console.log(req.body);
         const existingUser = yield prismaClient_1.prisma.user.findFirst({ where: { email } });
         if (existingUser) {
             throw new Error("User With This Email Already Exist.");
@@ -105,7 +106,7 @@ const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
                 employeeId,
                 phone,
                 role,
-                isBlocked: block === "false" ? false : true,
+                isBlocked: block === 1 ? true : false,
                 alias,
                 processId: process ? parseInt(process) : client_1.Prisma.skip,
             },
