@@ -39,6 +39,7 @@ const AddLeads = () => {
         queryKey: ["process"],
         queryFn: getAllProcess,
     });
+    
     const { data: plan } = useQuery({
         queryKey: ["plan"],
         queryFn: getAllPlan,

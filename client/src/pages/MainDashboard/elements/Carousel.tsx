@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+
 const Carousel = ({ children }: { children: React.ReactNode }) => {
     const [current, setCurrent] = useState(0);
     const total = React.Children.count(children);
@@ -11,12 +12,9 @@ const Carousel = ({ children }: { children: React.ReactNode }) => {
 
     const nextSlide = () => {
         setCurrent((prev) => (prev === total - 1 ? 0 : prev + 1));
-        // setCurrent((prev) => {
-        //     console.log((prev % (total - 1)) + 1);
-        //     console.log(total);
-        //     return (prev % (total - 1)) + 1;
-        // });
     };
+
+   
 
     return (
         <div className="relative w-full max-w-x overflow-hidden rounded-2xl shadow-lg h-[98vh]">

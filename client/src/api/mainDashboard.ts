@@ -16,3 +16,17 @@ export const getTopSellers = async () => {
         return error;
     }
 };
+export const getProcessLeadCount = async () => {
+    try {
+        const { data } = await axiosInstance.get(
+            `/superadmin/main-dashboard/process-lead-count`
+        );
+        return data;
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+        }
+        return error;
+    }
+};

@@ -32,8 +32,35 @@ export const getProcessLeadCount = async (
     res: Response,
     next: NextFunction
 ) => {
+    const date = new Date();
+    date.setUTCHours(0, 0, 0, 0);
+    const date2 = new Date();
+    date2.setUTCDate(date.getDate() + 1);
+    date2.setUTCHours(0, 0, 0, 0);
+
     try {
-        const leadCount = await prisma.process.findMany({});
+        const leadCount = await prisma.process.findMany({
+            include: {
+                User: {
+                    omit: {
+                        email: true,
+                        employeeId: true,
+                        phone: true,
+                        createdAt: true,
+                        isBlocked: true,
+                        password: true,
+                        updatedAt: true,
+                        processId: true,
+                    },
+                    include: {
+                        LeadCount: {
+                            select: { count: true },
+                            where: { createdAt: { gte: date, lte: date2 } },
+                        },
+                    },
+                },
+            },
+        });
         res.send(leadCount);
     } catch (error) {
         console.log(error);
