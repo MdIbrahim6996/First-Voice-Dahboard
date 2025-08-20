@@ -51,7 +51,6 @@ const AddLeads = () => {
 
     const processValue = watch("process") ? watch("process") : 1;
     const paymentMethod = watch("paymentMethod");
-    console.log(paymentMethod);
 
     const filterPlan = (id: number) =>
         plan?.filter((item: any) => id == item?.processId);
@@ -380,7 +379,7 @@ const AddLeads = () => {
                         Customer Plan and Product Details
                     </p>
 
-                    <div className="grid grid-cols-5 gap-x-4 gap-y-4 my-5">
+                    <div className="grid grid-cols-4 gap-x-4 gap-y-4 my-5">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="process" className="font-semibold">
                                 Select Process
@@ -567,7 +566,7 @@ const AddLeads = () => {
                                             required: "Please Enter Bank Name.",
                                         })}
                                         id="bankName"
-                                        placeholder="West Bridgford"
+                                        placeholder="Bank of UK."
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.bankName && (
@@ -590,7 +589,7 @@ const AddLeads = () => {
                                                 "Please Enter Account Name.",
                                         })}
                                         id="accountName"
-                                        placeholder="Nottinghamshire"
+                                        placeholder="Steve Balmer"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.accountName && (
@@ -613,7 +612,7 @@ const AddLeads = () => {
                                                 "Please Enter Account Number.",
                                         })}
                                         id="accountNumber"
-                                        placeholder="700001"
+                                        placeholder="000405007899"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.accountNumber && (

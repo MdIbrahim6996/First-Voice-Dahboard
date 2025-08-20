@@ -557,7 +557,7 @@ const AddLeads = () => {
                                             required: "Please Enter Bank Name.",
                                         })}
                                         id="bankName"
-                                        placeholder="West Bridgford"
+                                        placeholder="Bank of UK"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.bankName && (
@@ -580,7 +580,7 @@ const AddLeads = () => {
                                                 "Please Enter Account Name.",
                                         })}
                                         id="accountName"
-                                        placeholder="Nottinghamshire"
+                                        placeholder="Steve Balmer"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.accountName && (
@@ -603,7 +603,7 @@ const AddLeads = () => {
                                                 "Please Enter Account Number.",
                                         })}
                                         id="accountNumber"
-                                        placeholder="700001"
+                                        placeholder="000405007899"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.accountNumber && (
