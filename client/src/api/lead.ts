@@ -57,14 +57,18 @@ export const deleteLead = async (id: number) => {
 //SUPERADMIN
 export const getAllLead = async (
     status: number,
+    phone: string,
     process: number,
+    leadUser: number,
+    closerUser: number,
+    verifierUser: number,
     saleDate: string,
     fromDate: string,
     toDate: string
 ) => {
     try {
         const { data } = await axiosInstance.get(
-            `${SERVER_URL}/superadmin/lead?status=${status}&process=${process}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
+            `${SERVER_URL}/superadmin/lead?status=${status}&phone=${phone}&process=${process}&leadUser=${leadUser}&closerUser=${closerUser}&verifierUser=${verifierUser}&saleDate=${saleDate}&fromDate=${fromDate}&toDate=${toDate}`
         );
         return data;
     } catch (error) {

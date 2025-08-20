@@ -6,6 +6,7 @@ import { getAllLeadOfUser } from "../../../api/lead";
 import { AuthContext } from "../../../context/authContext";
 import StatusChangeInfoModal from "../../../components/Modal/StatusChangeInfoModal";
 import EmptyState from "../../../components/EmptyState/EmptyState";
+import Loader from "../../../components/Loader/Loader";
 
 const Leads = () => {
     const { user } = useContext(AuthContext);
@@ -23,7 +24,11 @@ const Leads = () => {
         queryFn: getAllStatusforUser,
     });
 
-    const { data: leads, refetch } = useQuery({
+    const {
+        data: leads,
+        refetch,
+        isLoading,
+    } = useQuery({
         queryKey: ["leads", status],
         queryFn: () =>
             getAllLeadOfUser(
@@ -180,108 +185,134 @@ const Leads = () => {
                         transition={{ duration: 0.5 }}
                         className="relative overflow-x-auto shadow-md sm:rounded-lg"
                     >
-                        {leads?.length > 0 ? (
-                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                                <thead className="text-center text-gray-700 uppercase bg-gray-200">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            Sr. No.
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            status
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Sale Date
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Name
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Process
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Plan
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {leads?.map((item: any, i: number) => (
-                                        <tr
-                                            key={item?.id}
-                                            className={` capitalize text-center border-b :border-gray-700 border-gray-200`}
-                                        >
+                        {!isLoading ? (
+                            leads?.length > 0 ? (
+                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                                    <thead className="text-center text-gray-700 uppercase bg-gray-200">
+                                        <tr>
                                             <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap :text-white"
+                                                scope="col"
+                                                className="px-6 py-3"
                                             >
-                                                {i + 1}
+                                                Sr. No.
                                             </th>
-
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <p
-                                                    className={`${
-                                                        item?.status?.name?.toLowerCase() ===
-                                                        "success"
-                                                            ? "bg-green-500"
-                                                            : ""
-                                                    } ${
-                                                        item?.status?.name?.toLowerCase() ===
-                                                        "pending"
-                                                            ? "bg-yellow-500"
-                                                            : ""
-                                                    } ${
-                                                        item?.status?.name?.toLowerCase() ===
-                                                        "cancelled"
-                                                            ? "bg-red-500"
-                                                            : ""
-                                                    } ${
-                                                        item?.name?.toLowerCase() ===
-                                                        "rework/warmup"
-                                                            ? "bg-sky-500"
-                                                            : ""
-                                                    } px-3 py-1 text-xs rounded font-semibold text-white`}
-                                                >
-                                                    {item?.status?.name}
-                                                </p>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {new Date(
-                                                    item?.saleDate
-                                                ).toDateString()}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {item?.title} {item?.firstName}{" "}
-                                                {item?.middleName}{" "}
-                                                {item?.lastName}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {item?.process?.name}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {item?.plan?.name}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <button
-                                                    onClick={() => {
-                                                        setView(true);
-                                                        setDetails(
-                                                            item?.StatusChangeReason
-                                                        );
-                                                    }}
-                                                    className="px-3 py-1 text-xs rounded font-semibold bg-blue-500 cursor-pointer capitalize text-white"
-                                                >
-                                                    view change in status
-                                                </button>
-                                            </td>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                status
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                Sale Date
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                Name
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                Process
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                Plan
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                action
+                                            </th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {leads?.map((item: any, i: number) => (
+                                            <tr
+                                                key={item?.id}
+                                                className={` capitalize text-center border-b :border-gray-700 border-gray-200`}
+                                            >
+                                                <th
+                                                    scope="row"
+                                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap :text-white"
+                                                >
+                                                    {i + 1}
+                                                </th>
+
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <p
+                                                        className={`${
+                                                            item?.status?.name?.toLowerCase() ===
+                                                            "success"
+                                                                ? "bg-green-500"
+                                                                : ""
+                                                        } ${
+                                                            item?.status?.name?.toLowerCase() ===
+                                                            "pending"
+                                                                ? "bg-yellow-500"
+                                                                : ""
+                                                        } ${
+                                                            item?.status?.name?.toLowerCase() ===
+                                                            "cancelled"
+                                                                ? "bg-red-500"
+                                                                : ""
+                                                        } ${
+                                                            item?.name?.toLowerCase() ===
+                                                            "rework/warmup"
+                                                                ? "bg-sky-500"
+                                                                : ""
+                                                        } px-3 py-1 text-xs rounded font-semibold text-white`}
+                                                    >
+                                                        {item?.status?.name}
+                                                    </p>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {new Date(
+                                                        item?.saleDate
+                                                    ).toDateString()}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {item?.title}{" "}
+                                                    {item?.firstName}{" "}
+                                                    {item?.middleName}{" "}
+                                                    {item?.lastName}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {item?.process?.name}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {item?.plan?.name}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <button
+                                                        onClick={() => {
+                                                            setView(true);
+                                                            setDetails(
+                                                                item?.StatusChangeReason
+                                                            );
+                                                        }}
+                                                        className="px-3 py-1 text-xs rounded font-semibold bg-blue-500 cursor-pointer capitalize text-white"
+                                                    >
+                                                        view change in status
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <EmptyState />
+                            )
                         ) : (
-                            <EmptyState />
+                            <Loader />
                         )}
                     </motion.div>
                 </div>

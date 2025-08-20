@@ -12,6 +12,9 @@ import { RiFileAddFill, RiBook2Fill } from "react-icons/ri";
 import { BsCalendar2EventFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 
+export const PUSHER_SECRET = "3598d69c8453a73ad670";
+export const PUSHER_CLUSTER = "ap2";
+
 export const monthNames = [
     "January",
     "February",

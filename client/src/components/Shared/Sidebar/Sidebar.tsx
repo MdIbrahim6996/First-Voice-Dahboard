@@ -2,6 +2,8 @@ import {
     userLinks,
     adminLinks,
     superAdminLinks,
+    PUSHER_SECRET,
+    PUSHER_CLUSTER,
 } from "../../../constants/appConstant";
 
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -40,8 +42,8 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
-        const pusher = new Pusher("3598d69c8453a73ad670", {
-            cluster: "ap2",
+        const pusher = new Pusher(PUSHER_SECRET, {
+            cluster: PUSHER_CLUSTER,
         });
         const channel = pusher.subscribe("lead");
         channel.bind(`status-change-${user?.user?.id}`, (data: any) => {
@@ -69,7 +71,8 @@ const Sidebar = () => {
                             />
                         </Link>
                     </div>
-                    {user?.user?.role === "user" && (
+                    {(user?.user?.role === "user" ||
+                        user?.user?.role === "closer") && (
                         <div className="my-10 space-y-1">
                             {userLinks?.map((item) => (
                                 <NavLink

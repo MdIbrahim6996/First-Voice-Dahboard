@@ -1,17 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { createSuperAdminLead } from "../../api/lead";
 import { getAllProcess } from "../../api/process";
 import { getAllPlan } from "../../api/plan";
 import type { LeadsFormInput } from "../../types/form.types";
 import { getAllUserforUsers } from "../../api/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import valid from "card-validator";
 
 const AddLeads = () => {
     const date = new Date();
     const currentDate = date.toString().substring(4, 15);
+    const [cardName, setCardName] = useState("");
 
     const {
         register,
@@ -20,15 +22,16 @@ const AddLeads = () => {
         handleSubmit,
         watch,
         reset,
-        control,
+        // control,
+        trigger,
     } = useForm<LeadsFormInput>({
         defaultValues: {},
     });
 
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: "appliances",
-    });
+    // const { fields, append, remove } = useFieldArray({
+    //     control,
+    //     name: "appliances",
+    // });
 
     const queryClient = useQueryClient();
 
@@ -88,6 +91,9 @@ const AddLeads = () => {
         //@ts-ignore
         createLeadMutation(data);
     };
+
+    const cardNumber = watch("card.cardNumber");
+
     return (
         <div className="overflow-y-scroll h-full">
             <div className="p-5">
@@ -295,6 +301,8 @@ const AddLeads = () => {
                                 </p>
                             )}
                         </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-x-4 gap-y-4 my-5">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="password" className="font-semibold">
                                 Password
@@ -342,13 +350,37 @@ const AddLeads = () => {
                                 </p>
                             )}
                         </div>
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label htmlFor="poa" className="font-semibold">
+                                Power Of Attorney
+                            </label>
+                            <select
+                                {...register("poa", {
+                                    required: "Please Select Yes/No.",
+                                })}
+                                id="poa"
+                                defaultValue={""}
+                                className="border outline-none border-gray-400 px-3 py-1 rounded"
+                            >
+                                <option disabled selected value="">
+                                    Select Yes/No.
+                                </option>
+                                <option value={"true"}>YES</option>
+                                <option value={"false"}>NO</option>
+                            </select>
+                            {errors?.poa && (
+                                <p className="text-red-500">
+                                    {errors?.poa?.message}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     <p className="mb-4 mt-16 text-2xl font-semibold italic text-black/80 underline">
                         Customer Plan and Product Details
                     </p>
 
-                    <div className="grid grid-cols-4 gap-x-4 gap-y-4 my-5">
+                    <div className="grid grid-cols-5 gap-x-4 gap-y-4 my-5">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="process" className="font-semibold">
                                 Select Process
@@ -365,7 +397,7 @@ const AddLeads = () => {
                                     Select a Process
                                 </option>
                                 {process?.map((item: any) => (
-                                    <option value={item?.id}>
+                                    <option key={item?.id} value={item?.id}>
                                         {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
@@ -392,7 +424,7 @@ const AddLeads = () => {
                                     Select a Plan
                                 </option>
                                 {filterPlan(processValue)?.map((item: any) => (
-                                    <option value={item?.id}>
+                                    <option value={item?.id} key={item?.id}>
                                         {item?.name?.toUpperCase()}
                                     </option>
                                 ))}
@@ -455,25 +487,6 @@ const AddLeads = () => {
                                 </p>
                             )}
                         </div>
-                        {/* <div className="flex flex-col text-sm space-y-0.5">
-                            <label htmlFor="fee" className="font-semibold">
-                                Fee
-                            </label>
-                            <input
-                                type="number"
-                                {...register("fee", {
-                                    required: "Please Enter Fee Amount.",
-                                })}
-                                id="fee"
-                                placeholder="$49"
-                                className="border border-gray-400 px-3 py-1 rounded outline-none"
-                            />
-                            {errors?.fee && (
-                                <p className="text-red-500">
-                                    {errors?.fee?.message}
-                                </p>
-                            )}
-                        </div> */}
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 gap-y-4 my-5">
@@ -486,7 +499,7 @@ const AddLeads = () => {
                             </label>
                             <select
                                 {...register("paymentMethod", {
-                                    required: "Please Select a Process.",
+                                    required: "Please Select a Payment Method.",
                                 })}
                                 id="paymentMethod"
                                 className="border outline-none border-gray-400 px-3 py-1 rounded"
@@ -495,8 +508,8 @@ const AddLeads = () => {
                                     Select a Payment Method
                                 </option>
                                 <option value="cash/cheque">Cash/Cheque</option>
-                                <option value="demandDraft">
-                                    Demand Draft (DD)
+                                <option value="directDebit">
+                                    Direct Debit (DD)
                                 </option>
                                 <option value="card">Card</option>
                             </select>
@@ -523,7 +536,9 @@ const AddLeads = () => {
                                 <option value="UNITED STATES (US)">
                                     UNITED STATES (US)
                                 </option>
-                                <option value="AUSTRALIA">AUSTRALIA</option>
+                                <option value="AUSTRALIA">
+                                    AUSTRALIA (AU)
+                                </option>
                             </select>
                             {errors?.shift && (
                                 <p className="text-red-500">
@@ -533,7 +548,7 @@ const AddLeads = () => {
                         </div>
                     </div>
 
-                    {paymentMethod === "demandDraft" && (
+                    {paymentMethod === "directDebit" && (
                         <div className="my-5">
                             <p className="capitalize text underline font-semibold italic">
                                 bank account details
@@ -552,7 +567,7 @@ const AddLeads = () => {
                                             required: "Please Enter Bank Name.",
                                         })}
                                         id="bankName"
-                                        placeholder="Bank of UK"
+                                        placeholder="West Bridgford"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.bankName && (
@@ -575,7 +590,7 @@ const AddLeads = () => {
                                                 "Please Enter Account Name.",
                                         })}
                                         id="accountName"
-                                        placeholder="Steve Balmer"
+                                        placeholder="Nottinghamshire"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.accountName && (
@@ -598,7 +613,7 @@ const AddLeads = () => {
                                                 "Please Enter Account Number.",
                                         })}
                                         id="accountNumber"
-                                        placeholder="1297834672211"
+                                        placeholder="700001"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
                                     {errors?.bank?.accountNumber && (
@@ -695,19 +710,47 @@ const AddLeads = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={16}
                                         {...register("card.cardNumber", {
+                                            onChange: () =>
+                                                trigger("card.cardNumber"),
                                             required:
                                                 "Please Enter Card Number.",
+                                            validate: (data) => {
+                                                const numberValidation =
+                                                    valid.number(data);
+
+                                                if (numberValidation.card) {
+                                                    setCardName(
+                                                        numberValidation.card
+                                                            .type
+                                                    );
+                                                }
+                                                if (!numberValidation.isValid) {
+                                                    setCardName("");
+                                                    return "Invalid Card.";
+                                                }
+                                            },
                                         })}
                                         id="cardNumber"
-                                        placeholder="4242 4242 4242"
+                                        placeholder="4242 4242 4242 4242"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
-                                    {errors?.card?.cardNumber && (
-                                        <p className="text-red-500">
-                                            {errors?.card?.cardNumber?.message}
-                                        </p>
-                                    )}
+                                    <div className="flex gap-3">
+                                        {cardName && cardNumber.length > 0 && (
+                                            <p className="text-green-600 uppercase ml-2">
+                                                &#10003; {cardName}
+                                            </p>
+                                        )}
+                                        {errors?.card?.cardNumber && (
+                                            <p className="text-red-500">
+                                                {
+                                                    errors?.card?.cardNumber
+                                                        ?.message
+                                                }
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="col-span-1 flex flex-col text-sm space-y-0.5">
                                     <label
@@ -718,9 +761,26 @@ const AddLeads = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={7}
                                         {...register("card.expiry", {
                                             required:
                                                 "Please Enter Card Expiry.",
+                                            onChange: () =>
+                                                trigger("card.expiry"),
+                                            validate: (data) => {
+                                                const dateValidation =
+                                                    valid.expirationDate(data);
+
+                                                if (
+                                                    !dateValidation.isPotentiallyValid
+                                                ) {
+                                                    return "Invalid Date.";
+                                                }
+
+                                                if (dateValidation.isValid) {
+                                                    return true;
+                                                }
+                                            },
                                         })}
                                         id="expiry"
                                         placeholder="05/30"
@@ -741,6 +801,7 @@ const AddLeads = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={3}
                                         {...register("card.cvv", {
                                             required: "Please Enter CVV.",
                                         })}
@@ -758,85 +819,51 @@ const AddLeads = () => {
                         </div>
                     )}
 
-                    <div>
-                        {fields?.map((field, index) => {
-                            return (
-                                <div key={field.id} className="mb-3">
-                                    <div className="grid grid-cols-3 gap-x-4 gap-y-4">
-                                        <div className="flex flex-col text-sm space-y-0.5">
-                                            <label
-                                                htmlFor="appliance"
-                                                className="font-semibold"
-                                            >
-                                                Appliance
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="appliance"
-                                                id="appliance"
-                                                placeholder="Nottinghamshire"
-                                                className="border border-gray-400 px-3 py-1 rounded outline-none"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col text-sm space-y-0.5">
-                                            <label
-                                                htmlFor="makeOfAppliance"
-                                                className="font-semibold"
-                                            >
-                                                Make of Appliance
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="makeOfAppliance"
-                                                id="makeOfAppliance"
-                                                placeholder="700001"
-                                                className="border border-gray-400 px-3 py-1 rounded outline-none"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col text-sm space-y-0.5">
-                                            <label
-                                                htmlFor="age"
-                                                className="font-semibold"
-                                            >
-                                                Age
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="age"
-                                                id="age"
-                                                placeholder="***********"
-                                                className="border border-gray-400 px-3 py-1 rounded-md outline-none"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-x-1">
-                                        <button
-                                            type="button"
-                                            className="bg-green-500 uppercase px-2 py-0.5 text-white rounded text-xs"
-                                            onClick={() =>
-                                                append({
-                                                    age: 0,
-                                                    make: "",
-                                                    name: "",
-                                                })
-                                            }
-                                        >
-                                            add
-                                        </button>
-                                        {index > 0 && (
-                                            <button
-                                                type="button"
-                                                className="bg-red-500 uppercase px-2 py-0.5 text-white rounded text-xs"
-                                                onClick={() => remove(index)}
-                                            >
-                                                remove
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+                    {/* <div className="grid grid-cols-3 gap-x-4 gap-y-4 my-5">
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label
+                                htmlFor="appliance"
+                                className="font-semibold"
+                            >
+                                Appliance
+                            </label>
+                            <input
+                                type="text"
+                                name="appliance"
+                                id="appliance"
+                                placeholder="Nottinghamshire"
+                                className="border border-gray-400 px-3 py-1 rounded outline-none"
+                            />
+                        </div>
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label
+                                htmlFor="makeOfAppliance"
+                                className="font-semibold"
+                            >
+                                Make of Appliance
+                            </label>
+                            <input
+                                type="text"
+                                name="makeOfAppliance"
+                                id="makeOfAppliance"
+                                placeholder="700001"
+                                className="border border-gray-400 px-3 py-1 rounded outline-none"
+                            />
+                        </div>
+                        <div className="flex flex-col text-sm space-y-0.5">
+                            <label htmlFor="age" className="font-semibold">
+                                Age
+                            </label>
+                            <input
+                                type="text"
+                                name="age"
+                                id="age"
+                                placeholder="***********"
+                                className="border border-gray-400 px-3 py-1 rounded-md outline-none"
+                            />
+                        </div>
+                    </div> */}
+
                     <div className="mb-4">
                         <div className="flex flex-col text-sm space-y-0.5">
                             <label htmlFor="comments" className="font-semibold">

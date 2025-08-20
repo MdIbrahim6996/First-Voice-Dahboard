@@ -162,6 +162,8 @@ const LeadDetailModal = ({
                                         {details?.pincode}
                                     </p>
                                 </div>
+                            </div>
+                            <div className="grid grid-cols-4 gap-x-4 gap-y-4 my-5">
                                 <div className="flex flex-col text-sm space-y-0.5">
                                     <label
                                         htmlFor="password"
@@ -196,13 +198,25 @@ const LeadDetailModal = ({
                                         {details?.phone}
                                     </p>
                                 </div>
+                                <div className="flex flex-col text-sm space-y-0.5">
+                                    <label
+                                        htmlFor="poa"
+                                        className="font-semibold"
+                                    >
+                                        Power of Attorney
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <p className="border outline-none border-gray-400 px-3 py-1 h-full rounded uppercase">
+                                        {details?.poa?.toString()}
+                                    </p>
+                                </div>
                             </div>
 
                             <p className="mb-4 mt-16 text-2xl font-semibold italic text-black/80 underline">
                                 Customer Plan and Product Details
                             </p>
 
-                            <div className="grid grid-cols-4 gap-x-4 gap-y-4 my-5">
+                            <div className="grid grid-cols-5 gap-x-4 gap-y-4 my-5">
                                 <div className="flex flex-col text-sm space-y-0.5">
                                     <label
                                         htmlFor="process"
@@ -231,6 +245,20 @@ const LeadDetailModal = ({
                                         className="border outline-none border-gray-400 px-3 py-1 rounded uppercase"
                                     >
                                         {details?.plan?.name}
+                                    </p>
+                                </div>
+                                <div className="flex flex-col text-sm space-y-0.5">
+                                    <label
+                                        htmlFor="leadBy"
+                                        className="font-semibold"
+                                    >
+                                        Lead By
+                                    </label>
+                                    <p
+                                        id="leadBy"
+                                        className="border outline-none border-gray-400 px-3 py-1 rounded uppercase"
+                                    >
+                                        {details?.leadBy?.name}
                                     </p>
                                 </div>
                                 <div className="flex flex-col text-sm space-y-0.5">
@@ -273,7 +301,7 @@ const LeadDetailModal = ({
                                         htmlFor="paymentMethod"
                                         className="font-semibold"
                                     >
-                                        Select Payment Method
+                                        Payment Method
                                     </label>
                                     <p
                                         {...register("paymentMethod")}

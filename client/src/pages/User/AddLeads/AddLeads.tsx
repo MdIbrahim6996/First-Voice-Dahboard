@@ -710,17 +710,15 @@ const AddLeads = () => {
                                                 const numberValidation =
                                                     valid.number(data);
 
-                                                if (!numberValidation.isValid) {
-                                                    setCardName("");
-                                                    return "Invalid Card.";
-                                                }
-
                                                 if (numberValidation.card) {
                                                     setCardName(
                                                         numberValidation.card
                                                             .type
                                                     );
-                                                    return true;
+                                                }
+                                                if (!numberValidation.isValid) {
+                                                    setCardName("");
+                                                    return "Invalid Card.";
                                                 }
                                             },
                                         })}
@@ -728,16 +726,21 @@ const AddLeads = () => {
                                         placeholder="4242 4242 4242 4242"
                                         className="border border-gray-400 px-3 py-1 rounded outline-none"
                                     />
-                                    {errors?.card?.cardNumber && (
-                                        <p className="text-red-500">
-                                            {errors?.card?.cardNumber?.message}
-                                        </p>
-                                    )}
-                                    {cardName && cardNumber.length > 0 && (
-                                        <p className="text-green-600 uppercase ml-2">
-                                            &#10003; {cardName}
-                                        </p>
-                                    )}
+                                    <div className="flex gap-3">
+                                        {cardName && cardNumber.length > 0 && (
+                                            <p className="text-green-600 uppercase ml-2">
+                                                &#10003; {cardName}
+                                            </p>
+                                        )}
+                                        {errors?.card?.cardNumber && (
+                                            <p className="text-red-500">
+                                                {
+                                                    errors?.card?.cardNumber
+                                                        ?.message
+                                                }
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="col-span-1 flex flex-col text-sm space-y-0.5">
                                     <label

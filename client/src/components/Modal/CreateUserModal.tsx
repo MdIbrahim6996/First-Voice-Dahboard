@@ -190,7 +190,7 @@ const CreateUserModal = ({ handleClose }: { handleClose: () => void }) => {
                             <option value="admin">ADMIN</option>
                             <option value="superadmin">SUPERADMIN</option>
                             <option value="user">USER</option>
-                            <option value="user">CLOSER</option>
+                            <option value="closer">CLOSER</option>
                         </select>
                         {errors.role && (
                             <p className="text-red-500 text-sm">

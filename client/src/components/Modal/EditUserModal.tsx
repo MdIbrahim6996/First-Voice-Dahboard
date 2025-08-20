@@ -15,7 +15,7 @@ type Inputs = {
     role: string;
     process: number;
     email: string;
-    block: boolean;
+    block: number;
     password: string;
 };
 
@@ -31,7 +31,7 @@ const EditUserModal = ({
         defaultValues: {
             ...detail,
             password: "",
-            block: detail?.isBlocked,
+            block: detail?.isBlocked ? 1 : 0,
             process: detail?.processId,
         },
     });
@@ -59,6 +59,7 @@ const EditUserModal = ({
     });
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log(data);
         mutate({ ...data, id: detail?.id });
     };
 
@@ -165,7 +166,7 @@ const EditUserModal = ({
                             <option value="admin">ADMIN</option>
                             <option value="superadmin">SUPERADMIN</option>
                             <option value="user">USER</option>
-                            <option value="user">CLOSER</option>
+                            <option value="closer">CLOSER</option>
                         </select>
                     </div>
                     <div>
@@ -202,8 +203,9 @@ const EditUserModal = ({
                             id="allowLogin"
                             className="w-full border border-gray-400 px-2 py-1 rounded-md outline-none"
                         >
-                            <option value="true">true</option>
-                            <option selected value="false">
+                            <option value="">Select</option>
+                            <option value={1}>true</option>
+                            <option selected value={0}>
                                 false
                             </option>
                         </select>

@@ -9,6 +9,7 @@ import Pusher from "pusher-js";
 import { getDailyLeadCount } from "../../api/dashboard";
 import LeadCountChartModal from "../../components/Modal/LeadCountChartModal";
 import EmptyState from "../../components/EmptyState/EmptyState";
+import Loader from "../../components/Loader/Loader";
 
 const Dashboard = () => {
     const [show, setShow] = useState(false);
@@ -36,7 +37,7 @@ const Dashboard = () => {
         // },
     });
 
-    const { data: leadCount = [] } = useQuery({
+    const { data: leadCount = [], isLoading } = useQuery({
         queryKey: ["leadCount"],
         queryFn: () => getDailyLeadCount(user?.user?.id!),
     });
@@ -96,41 +97,51 @@ const Dashboard = () => {
                         transition={{ duration: 0.5 }}
                         className="relative overflow-x-auto shadow-md sm:rounded-lg"
                     >
-                        {leadCount?.length > 0 ? (
-                            <table className="w-full h-fit text-sm text-left rtl:text-right text-gray-500 ">
-                                <thead className="text-center text-gray-700 uppercase bg-gray-50">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            Date
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Lead Count
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {leadCount?.map((item: any) => (
-                                        <tr
-                                            key={item?.id}
-                                            className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200"
-                                        >
+                        {!isLoading ? (
+                            leadCount?.length > 0 ? (
+                                <table className="w-full h-fit text-sm text-left rtl:text-right text-gray-500 ">
+                                    <thead className="text-center text-gray-700 uppercase bg-gray-50">
+                                        <tr>
                                             <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                                scope="col"
+                                                className="px-6 py-3"
                                             >
-                                                {new Date(
-                                                    item?.createdAt
-                                                ).toDateString()}
+                                                Date
                                             </th>
-                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                {item?.count}
-                                            </td>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3"
+                                            >
+                                                Lead Count
+                                            </th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {leadCount?.map((item: any) => (
+                                            <tr
+                                                key={item?.id}
+                                                className="capitalize text-center odd:bg-white odd::bg-gray-900 even:bg-gray-50 even::bg-gray-800 border-b :border-gray-700 border-gray-200"
+                                            >
+                                                <th
+                                                    scope="row"
+                                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                                >
+                                                    {new Date(
+                                                        item?.createdAt
+                                                    ).toDateString()}
+                                                </th>
+                                                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                    {item?.count}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <EmptyState />
+                            )
                         ) : (
-                            <EmptyState />
+                            <Loader />
                         )}
                     </motion.div>
                 </div>

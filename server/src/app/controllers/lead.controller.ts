@@ -150,7 +150,17 @@ export const getAllLead = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { status, process, saleDate, fromDate, toDate } = req.query;
+    const {
+        status,
+        phone,
+        process,
+        leadUser,
+        closerUser,
+        verifierUser,
+        saleDate,
+        fromDate,
+        toDate,
+    } = req.query;
 
     try {
         const newSaleDate = new Date(saleDate as string);
@@ -162,6 +172,7 @@ export const getAllLead = async (
                 process: { select: { name: true } },
                 plan: { select: { name: true } },
                 closer: { select: { name: true } },
+                leadBy: { select: { name: true } },
                 verifier: { select: { name: true } },
                 status: { select: { name: true } },
                 StatusChangeReason: true,
@@ -170,8 +181,18 @@ export const getAllLead = async (
                 statusId: parseInt(status as string)
                     ? parseInt(status as string)
                     : Prisma.skip,
+                phone: phone ? (phone as string) : Prisma.skip,
                 processId: parseInt(process as string)
                     ? parseInt(process as string)
+                    : Prisma.skip,
+                leadByUserId: parseInt(leadUser as string)
+                    ? parseInt(leadUser as string)
+                    : Prisma.skip,
+                closerId: parseInt(closerUser as string)
+                    ? parseInt(closerUser as string)
+                    : Prisma.skip,
+                verifierId: parseInt(verifierUser as string)
+                    ? parseInt(verifierUser as string)
                     : Prisma.skip,
                 saleDate: {
                     gte: saleDate ? newSaleDate : Prisma.skip,

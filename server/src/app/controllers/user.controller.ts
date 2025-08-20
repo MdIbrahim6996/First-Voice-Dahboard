@@ -20,6 +20,7 @@ export const createUser = async (
             role,
             process,
         } = req.body;
+        console.log(req.body);
 
         const existingUser = await prisma.user.findFirst({ where: { email } });
         if (existingUser) {
@@ -126,7 +127,7 @@ export const updateUser = async (
                 employeeId,
                 phone,
                 role,
-                isBlocked: block === "false" ? false : true,
+                isBlocked: block === 1 ? true : false,
                 alias,
                 processId: process ? parseInt(process) : Prisma.skip,
             },

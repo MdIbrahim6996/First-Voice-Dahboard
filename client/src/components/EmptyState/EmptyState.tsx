@@ -1,6 +1,6 @@
 const EmptyState = () => {
     return (
-        <div className="flex flex-col items-center justify-center my-10 bg-white">
+        <div className="flex flex-col items-center justify-center my-10 bg-white w-full">
             {/* Illustration */}
             <div className="relative flex items-center justify-center">
                 <svg
