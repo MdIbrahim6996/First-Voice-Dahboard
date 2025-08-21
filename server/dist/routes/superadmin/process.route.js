@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const process_controller_1 = require("../../controllers/process.controller");
-const router = (0, express_1.Router)();
+var express_1 = require("express");
+var process_controller_1 = require("../../controllers/process.controller");
+var router = (0, express_1.Router)();
 router.post("/", process_controller_1.createProcess);
 router.get("/", process_controller_1.getAllProcess);
 router.get("/:id", process_controller_1.getProcessInfo);

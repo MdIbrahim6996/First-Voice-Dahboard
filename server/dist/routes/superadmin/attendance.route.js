@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const attendance_controller_1 = require("../../controllers/attendance.controller");
-const router = (0, express_1.Router)();
+var express_1 = require("express");
+var attendance_controller_1 = require("../../controllers/attendance.controller");
+var router = (0, express_1.Router)();
 // router.get("/monthly", getEmployeeMonthlyAttendance);
 // router.get("/:id", getEmployeePeriodwiseAttendance);
 router.post("/:id", attendance_controller_1.createEmployeeAttendance);

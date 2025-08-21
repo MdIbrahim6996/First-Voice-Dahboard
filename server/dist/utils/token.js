@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateAuthToken = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 //Paste secret key from .env
-const generateAuthToken = (id, role) => {
-    return jsonwebtoken_1.default.sign({ id, role }, "fsdfsdf", { expiresIn: "24h" });
+var generateAuthToken = function (id, role) {
+    return jsonwebtoken_1.default.sign({ id: id, role: role }, "fsdfsdf", { expiresIn: "24h" });
 };
 exports.generateAuthToken = generateAuthToken;

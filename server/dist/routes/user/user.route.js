@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const user_controller_1 = require("../../controllers/user.controller");
-const router = (0, express_1.Router)();
+var express_1 = require("express");
+var user_controller_1 = require("../../controllers/user.controller");
+var router = (0, express_1.Router)();
 router.get("/", user_controller_1.getAllUser);
 exports.default = router;

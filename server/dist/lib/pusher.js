@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pusher = void 0;
-const pusher_1 = __importDefault(require("pusher"));
+var pusher_1 = __importDefault(require("pusher"));
 exports.pusher = new pusher_1.default({
     appId: "2027044",
     key: "3598d69c8453a73ad670",

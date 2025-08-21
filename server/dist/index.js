@@ -2,18 +2,18 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const morgan_1 = __importDefault(require("morgan"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const routes_1 = __importDefault(require("./routes"));
-const errorHandler_1 = require("./middlewares/errorHandler");
-const path_1 = __importDefault(require("path"));
-const cluster_1 = __importDefault(require("cluster"));
-const os_1 = __importDefault(require("os"));
-const numCPUs = os_1.default.cpus().length;
-const app = (0, express_1.default)();
+var express_1 = __importDefault(require("express"));
+var cors_1 = __importDefault(require("cors"));
+var morgan_1 = __importDefault(require("morgan"));
+var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var routes_1 = __importDefault(require("./routes"));
+var errorHandler_1 = require("./middlewares/errorHandler");
+var path_1 = __importDefault(require("path"));
+var os_1 = __importDefault(require("os"));
+var numCPUs = os_1.default.cpus().length;
+var app = (0, express_1.default)();
 //MIDDLEWARES
 app.use((0, cors_1.default)({
     origin: [
@@ -27,40 +27,40 @@ app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 //ROUTES
-app.get("/api/v1/health-check", (_, res) => res.send({ message: "ok" }));
+app.get("/api/v1/health-check", function (_, res) {
+    return res.send({ message: "ok" });
+});
 app.use("/api/v1", routes_1.default);
 if (process.env.NODE_ENV === "production") {
     // Serve front-end app for all unmatched routes
     app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
-    app.get("/{*any}", (req, res) => {
+    app.get("/{*any}", function (req, res) {
         res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
     });
 }
 app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
-app.get("/{*any}", (req, res) => {
+app.get("/{*any}", function (req, res) {
     res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
 });
 //ERROR HANDLER
 app.use(errorHandler_1.notFound);
 app.use(errorHandler_1.errorHandler);
-const PORT = 4000;
-app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-if (numCPUs > 1) {
-    if (cluster_1.default.isPrimary) {
-        for (let i = 0; i < numCPUs; i++) {
-            cluster_1.default.fork();
-        }
-        cluster_1.default.on("exit", function (worker) {
-            console.log("Worker", worker.id, " has exited.");
-        });
-    }
-    else {
-        app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-    }
-}
-else {
-    app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-}
+var PORT = 4000;
+app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
+// if (numCPUs > 1) {
+//     if (cluster.isPrimary) {
+//         for (let i = 0; i < numCPUs; i++) {
+//             cluster.fork();
+//         }
+//         cluster.on("exit", function (worker: any) {
+//             console.log("Worker", worker.id, " has exited.");
+//         });
+//     } else {
+//         app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+//     }
+// } else {
+//     app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+// }
 // const obj = {
 //     "07": [
 //         {
@@ -252,3 +252,68 @@ else {
 //     // await prisma.$executeRaw`DROP TABLE IF EXISTS User;`;
 // }
 // dropTable();
+var arr = [
+    {
+        id: 2,
+        name: "p1",
+        createdAt: "2025-08-14T16:37:52.145Z",
+        updatedAt: "2025-08-14T16:37:52.145Z",
+        User: [
+            {
+                id: 9,
+                name: "asdsad",
+                alias: "asdsadsad",
+                role: "user",
+                LeadCount: [],
+            },
+            {
+                id: 14,
+                name: "asdasds",
+                alias: "dfsdfsdfsdfds",
+                role: "user",
+                LeadCount: [],
+            },
+            {
+                id: 11,
+                name: "user5",
+                alias: "user5",
+                role: "user",
+                LeadCount: [],
+            },
+            {
+                id: 10,
+                name: "user1",
+                alias: "user1",
+                role: "user",
+                LeadCount: [
+                    {
+                        count: 2,
+                    },
+                ],
+            },
+            {
+                id: 15,
+                name: "admin",
+                alias: "first admin",
+                role: "admin",
+                LeadCount: [],
+            },
+            {
+                id: 17,
+                name: "closer2",
+                alias: "closerSecond",
+                role: "closer",
+                LeadCount: [],
+            },
+            {
+                id: 16,
+                name: "closer1",
+                alias: "closerFirst",
+                role: "closer",
+                LeadCount: [],
+            },
+        ],
+    },
+];
+arr[0].User.map(function (item) { return console.log(item.LeadCount); });
+(_a = arr[0].User) === null || _a === void 0 ? void 0 : _a.sort(function (a, b) { var _a, _b; return ((_a = b.LeadCount[0]) === null || _a === void 0 ? void 0 : _a.count) - ((_b = a.LeadCount[0]) === null || _b === void 0 ? void 0 : _b.count); });

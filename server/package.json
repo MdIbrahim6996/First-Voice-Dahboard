@@ -3,6 +3,8 @@
     "version": "1.0.0",
     "main": "dist/index.js",
     "scripts": {
+        "dev:tailwind": "npx tailwindcss -i ./src/app/views/styles/input.css -o ./src/app/views/styles/output.css --watch",
+        "build:css": "postcss ./src/app/views/styles/output.css -o ./src/app/views/styles/main.css",
         "dev": "nodemon --files src/app/index.ts",
         "build": " npm install && npm install --prefix ../client && npm run build --prefix ../client && npx prisma generate && tsc",
         "start": "node dist/index.js"
@@ -13,6 +15,7 @@
     "description": "",
     "dependencies": {
         "@prisma/client": "^6.11.1",
+        "@tailwindcss/cli": "^4.1.12",
         "bcrypt": "^6.0.0",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
@@ -23,11 +26,13 @@
         "luxon": "^3.7.1",
         "morgan": "^1.10.0",
         "pusher": "^5.2.0",
+        "tailwindcss": "^4.1.12",
         "zod": "^4.0.5"
     },
     "devDependencies": {
         "@swc/cli": "^0.7.8",
         "@swc/core": "^1.12.11",
+        "@tailwindcss/postcss": "^4.1.12",
         "@types/bcrypt": "^5.0.2",
         "@types/cookie-parser": "^1.4.9",
         "@types/cors": "^2.8.19",
@@ -38,9 +43,14 @@
         "@types/luxon": "^3.6.2",
         "@types/morgan": "^1.9.10",
         "@types/node": "^24.0.13",
+        "autoprefixer": "^10.4.21",
         "loadtest": "^8.2.0",
         "nodemon": "^3.1.10",
         "pm2": "^6.0.8",
+        "postcss": "^8.5.6",
+        "postcss-cli": "^11.0.1",
+        "postcss-custom-properties": "^14.0.6",
+        "postcss-preset-env": "^10.2.4",
         "prisma": "^6.11.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3"

@@ -59,21 +59,21 @@ app.use(errorHandler);
 const PORT = 4000;
 app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
 
-if (numCPUs > 1) {
-    if (cluster.isPrimary) {
-        for (let i = 0; i < numCPUs; i++) {
-            cluster.fork();
-        }
+// if (numCPUs > 1) {
+//     if (cluster.isPrimary) {
+//         for (let i = 0; i < numCPUs; i++) {
+//             cluster.fork();
+//         }
 
-        cluster.on("exit", function (worker: any) {
-            console.log("Worker", worker.id, " has exited.");
-        });
-    } else {
-        app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-    }
-} else {
-    app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-}
+//         cluster.on("exit", function (worker: any) {
+//             console.log("Worker", worker.id, " has exited.");
+//         });
+//     } else {
+//         app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+//     }
+// } else {
+//     app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+// }
 
 // const obj = {
 //     "07": [
@@ -274,3 +274,70 @@ if (numCPUs > 1) {
 // }
 
 // dropTable();
+
+const arr = [
+    {
+        id: 2,
+        name: "p1",
+        createdAt: "2025-08-14T16:37:52.145Z",
+        updatedAt: "2025-08-14T16:37:52.145Z",
+        User: [
+            {
+                id: 9,
+                name: "asdsad",
+                alias: "asdsadsad",
+                role: "user",
+                LeadCount: [],
+            },
+            {
+                id: 14,
+                name: "asdasds",
+                alias: "dfsdfsdfsdfds",
+                role: "user",
+                LeadCount: [],
+            },
+            {
+                id: 11,
+                name: "user5",
+                alias: "user5",
+                role: "user",
+                LeadCount: [],
+            },
+            {
+                id: 10,
+                name: "user1",
+                alias: "user1",
+                role: "user",
+                LeadCount: [
+                    {
+                        count: 2,
+                    },
+                ],
+            },
+            {
+                id: 15,
+                name: "admin",
+                alias: "first admin",
+                role: "admin",
+                LeadCount: [],
+            },
+            {
+                id: 17,
+                name: "closer2",
+                alias: "closerSecond",
+                role: "closer",
+                LeadCount: [],
+            },
+            {
+                id: 16,
+                name: "closer1",
+                alias: "closerFirst",
+                role: "closer",
+                LeadCount: [],
+            },
+        ],
+    },
+];
+
+arr[0].User.map((item) => console.log(item.LeadCount));
+arr[0].User?.sort((a, b) => b.LeadCount[0]?.count - a.LeadCount[0]?.count);

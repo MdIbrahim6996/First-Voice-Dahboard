@@ -8,6 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -24,71 +51,100 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logoutController = exports.loginController = exports.registerController = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const prismaClient_1 = require("../lib/prismaClient");
-const token_1 = require("../utils/token");
-const registerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { email, password, role, name } = req.body;
-        const existingUser = yield prismaClient_1.prisma.user.findFirst({ where: { email } });
-        if (existingUser) {
-            throw new Error("User Already Exist.");
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var prismaClient_1 = require("../lib/prismaClient");
+var token_1 = require("../utils/token");
+var registerController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, role, name_1, existingUser, hanshedPassword, error_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                _a = req.body, email = _a.email, password = _a.password, role = _a.role, name_1 = _a.name;
+                return [4 /*yield*/, prismaClient_1.prisma.user.findFirst({ where: { email: email } })];
+            case 1:
+                existingUser = _b.sent();
+                if (existingUser) {
+                    throw new Error("User Already Exist.");
+                }
+                return [4 /*yield*/, bcrypt_1.default.hash(password, 10)];
+            case 2:
+                hanshedPassword = _b.sent();
+                // const user = await prisma.user.create({
+                //     data: { email, password: hanshedPassword, role, name },
+                // });
+                res.send("user");
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _b.sent();
+                console.log(error_1);
+                next(error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
-        const hanshedPassword = yield bcrypt_1.default.hash(password, 10);
-        // const user = await prisma.user.create({
-        //     data: { email, password: hanshedPassword, role, name },
-        // });
-        res.send("user");
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
+    });
+}); };
 exports.registerController = registerController;
-const loginController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
-    try {
-        const existingUser = yield prismaClient_1.prisma.user.findFirst({
-            where: { email },
-        });
-        if (!existingUser) {
-            throw new Error("User Does not Exist.");
+var loginController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, existingUser, matchedPassword, token, password_1, userData, error_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, email = _a.email, password = _a.password;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, prismaClient_1.prisma.user.findFirst({
+                        where: { email: email },
+                    })];
+            case 2:
+                existingUser = _b.sent();
+                if (!existingUser) {
+                    throw new Error("User Does not Exist.");
+                }
+                if (existingUser === null || existingUser === void 0 ? void 0 : existingUser.isBlocked) {
+                    res.status(401);
+                    throw new Error("You Have Been Blocked By Admin.");
+                }
+                return [4 /*yield*/, bcrypt_1.default.compare(password, existingUser.password)];
+            case 3:
+                matchedPassword = _b.sent();
+                if (matchedPassword) {
+                    token = (0, token_1.generateAuthToken)(String(existingUser === null || existingUser === void 0 ? void 0 : existingUser.id), existingUser.role);
+                    password_1 = existingUser.password, userData = __rest(existingUser, ["password"]);
+                    return [2 /*return*/, res
+                            .cookie("token", token, {
+                            httpOnly: true,
+                            secure: true,
+                            maxAge: 12 * 60 * 60 * 1000,
+                        })
+                            .send({ user: userData })];
+                }
+                else {
+                    throw new Error("Invalid Credentials.");
+                }
+                return [3 /*break*/, 5];
+            case 4:
+                error_2 = _b.sent();
+                console.log(error_2);
+                next(error_2);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
-        if (existingUser === null || existingUser === void 0 ? void 0 : existingUser.isBlocked) {
-            res.status(401);
-            throw new Error("You Have Been Blocked By Admin.");
-        }
-        const matchedPassword = yield bcrypt_1.default.compare(password, existingUser.password);
-        if (matchedPassword) {
-            const token = (0, token_1.generateAuthToken)(String(existingUser === null || existingUser === void 0 ? void 0 : existingUser.id), existingUser.role);
-            const { password } = existingUser, userData = __rest(existingUser, ["password"]);
-            return res
-                .cookie("token", token, {
-                httpOnly: true,
-                secure: true,
-                maxAge: 12 * 60 * 60 * 1000,
-            })
-                .send({ user: userData });
-        }
-        else {
-            throw new Error("Invalid Credentials.");
-        }
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
+    });
+}); };
 exports.loginController = loginController;
-const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.clearCookie("token");
-    res.send({ msg: "logout success" });
-    try {
-    }
-    catch (error) {
-        console.log(error);
-        next(error);
-    }
-});
+var logoutController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        res.clearCookie("token");
+        res.send({ msg: "logout success" });
+        try {
+        }
+        catch (error) {
+            console.log(error);
+            next(error);
+        }
+        return [2 /*return*/];
+    });
+}); };
 exports.logoutController = logoutController;

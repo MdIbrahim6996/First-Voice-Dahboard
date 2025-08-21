@@ -3,9 +3,10 @@ import Carousel from "./elements/Carousel";
 import EnergyBoilers from "./elements/EnergyBoilers";
 import { getProcessLeadCount } from "../../api/mainDashboard";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "../../components/Loader/Loader";
 
 const MainDashboard = () => {
-    const { data: processLeadCount } = useQuery({
+    const { data: processLeadCount, isLoading } = useQuery({
         queryKey: ["process-lead-count"],
         queryFn: getProcessLeadCount,
     });
@@ -15,9 +16,13 @@ const MainDashboard = () => {
         <div className="overflow-hidden">
             <Carousel>
                 <TopPerformer />
-                {processLeadCount?.map((item: any) => (
-                    <EnergyBoilers details={item} />
-                ))}
+                {!isLoading ? (
+                    processLeadCount?.map((item: any) => (
+                        <EnergyBoilers details={item} />
+                    ))
+                ) : (
+                    <Loader />
+                )}
             </Carousel>
         </div>
     );

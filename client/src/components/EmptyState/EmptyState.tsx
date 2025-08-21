@@ -49,7 +49,6 @@ const EmptyState = () => {
                 </svg>
             </div>
 
-            {/* Message */}
             <p className="mt-6 text-gray-700 font-medium capitalize text-center text-lg">
                 Uh oh, Nothing to show here!
             </p>
