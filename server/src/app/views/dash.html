@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard - Daily Leads Count</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #fff;
+                margin: 0;
+                padding: 0;
+            }
+
+            .header {
+                background: #fff;
+                border-top: 5px solid #2563eb;
+                padding: 20px 40px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+                color: #111827;
+            }
+
+            .header p {
+                font-size: 14px;
+                color: #6b7280;
+                margin: 5px 0 0;
+                max-width: 500px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+                font-weight: 500;
+                color: #fff;
+            }
+
+            .btn-blue {
+                background: #2563eb;
+            }
+
+            .btn-green {
+                background: #16a34a;
+            }
+
+            .content {
+                padding: 20px 40px;
+            }
+
+            .table-container {
+                margin-top: 20px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            thead {
+                background: #f9fafb;
+            }
+
+            th,
+            td {
+                text-align: left;
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            th {
+                font-weight: 600;
+                color: #374151;
+            }
+
+            tr:nth-child(even) {
+                background: #f9fafb;
+            }
+
+            td {
+                color: #111827;
+            }
+
+            .top-buttons {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 15px;
+                gap: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>DASHBOARD - DAILY LEADS COUNT</h1>
+                <p>
+                    A real-time snapshot of your total leads at a glance. Track,
+                    measure, and stay on top of every opportunity.
+                </p>
+            </div>
+            <button class="btn btn-blue">Mark Attendance</button>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="top-buttons">
+                <button class="btn btn-green">Line Chart</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>LEAD COUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Wed Aug 20 2025</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>Tue Aug 19 2025</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>Mon Aug 18 2025</td>
+                            <td>14</td>
+                        </tr>
+                        <tr>
+                            <td>Sat Aug 16 2025</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>Thu Aug 14 2025</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

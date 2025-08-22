@@ -101,39 +101,39 @@ const Attendance = () => {
 
 export default Attendance;
 
-[
-    {
-        event_id: 1,
-        title: (
-            <motion.p
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1 }}
-            >
-                LATE
-            </motion.p>
-        ),
-        start: new Date("2025/7/2 09:30"),
-        end: new Date("2025/5/2 10:30"),
-        subtitle: "Mark Time: 2:50 PM",
-        color: "red",
-        allDay: true,
-    },
-    {
-        event_id: 2,
-        title: (
-            <motion.p
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 1 }}
-            >
-                ON TIME
-            </motion.p>
-        ),
-        start: new Date("2025/7/21 11:30"),
-        end: new Date("2025/7/21 2:30"),
-        subtitle: "Mark Time: 2:30 PM",
-        color: "green",
-        allDay: true,
-    },
-];
+// [
+//     {
+//         event_id: 1,
+//         title: (
+//             <motion.p
+//                 initial={{ x: -50, opacity: 0 }}
+//                 animate={{ x: 0, opacity: 1 }}
+//                 transition={{ duration: 1 }}
+//             >
+//                 LATE
+//             </motion.p>
+//         ),
+//         start: new Date("2025/7/2 09:30"),
+//         end: new Date("2025/5/2 10:30"),
+//         subtitle: "Mark Time: 2:50 PM",
+//         color: "red",
+//         allDay: true,
+//     },
+//     {
+//         event_id: 2,
+//         title: (
+//             <motion.p
+//                 initial={{ x: -50, opacity: 0 }}
+//                 animate={{ x: 0, opacity: 1 }}
+//                 transition={{ duration: 1 }}
+//             >
+//                 ON TIME
+//             </motion.p>
+//         ),
+//         start: new Date("2025/7/21 11:30"),
+//         end: new Date("2025/7/21 2:30"),
+//         subtitle: "Mark Time: 2:30 PM",
+//         color: "green",
+//         allDay: true,
+//     },
+// ];
