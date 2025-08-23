@@ -3,8 +3,7 @@
     "version": "1.0.0",
     "main": "dist/index.js",
     "scripts": {
-        "dev:tailwind": "npx tailwindcss -i ./src/app/views/styles/input.css -o ./src/app/views/styles/output.css --watch",
-        "build:css": "postcss ./src/app/views/styles/output.css -o ./src/app/views/styles/main.css",
+        "build:css": "sass scss:public/css --style=compressed",
         "dev": "nodemon --files src/app/index.ts",
         "build": " npm install && npm install --prefix ../client && npm run build --prefix ../client && npx prisma generate && tsc",
         "start": "node dist/index.js"
@@ -15,18 +14,18 @@
     "description": "",
     "dependencies": {
         "@prisma/client": "^6.11.1",
-        "@tailwindcss/cli": "^4.1.12",
         "bcrypt": "^6.0.0",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "dotenv": "^17.2.0",
+        "ejs": "^3.1.10",
         "express": "^5.1.0",
         "jsonwebtoken": "^9.0.2",
         "lodash": "^4.17.21",
         "luxon": "^3.7.1",
         "morgan": "^1.10.0",
         "pusher": "^5.2.0",
-        "tailwindcss": "^4.1.12",
+        "sass": "^1.90.0",
         "zod": "^4.0.5"
     },
     "devDependencies": {

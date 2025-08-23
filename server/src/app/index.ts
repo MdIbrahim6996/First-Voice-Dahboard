@@ -23,11 +23,21 @@ app.use(
         optionsSuccessStatus: 200,
     })
 );
+
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
+// VIEWS
+app.set("view engine", "ejs");
+app.set("views", path.join(path.resolve(), "src/app/views/pages"));
+
+app.use(express.static(path.join(path.resolve(), "src/app/views/pages/scss")));
+console.log(path.join(path.resolve(), "src/app/views/pages/scss"));
 
 //ROUTES
+app.get("/user/dashboard", (_, res: Response) =>
+    res.render("dashboard", { message: "ok" })
+);
 app.get("/api/v1/health-check", (_, res: Response) =>
     res.send({ message: "ok" })
 );

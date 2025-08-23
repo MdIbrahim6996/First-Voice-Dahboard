@@ -1,0 +1,19 @@
+@use "../abstracts/variables" as variables;
+
+body {
+    font-family: "Montserrat";
+    background-color: red;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background-color: variables.$primary-color;
+}
+
+.header {
+    background: #fff;
+    border-top: 5px solid red;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
