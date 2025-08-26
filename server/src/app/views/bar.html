@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Chart.js v1.1.1 Bar Chart (FF28 compatible)</title>
+        <style>
+            .chart-wrap {
+                width: 600px;
+                margin: 0 auto;
+            }
+            canvas {
+                display: block; /* avoid inline whitespace issues */
+            }
+            .legend {
+                text-align: center;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 style="text-align: center">Sales (Monthly)</h2>
+        <div class="chart-wrap">
+            <!-- fixed-size canvas helps old browsers handle layout reliably -->
+            <canvas id="barChart" width="600" height="360"></canvas>
+            <div id="legend" class="legend"></div>
+        </div>
+
+        <!-- Chart.js v1.1.1 (old branch, CDN) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script>
+
+        <script>
+            // Data in v1.x format
+            var data = {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                datasets: [
+                    {
+                        label: "Product A",
+                        fillColor: "rgba(27,110,243,0.1)",
+                        strokeColor: "rgba(27,110,243,0.9)",
+                        highlightFill: "rgba(27,110,243,0.85)",
+                        highlightStroke: "rgba(27,110,243,1)",
+                        data: [65, 59, 80, 81, 56, 55],
+                    },
+                    {
+                        label: "Product B",
+                        fillColor: "rgba(220,220,220,0.7)",
+                        strokeColor: "rgba(220,220,220,0.9)",
+                        highlightFill: "rgba(220,220,220,0.85)",
+                        highlightStroke: "rgba(220,220,220,1)",
+                        data: [28, 48, 40, 19, 86, 27],
+                    },
+                ],
+            };
+
+            // Chart options (v1.x)
+            var options = {
+                // keep animations conservative for very old browsers
+                animation: true,
+                animationSteps: 30,
+                // display scale and grid lines
+                scaleShowGridLines: true,
+                scaleGridLineColor: "rgba(0,0,0,.05)",
+                scaleGridLineWidth: 1,
+                barShowStroke: true,
+                barStrokeWidth: 1,
+                // spacing
+                barValueSpacing: 5,
+                barDatasetSpacing: 2,
+                // tooltip fallback: Chart.js v1 has built-in tooltips; they should work
+                // responsive: avoid enabling responsive resizing which can cause layout issues in very old engines
+                responsive: false,
+            };
+
+            // Draw the chart (ES5 style)
+            (function () {
+                var ctx = document.getElementById("barChart").getContext("2d");
+                // v1.x syntax creates a Chart instance and calls Bar
+                var chart = new Chart(ctx).Bar(data, options);
+
+                // build a simple legend (v1 didn't include a legend DOM by default)
+                function buildLegend(datasets) {
+                    var html = [];
+                    for (var i = 0; i < datasets.length; i++) {
+                        var ds = datasets[i];
+                        html.push(
+                            '<span style="display:inline-block;margin:0 8px;">' +
+                                '<span style="display:inline-block;width:12px;height:12px;background:' +
+                                ds.fillColor +
+                                ";border:1px solid " +
+                                ds.strokeColor +
+                                ';margin-right:6px;vertical-align:middle;"></span>' +
+                                '<span style="vertical-align:middle;">' +
+                                (ds.label || "Series " + (i + 1)) +
+                                "</span>" +
+                                "</span>"
+                        );
+                    }
+                    return html.join("");
+                }
+
+                var legendEl = document.getElementById("legend");
+                if (legendEl) {
+                    legendEl.innerHTML = buildLegend(data.datasets);
+                }
+            })();
+        </script>
+    </body>
+</html>

@@ -9,5 +9,6 @@
         "noImplicitAny": true,
         "skipLibCheck": true,
         "typeRoots": ["./node_modules/@types", "./src/app/types"]
-    }
+    },
+    "ts-node": { "swc": true }
 }

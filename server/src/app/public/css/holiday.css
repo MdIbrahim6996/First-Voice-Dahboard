@@ -1,0 +1,32 @@
+h2 {
+    text-align: center;
+    color: #111827;
+    margin-bottom: 20px;
+}
+.cell-new {
+    background-color: #111827;
+    height: 100%;
+}
+#calendar {
+    /* max-width: 900px;
+                margin: 40px auto; */
+    padding: 1rem;
+}
+
+.fc table {
+    border-collapse: collapse !important;
+    border-spacing: 2px; /* add spacing so rounding shows */
+}
+
+/* .fc-day {
+                border-radius: 8px;
+                padding: 2px;
+            } */
+.day-wrapper {
+    border: 1px solid rgb(175, 175, 175);
+    border-radius: 8px;
+    height: calc(100% - 8px);
+    /* margin: 2px; */
+    padding: 2px;
+    box-sizing: border-box;
+}

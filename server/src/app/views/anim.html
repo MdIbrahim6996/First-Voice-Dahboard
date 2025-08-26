@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Page Load Animation</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+
+    /* Wrap all content inside this container */
+    .page-content {
+      opacity: 0;
+      -webkit-animation: fadeIn 1s ease-in forwards;
+      -moz-animation: fadeIn 1s ease-in forwards;
+      -o-animation: fadeIn 1s ease-in forwards;
+      animation: fadeIn 1s ease-in forwards;
+    }
+
+    /* Keyframes for cross-browser */
+    @-webkit-keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @-moz-keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @-o-keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-content">
+    <h1>Welcome</h1>
+    <p>This page fades in when loaded!</p>
+  </div>
+</body>
+</html>

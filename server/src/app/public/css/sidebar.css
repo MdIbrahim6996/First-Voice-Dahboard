@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    font-family: "Montserrat", Arial, sans-serif;
+    float: left;
+}
+
+.sidebar {
+    width: 19%;
+    height: 100vh;
+    background: #1d4ed8; /* Tailwind blue-700 */
+    color: #fff;
+    padding: 20px 25px;
+    box-sizing: border-box;
+    float: left;
+    margin-right: 2rem;
+}
+
+/* Logo */
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Menu */
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    width: 15rem;
+
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.menu li a {
+    display: block;
+    padding: 10px 12px;
+    margin: 6px 0;
+    width: 100%;
+    height: 100%;
+}
+
+.menu li i {
+    margin-right: 8px;
+    width: 18px;
+    text-align: center;
+}
+
+.menu li:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.menu .active {
+    background: #fff;
+    color: #1d4ed8;
+    font-weight: bold;
+}
+.menu .active:hover {
+    background: #fff;
+    color: #1d4ed8;
+    font-weight: bold;
+}
+
+/* Notification badge */
+.badge {
+    background: white;
+    color: blue;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 11px;
+    float: right;
+    margin-top: 2px;
+}
+
+/* User info */
+.user-box {
+    display: flex;
+    background: #fff;
+    width: 15.5rem;
+    color: #1d4ed8;
+    text-align: center;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 40px;
+    position: absolute;
+    bottom: 10px;
+    clear: both;
+}
+
+.user-box .avatar {
+    font-size: 52px;
+    margin-bottom: 8px;
+    margin-right: 1rem;
+}
+
+.user-box p {
+    margin: 0;
+    font-size: 18px;
+}
+.user-box small {
+    font-size: 16px;
+    color: #555;
+}
+
+.logout {
+    margin-top: 10px;
+    width: 100%;
+    background: #1d4ed8;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout:hover {
+    background: #2563eb; /* lighter blue */
+}
