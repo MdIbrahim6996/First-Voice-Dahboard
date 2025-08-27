@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import e, { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { prisma } from "../lib/prismaClient";
 import { generateAuthToken } from "../utils/token";
@@ -39,7 +39,7 @@ export const loginController = async (
         if (!existingUser) {
             throw new Error("User Does not Exist.");
         }
-        
+
         if (existingUser?.isBlocked) {
             res.status(401);
             throw new Error("You Have Been Blocked By Admin.");
@@ -55,6 +55,13 @@ export const loginController = async (
             );
 
             const { password, ...userData } = existingUser;
+            console.log(existingUser?.role);
+            if (existingUser?.role === "user") {
+                res.json({
+                    success: true,
+                    redirectUrl: "http://localhost:4000/user",
+                });
+            }
 
             return res
                 .cookie("token", token, {
