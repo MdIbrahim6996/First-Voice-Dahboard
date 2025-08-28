@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Leads Table</title>
+    <link rel="stylesheet" href="/css/leads.css" />
+    <!-- jQuery (compatible with FF28) -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- jQuery UI -->
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  </head>
+  <body>
+    <main class="main">
+      <!-- Filter Section -->
+      <div>
+        <div class="filters">
+          <div>
+            <label>Sale Date</label>
+            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+          </div>
+          <div>
+            <label>From Date</label>
+            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+          </div>
+          <div>
+            <label>To Date</label>
+            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+          </div>
+        </div>
+        <div class="filter-buttons">
+          <button class="btn-green">Search</button>
+          <button class="btn-blue">Reset Filters</button>
+        </div>
+      </div>
+
+      <!-- Status Labels -->
+      <h2>LEADS - ALL LEADS</h2>
+      <p>Browse list of leads closed by user1.</p>
+
+      <div class="status-labels">
+        <span class="label label-success">Success</span>
+        <span class="label label-pending">Pending</span>
+        <span class="label label-rework">Rework/Warmup</span>
+        <span class="label label-cancel">Cancelled</span>
+      </div>
+
+      <!-- Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>STATUS</th>
+            <th>SALE DATE</th>
+            <th>NAME</th>
+            <th>PROCESS</th>
+            <th>PLAN</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="status-badge pending">Pending</span></td>
+            <td>Wed Aug 20 2025</td>
+            <td>Miss FirstName MiddleName LastName</td>
+            <td>P2</td>
+            <td>Plan 2</td>
+            <td><button class="action-btn">View Change In Status</button></td>
+          </tr>
+          <tr>
+            <td><span class="status-badge pending">Pending</span></td>
+            <td>Wed Aug 20 2025</td>
+            <td>Mr. First Middle Last</td>
+            <td>P2</td>
+            <td>Plan 2</td>
+            <td><button class="action-btn">View Change In Status</button></td>
+          </tr>
+          <tr>
+            <td><span class="status-badge success">Success</span></td>
+            <td>Mon Aug 18 2025</td>
+            <td>Mr. Werwe Wer Wer</td>
+            <td>P1</td>
+            <td>Gfdg</td>
+            <td><button class="action-btn">View Change In Status</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <script>
+      $(function () {
+        $(".datepicker").datepicker({
+          dateFormat: "dd-mm-yy", // same format you wanted
+        });
+      });
+    </script>
+  </body>
+</html>

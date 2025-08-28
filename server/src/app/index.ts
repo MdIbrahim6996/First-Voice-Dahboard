@@ -140,6 +140,12 @@ app.get("/user/attendance", isUserAuth, getUserAllAttendance);
 app.get("/user/holiday", isUserAuth, (_, res: Response) =>
   res.render("pages/holiday", { currentPath: "/user/holiday" })
 );
+app.get("/user/leads", isUserAuth, (_, res: Response) =>
+  res.render("pages/leads", { currentPath: "/user/leads" })
+);
+app.get("/user/add-lead", isUserAuth, (_, res: Response) =>
+  res.render("pages/add-lead", { currentPath: "/user/add-lead" })
+);
 app.get("/user/notification", isUserAuth, (_, res: Response) =>
   res.render("pages/notification", { currentPath: "/user/notification" })
 );

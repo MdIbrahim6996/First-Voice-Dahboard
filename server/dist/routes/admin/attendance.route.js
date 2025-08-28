@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var attendance_controller_1 = require("../../controllers/attendance.controller");
+var router = (0, express_1.Router)();
+// router.get("/monthly", getEmployeeMonthlyAttendance);
+// router.get("/:id", getEmployeePeriodwiseAttendance);
+router.post("/:id", attendance_controller_1.createEmployeeAttendance);
+router.get("/monthly", attendance_controller_1.getEmployeeMonthlyAttendance);
+router.get("/:id", attendance_controller_1.getUserAllAttendance);
+router.get("/", attendance_controller_1.getAllAttendance);
+// router.post("/", createAttendance);
+// router.get("/", getAllAttendance);
+// router.get("/:id", getSingleAttendance);
+// router.put("/:id", updateAttendance);
+// router.delete("/:id", deleteAttendance);
+exports.default = router;

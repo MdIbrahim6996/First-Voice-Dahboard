@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isAuth = void 0;
+exports.isUserAuth = exports.isAuth = void 0;
 var prismaClient_1 = require("../lib/prismaClient");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var isAuth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -88,3 +88,51 @@ var isAuth = function (req, res, next) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 exports.isAuth = isAuth;
+var isUserAuth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, id, user, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 4, , 5]);
+                token = req.cookies.token;
+                console.log("Token from cookie:", token); // Debugging line
+                if (!token) {
+                    return [2 /*return*/, res.redirect("/login")];
+                }
+                id = jsonwebtoken_1.default.verify(token, "fsdfsdf").id;
+                if (!id) return [3 /*break*/, 2];
+                return [4 /*yield*/, prismaClient_1.prisma.user.findUnique({
+                        where: { id: parseInt(id) },
+                        select: {
+                            createdAt: false,
+                            updatedAt: false,
+                            password: false,
+                            id: true,
+                            email: true,
+                            name: true,
+                            role: true,
+                            employeeId: true,
+                            phone: true,
+                            isBlocked: true,
+                        },
+                    })];
+            case 1:
+                user = (_a.sent());
+                req.user = user;
+                return [3 /*break*/, 3];
+            case 2:
+                res.redirect("/login");
+                throw new Error("Invalid token. Please Sign in.");
+            case 3:
+                next();
+                return [3 /*break*/, 5];
+            case 4:
+                error_2 = _a.sent();
+                console.log(error_2);
+                next(error_2);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+exports.isUserAuth = isUserAuth;

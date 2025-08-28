@@ -33,7 +33,7 @@
       .card {
         display: inline-block;
         vertical-align: top;
-        width: 154px;
+        width: 165px;
         margin: 5px;
         border-radius: 6px;
         padding: 12px;
@@ -83,7 +83,7 @@
         width: 58%;
       }
       .box-2 {
-        width: 38%;
+        width: 31.5%;
       }
 
       .overview-box h3 {
@@ -124,7 +124,7 @@
   <body>
     <div class="profile-container">
       <!-- Header -->
-      <header>
+      <header class="animated-header">
         <h1>GOOD DAY, USER1</h1>
         <p>Hope you are having energetic and productive day.</p>
       </header>
@@ -133,7 +133,7 @@
       <h2 class="analytics-title">August Analytics</h2>
 
       <!-- Cards -->
-      <div class="cards">
+      <div class="cards animated-element">
         <div class="card gradient-green">
           <p>Today's Sale</p>
           <h3><%= cardInfo.todayLead %></h3>
@@ -160,7 +160,7 @@
       <!-- Overview Section -->
       <div class="overview">
         <div class="overview-box box-1">
-          <h3>MONTHLY OVERVIEW</h3>
+          <h3>MONTHLY ATTENDANCE OVERVIEW</h3>
           <div class="chart-placeholder">
             <div class="chart-wrap">
               <!-- fixed-size canvas helps old browsers handle layout reliably -->
@@ -195,7 +195,7 @@
                "Apr",
                "May",
                "Jun",
-               "jul",
+               "Jul",
                "Aug",
                "Sep",
                "Oct",
@@ -299,7 +299,7 @@
                       }
       };
 
-                  var pieData = pieChartData?.map(item=>(
+                  var pieData = pieChartData.map(item=>(
                       {
                           value: item.count,
                           color: returnColors(item.status),

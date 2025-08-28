@@ -13,18 +13,9 @@ export const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: "/",
+        path: "",
         element: <RootLayout />,
         children: [
-            // {
-            //     path: "",
-            //     async lazy() {
-            //         let Dashboard = await import(
-            //             "../pages/Dashboard/Dashboard"
-            //         );
-            //         return { Component: Dashboard.default };
-            //     },
-            // },
             { ...userRoutes },
             { ...adminRoutes },
             { ...superadminRoutes },

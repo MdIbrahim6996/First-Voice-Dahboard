@@ -1,0 +1,138 @@
+/* --- Filter Section --- */
+.main {
+  padding: 1rem;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters label {
+  font-size: 14px;
+  margin-right: 2px;
+  margin-left: 15px;
+}
+
+.filters input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.label,
+.filter-buttons button,
+.action-btn {
+  font-weight: 600;
+}
+
+.filter-buttons button {
+  padding: 3px 12px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-green {
+  background: #16a34a;
+}
+.btn-blue {
+  background: #2563eb;
+}
+.btn-green:hover {
+  background: #15803d;
+}
+.btn-blue:hover {
+  background: #1d4ed8;
+}
+
+/* --- Status Labels --- */
+.status-labels {
+  margin: 20px 0 10px;
+}
+
+.label {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.label-success {
+  background: #16a34a;
+}
+.label-pending {
+  background: #facc15;
+}
+.label-rework {
+  background: #3b82f6;
+}
+.label-cancel {
+  background: #dc2626;
+}
+
+/* --- Table Styles --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: #f3f4f6;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  font-weight: bold;
+  color: #555;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.pending {
+  background: #facc15;
+  color: #fff;
+}
+.success {
+  background: #16a34a;
+  color: #fff;
+}
+.cancel {
+  background: #dc2626;
+  color: #fff;
+}
+.rework {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.action-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.action-btn:hover {
+  background: #1d4ed8;
+}

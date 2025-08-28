@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Add New Lead</title>
+
+    <!-- jQuery + jQuery UI for datepicker -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+    <style>
+      .main {
+        padding: 1rem;
+      }
+
+      h2 {
+        margin-bottom: 5px;
+      }
+
+      .date-label {
+        float: right;
+        background: #2563eb;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      p {
+        margin-top: 0;
+        font-size: 14px;
+        color: #555;
+      }
+
+      h3 {
+        margin-top: 20px;
+        font-size: 16px;
+        font-style: italic;
+        text-decoration: underline;
+      }
+
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-row {
+        width: 100%;
+        clear: both;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        display: inline-block;
+        width: 23%;
+        margin-right: 2%;
+        vertical-align: top;
+      }
+
+      .form-group:last-child {
+        margin-right: 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 13px;
+        font-weight: bold;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        height: 60px;
+        resize: vertical;
+      }
+
+      .required {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="main">
+      <h2 style="display: inline-block">ADD A NEW LEAD</h2>
+      <span class="date-label">Aug 28 2025</span>
+      <p>
+        Start Adding Leads Now &amp; Expand Your Reach.<br />Your Gateway to New
+        Connections.
+      </p>
+
+      <h3>Customer Information</h3>
+
+      <form>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Title <span class="required">*</span></label>
+            <select>
+              <option>Mr.</option>
+              <option>Mrs.</option>
+              <option>Miss</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>First Name <span class="required">*</span></label>
+            <input type="text" placeholder="First Name" />
+          </div>
+          <div class="form-group">
+            <label>Middle Name</label>
+            <input type="text" placeholder="Middle Name" />
+          </div>
+          <div class="form-group">
+            <label>Last Name <span class="required">*</span></label>
+            <input type="text" placeholder="Last Name" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Centre <span class="required">*</span></label>
+            <input type="text" placeholder="Centre" />
+          </div>
+          <div class="form-group" style="width: 74%">
+            <label>Address</label>
+            <textarea placeholder="Address"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" placeholder="West Bridgford" />
+          </div>
+          <div class="form-group">
+            <label>County</label>
+            <input type="text" placeholder="Nottinghamshire" />
+          </div>
+          <div class="form-group">
+            <label>Pin Code <span class="required">*</span></label>
+            <input type="text" placeholder="700001" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="********" />
+          </div>
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number <span class="required">*</span></label>
+            <input type="text" placeholder="(033) 2347 9645" />
+          </div>
+          <div class="form-group">
+            <label>Power Of Attorney</label>
+            <select>
+              <option>Select Yes/No.</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Customer Plan and Product Details -->
+        <h3>Customer Plan and Product Details</h3>
+        <div class="form-section">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Select Process</label>
+              <select>
+                <option>Select a Process</option>
+                <option>Process 1</option>
+                <option>Process 2</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Plan</label>
+              <select>
+                <option>Select a Plan</option>
+                <option>Plan A</option>
+                <option>Plan B</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Closer</label>
+              <select>
+                <option>Select a Closer</option>
+                <option>Closer 1</option>
+                <option>Closer 2</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Verifier</label>
+              <select>
+                <option>Select a Verifier</option>
+                <option>Verifier 1</option>
+                <option>Verifier 2</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="width: 48%">
+              <label>Select Payment Method</label>
+              <select id="payment-method">
+                <option value="">Select a Payment Method</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="card">Credit Card</option>
+                <option value="paypal">PayPal</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="width: 48%">
+              <label>Shift</label>
+              <select>
+                <option>UNITED KINGDOM (UK)</option>
+                <option>USA</option>
+                <option>INDIA</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank Account Details (Hidden Initially) -->
+        <div id="bank-details">
+          <h3>Bank Account Details</h3>
+          <div class="form-section">
+            <div class="form-group">
+              <label>Bank Name</label>
+              <input type="text" value="Bank of UK" />
+            </div>
+            <div class="form-group">
+              <label>Account Name</label>
+              <input type="text" value="Steve Balmer" />
+            </div>
+            <div class="form-group">
+              <label>Account Number</label>
+              <input type="text" value="000405007899" />
+            </div>
+            <div class="form-group">
+              <label>SORT Code</label>
+              <input type="text" value="*****" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+    <script>
+      $(function () {
+        $(".datepicker").datepicker({
+          dateFormat: "dd-mm-yy",
+        });
+      });
+
+      $(document).ready(function () {
+        $("#payment-method").change(function () {
+          var method = $(this).val();
+          if (method === "bank") {
+            $("#bank-details").slideDown(); // show with animation
+          } else {
+            $("#bank-details").slideUp(); // hide if not bank
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

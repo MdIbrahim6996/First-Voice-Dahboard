@@ -1,17 +1,73 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var morgan_1 = __importDefault(require("morgan"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var routes_1 = __importDefault(require("./routes"));
+var pages_route_1 = __importDefault(require("./routes/user/pages.route"));
 var errorHandler_1 = require("./middlewares/errorHandler");
 var path_1 = __importDefault(require("path"));
+var express_ejs_layouts_1 = __importDefault(require("express-ejs-layouts"));
+var cluster_1 = __importDefault(require("cluster"));
 var os_1 = __importDefault(require("os"));
+var authMiddleware_1 = require("./middlewares/authMiddleware");
+var prismaClient_1 = require("./lib/prismaClient");
+var token_1 = require("./utils/token");
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var dashboard_controller_1 = require("./controllers/user/dashboard.controller");
+var attendance_controller_1 = require("./controllers/user/attendance.controller");
+var profile_controller_1 = require("./controllers/user/profile.controller");
 var numCPUs = os_1.default.cpus().length;
 var app = (0, express_1.default)();
 //MIDDLEWARES
@@ -26,294 +82,166 @@ app.use((0, cors_1.default)({
 app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
-//ROUTES
-app.get("/api/v1/health-check", function (_, res) {
-    return res.send({ message: "ok" });
+app.use(express_1.default.urlencoded({ extended: true }));
+// VIEWS
+app.set("view engine", "ejs");
+app.set("views", path_1.default.join(path_1.default.resolve(), "src/app/views"));
+app.use(express_ejs_layouts_1.default);
+app.set("layout", "layouts/main");
+//STATIC FILES
+app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public")));
+app.use("/js", express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public/js")));
+app.use("/css", express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public/css")));
+// ROUTES
+// app.get("/user/{*any}", (_, res: Response) => res.send("pages not found"));
+// app.get("/api/v1/health-check", (_, res: Response) =>
+//   res.send({ message: "ok" })
+// );
+var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, existingUser, matchedPassword, token, password_1, userData, error_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, email = _a.email, password = _a.password;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, prismaClient_1.prisma.user.findFirst({
+                        where: { email: email },
+                    })];
+            case 2:
+                existingUser = _b.sent();
+                if (!existingUser) {
+                    throw new Error("User Does not Exist.");
+                }
+                if (existingUser === null || existingUser === void 0 ? void 0 : existingUser.isBlocked) {
+                    res.status(401);
+                    throw new Error("You Have Been Blocked By Admin.");
+                }
+                return [4 /*yield*/, bcrypt_1.default.compare(password, existingUser.password)];
+            case 3:
+                matchedPassword = _b.sent();
+                if (matchedPassword) {
+                    token = (0, token_1.generateAuthToken)(String(existingUser === null || existingUser === void 0 ? void 0 : existingUser.id), existingUser.role);
+                    console.log("Generated Token:", token); // Debugging line
+                    if ((existingUser === null || existingUser === void 0 ? void 0 : existingUser.role) === "user") {
+                        return [2 /*return*/, res
+                                .cookie("token", token, {
+                                httpOnly: true,
+                                secure: false,
+                                maxAge: 12 * 60 * 60 * 1000,
+                            })
+                                .redirect(303, "/user/dashboard")];
+                    }
+                    password_1 = existingUser.password, userData = __rest(existingUser, ["password"]);
+                    // if (existingUser?.role === "user") {
+                    //     res.json({
+                    //         success: true,
+                    //         redirectUrl: "http://localhost:4000/user",
+                    //     });
+                    // }
+                    return [2 /*return*/, res
+                            .cookie("token", token, {
+                            httpOnly: true,
+                            secure: true,
+                            maxAge: 12 * 60 * 60 * 1000,
+                        })
+                            .redirect("http://localhost:5173/superadmin/dashboard")];
+                }
+                else {
+                    throw new Error("Invalid Credentials.");
+                }
+                return [3 /*break*/, 5];
+            case 4:
+                error_1 = _b.sent();
+                console.log(error_1);
+                next(error_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+app.get("/login", function (req, res) {
+    var token = req.cookies.token;
+    console.log("Token from cookie login:", token); // Debugging line
+    if (token) {
+        return res.redirect("/user/dashboard");
+    }
+    else
+        res.render("pages/login", { layout: false });
 });
+app.post("/login", loginFunction);
+app.get("/logout", function (req, res) {
+    res.clearCookie("token");
+    res.redirect("/login");
+});
+app.get("", authMiddleware_1.isUserAuth, function (_, res) { return res.redirect("/user/dashboard"); });
+app.get("/user", authMiddleware_1.isUserAuth, function (_, res) {
+    return res.redirect("/user/dashboard");
+});
+app.get("/user/dashboard", authMiddleware_1.isUserAuth, dashboard_controller_1.getDailyLeadCount);
+app.get("/user/attendance", authMiddleware_1.isUserAuth, attendance_controller_1.getUserAllAttendance);
+app.get("/user/holiday", authMiddleware_1.isUserAuth, function (_, res) {
+    return res.render("pages/holiday", { currentPath: "/user/holiday" });
+});
+app.get("/user/leads", authMiddleware_1.isUserAuth, function (_, res) {
+    return res.render("pages/leads", { currentPath: "/user/leads" });
+});
+app.get("/user/add-lead", authMiddleware_1.isUserAuth, function (_, res) {
+    return res.render("pages/add-lead", { currentPath: "/user/add-lead" });
+});
+app.get("/user/notification", authMiddleware_1.isUserAuth, function (_, res) {
+    return res.render("pages/notification", { currentPath: "/user/notification" });
+});
+app.get("/user/profile", authMiddleware_1.isUserAuth, profile_controller_1.getUserInfo);
+app.use("/", pages_route_1.default);
 app.use("/api/v1", routes_1.default);
+// Serve front-end app for all unmatched routes
 if (process.env.NODE_ENV === "production") {
-    // Serve front-end app for all unmatched routes
     app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
     app.get("/{*any}", function (req, res) {
         res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
     });
 }
+// Serve front-end app for all unmatched routes
 app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
-app.get("/{*any}", function (req, res) {
+app.get("/app", function (req, res) {
     res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
+});
+app.use(function (req, res, next) {
+    // Only handle 404s for non-React routes
+    if (req.path.startsWith("/app")) {
+        return next(); // let React handle it
+    }
+    res.status(404).render("errors/404", {
+        url: req.originalUrl,
+        layout: false, // optional: show requested URL
+    });
 });
 //ERROR HANDLER
 app.use(errorHandler_1.notFound);
 app.use(errorHandler_1.errorHandler);
 var PORT = 4000;
-app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
-// if (numCPUs > 1) {
-//     if (cluster.isPrimary) {
-//         for (let i = 0; i < numCPUs; i++) {
-//             cluster.fork();
-//         }
-//         cluster.on("exit", function (worker: any) {
-//             console.log("Worker", worker.id, " has exited.");
-//         });
-//     } else {
-//         app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-//     }
-// } else {
-//     app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-// }
-// const obj = {
-//     "07": [
-//         {
-//             id: 24,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-22T11:25:07.659Z",
-//         },
-//         {
-//             id: 25,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-21T11:25:09.380Z",
-//         },
-//         {
-//             id: 26,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-20T11:25:10.378Z",
-//         },
-//         {
-//             id: 27,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-19T11:25:11.216Z",
-//         },
-//         {
-//             id: 28,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-18T11:26:01.356Z",
-//         },
-//         {
-//             id: 29,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-17T11:26:02.427Z",
-//         },
-//         {
-//             id: 30,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-16T11:26:03.318Z",
-//         },
-//         {
-//             id: 31,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-15T11:26:04.192Z",
-//         },
-//         {
-//             id: 32,
-//             userId: "1",
-//             isLate: true,
-//             dateTime: "2025-07-14T11:26:05.104Z",
-//         },
-//         {
-//             id: 33,
-//             userId: "1",
-//             isLate: false,
-//             dateTime: "2025-07-13T11:28:59.912Z",
-//         },
-//         {
-//             id: 34,
-//             userId: "1",
-//             isLate: false,
-//             dateTime: "2025-07-12T11:29:01.167Z",
-//         },
-//         {
-//             id: 35,
-//             userId: "1",
-//             isLate: false,
-//             dateTime: "2025-07-11T11:29:02.441Z",
-//         },
-//     ],
-//     "06": [
-//         {
-//             id: 36,
-//             userId: "1",
-//             isLate: false,
-//             dateTime: "2025-06-22T11:30:36.435Z",
-//         },
-//         {
-//             id: 37,
-//             userId: "1",
-//             isLate: false,
-//             dateTime: "2025-06-21T11:30:37.452Z",
-//         },
-//         {
-//             id: 38,
-//             userId: "1",
-//             isLate: false,
-//             dateTime: "2025-06-20T11:30:38.365Z",
-//         },
-//     ],
-// };
-// const array = [
-//     [
-//         "05",
-//         [
-//             {
-//                 status: {
-//                     id: 3,
-//                     name: "cancelled",
-//                 },
-//                 saleDate: "2025-05-24T10:51:36.000Z",
-//             },
-//         ],
-//     ],
-//     [
-//         "06",
-//         [
-//             {
-//                 status: {
-//                     id: 1,
-//                     name: "pending",
-//                 },
-//                 saleDate: "2025-06-25T10:51:36.000Z",
-//             },
-//         ],
-//     ],
-//     [
-//         "07",
-//         [
-//             {
-//                 status: {
-//                     id: 6,
-//                     name: "success",
-//                 },
-//                 saleDate: "2025-07-23T10:51:36.000Z",
-//             },
-//             {
-//                 status: {
-//                     id: 6,
-//                     name: "success",
-//                 },
-//                 saleDate: "2025-07-22T10:51:36.000Z",
-//             },
-//             {
-//                 status: {
-//                     id: 1,
-//                     name: "pending",
-//                 },
-//                 saleDate: "2025-07-21T10:51:36.000Z",
-//             },
-//             {
-//                 status: {
-//                     id: 1,
-//                     name: "pending",
-//                 },
-//                 saleDate: "2025-07-20T14:25:05.198Z",
-//             },
-//         ],
-//     ],
-// ];
-// let lateArray = [];
-// const ontimeArray = [];
-// for (const [key, value] of Object.entries(obj)) {
-//     // console.log(parseInt(key));
-//     let late = 0;
-//     let ontime = 0;
-//     //@ts-ignore
-//     // result[key] = {
-//     //     late: [],
-//     //     onTime: [],
-//     // };
-//     for (const entry of value) {
-//         if (entry.isLate) {
-//             late++;
-//         } else {
-//             ontime++;
-//         }
-//     }
-//     lateArray[parseInt(key) - 1] = late;
-//     ontimeArray[parseInt(key) - 1] = ontime;
-// }
-// console.log(lateArray);
-// console.log(new Date());
-// const time = new Date().getTime() - 60 * 60 * 1000;
-// console.log(new Date(time));
-// pusher.trigger("channel", "event", {
-//     message: "hello world",
-// });
-// const date = new Date();
-// console.log(new Date(2025, 5, date.getDate()).getDate());
+// app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+if (numCPUs > 1) {
+    if (cluster_1.default.isPrimary) {
+        for (var i = 0; i < numCPUs; i++) {
+            cluster_1.default.fork();
+        }
+        cluster_1.default.on("exit", function (worker) {
+            console.log("Worker", worker.id, " has exited.");
+        });
+    }
+    else {
+        app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
+    }
+}
+else {
+    app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
+}
 // async function dropTable() {
 //     await prisma.$executeRaw`DROP TABLE IF EXISTS leadCount;`;
 //     // Or with IF EXISTS to prevent errors if the table doesn't exist:
 //     // await prisma.$executeRaw`DROP TABLE IF EXISTS User;`;
 // }
 // dropTable();
-var arr = [
-    {
-        id: 2,
-        name: "p1",
-        createdAt: "2025-08-14T16:37:52.145Z",
-        updatedAt: "2025-08-14T16:37:52.145Z",
-        User: [
-            {
-                id: 9,
-                name: "asdsad",
-                alias: "asdsadsad",
-                role: "user",
-                LeadCount: [],
-            },
-            {
-                id: 14,
-                name: "asdasds",
-                alias: "dfsdfsdfsdfds",
-                role: "user",
-                LeadCount: [],
-            },
-            {
-                id: 11,
-                name: "user5",
-                alias: "user5",
-                role: "user",
-                LeadCount: [],
-            },
-            {
-                id: 10,
-                name: "user1",
-                alias: "user1",
-                role: "user",
-                LeadCount: [
-                    {
-                        count: 2,
-                    },
-                ],
-            },
-            {
-                id: 15,
-                name: "admin",
-                alias: "first admin",
-                role: "admin",
-                LeadCount: [],
-            },
-            {
-                id: 17,
-                name: "closer2",
-                alias: "closerSecond",
-                role: "closer",
-                LeadCount: [],
-            },
-            {
-                id: 16,
-                name: "closer1",
-                alias: "closerFirst",
-                role: "closer",
-                LeadCount: [],
-            },
-        ],
-    },
-];
-arr[0].User.map(function (item) { return console.log(item.LeadCount); });
-(_a = arr[0].User) === null || _a === void 0 ? void 0 : _a.sort(function (a, b) { var _a, _b; return ((_a = b.LeadCount[0]) === null || _a === void 0 ? void 0 : _a.count) - ((_b = a.LeadCount[0]) === null || _b === void 0 ? void 0 : _b.count); });

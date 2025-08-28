@@ -20,6 +20,10 @@
   text-align: center;
   margin-bottom: 30px;
 }
+.logo img {
+  width: 14rem;
+  height: auto;
+}
 
 .logo-text {
   font-size: 18px;
@@ -35,7 +39,7 @@
 }
 
 .menu li {
-  width: 15rem;
+  width: 14rem;
 
   border-radius: 4px;
   cursor: pointer;
@@ -66,6 +70,7 @@
   color: #1d4ed8;
   font-weight: bold;
 }
+
 .menu .active:hover {
   background: #fff;
   color: #1d4ed8;

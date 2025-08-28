@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Header Animation Test</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    header {
+      background: #2563eb;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      position: relative;
+
+      /* Vendor-prefixed + standard animation */
+      -moz-animation: headerSlide 1.5s ease-out forwards;
+      animation: headerSlide 1.5s ease-out forwards;
+    }
+
+    /* Firefox prefixed keyframes */
+    @-moz-keyframes headerSlide {
+      from {
+        opacity: 0;
+        top: -50px;
+      }
+      to {
+        opacity: 1;
+        top: 0;
+      }
+    }
+
+    /* Standard keyframes */
+    @keyframes headerSlide {
+      from {
+        opacity: 0;
+        top: -50px;
+      }
+      to {
+        opacity: 1;
+        top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    🚀 Welcome to My App
+  </header>
+</body>
+</html>
