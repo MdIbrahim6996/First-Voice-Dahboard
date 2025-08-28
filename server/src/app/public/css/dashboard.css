@@ -1,93 +1,192 @@
-main {
-    float: left;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    min-height: 100v;
-    padding: 0rem 1rem;
+.main {
+  overflow: -moz-scrollbars-none;
+  float: left;
+  width: 98%;
+  height: 100%;
+  background: #fff;
+  min-height: 100v;
+  padding: 0rem 1rem;
+}
+.main::-webkit-scrollbar {
+  display: none;
 }
 
 .header {
-    background: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #111827;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0;
 }
 
 .header p {
-    font-size: 14px;
-    color: #6b7280;
-    margin: 5px 0 0;
-    max-width: 500px;
+  font-size: 14px;
+  color: #6b7280;
+  /* margin: 5px 0 0; */
+  margin-top: 0rem;
+  max-width: 500px;
 }
 
 .btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-    color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: #fff;
 }
 
 .btn-blue {
-    background: #2563eb;
+  background: #2563eb;
 }
 
 .btn-green {
-    background: #16a34a;
+  background: #16a34a;
 }
 
 .content {
-    padding: 20px 0;
+  padding: 20px 0;
 }
 
 .table-container {
-    margin-top: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 thead {
-    background: #f9fafb;
+  background: #f9fafb;
 }
 
 th,
 td {
-    text-align: left;
-    padding: 14px 20px;
-    font-size: 14px;
+  text-align: center;
+  padding: 14px 20px;
+  font-size: 14px;
 }
 
 th {
-    font-weight: 600;
-    color: #374151;
+  font-weight: 600;
+  color: #374151;
 }
 
 tr:nth-child(even) {
-    background: #f9fafb;
+  background: #f9fafb;
 }
 
 td {
-    color: #111827;
+  color: #111827;
 }
 
 .top-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 15px;
-    gap: 10px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+/* Page button */
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  /* background: #1b3c53; */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  z-index: 9998;
+}
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal container (no flexbox) */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  z-index: 9999;
+  overflow: hidden;
+}
+.modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  background: #f7f9fb;
+}
+.modal-title {
+  margin: 0;
+  font-size: 16px;
+  color: #1b3c53;
+}
+.modal-body {
+  padding: 12px;
+}
+.modal-footer {
+  padding: 10px 12px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+.close-btn {
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Make canvas responsive inside modal (Chart.js v1 respects element size) */
+.chart-wrap {
+  width: 100%;
+  height: 360px; /* adjust as you like */
+  position: relative;
+}
+.chart-wrap canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }

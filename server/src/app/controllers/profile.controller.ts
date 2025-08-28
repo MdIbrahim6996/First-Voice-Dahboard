@@ -82,11 +82,13 @@ export const getUserInfo = async (
                 count: count ? count : 0,
             };
         });
+
         // const user = await prisma.lead.groupBy({
         //     by: ["statusId"],
         //     where: { closerId: parseInt(userId), statusId: 1 },
         //     _count: { _all: true },
         // });
+        
         const data = await Promise.all(result);
         res.send(data);
     } catch (error) {

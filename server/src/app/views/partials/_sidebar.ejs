@@ -1,81 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Sidebar</title>
-        <link rel="stylesheet" href="/css/sidebar.css" />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
-    </head>
-    <body>
-        <div class="sidebar">
-            <!-- Logo -->
-            <div class="logo">
-                <span class="logo-text">FIRSTVOICE</span>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sidebar</title>
+    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <!-- Logo -->
+      <div class="logo">
+        <span class="logo-text">FIRSTVOICE</span>
+      </div>
 
-            <!-- Menu -->
-            <ul class="menu">
-                <li
-                    class="<%= currentPath === '/user/dashboard' ? 'active' : '' %>"
-                >
-                    <a href="/user/dashboard"
-                        ><i class="fa fa-th-large"></i> Dashboard</a
-                    >
-                </li>
-                <li
-                    class="<%= currentPath === '/user/attendance' ? 'active' : '' %>"
-                >
-                    <a href="/user/attendance"
-                        ><i class="fa fa-book"></i> Attendance</a
-                    >
-                </li>
-                <li
-                    class="<%= currentPath === '/user/add-lead' ? 'active' : '' %>"
-                >
-                    <a href="/user/add-lead"
-                        ><i class="fa fa-plus-square"></i> Add Lead</a
-                    >
-                </li>
-                <li
-                    class="<%= currentPath === '/user/leads' ? 'active' : '' %>"
-                >
-                    <a href="/user/leads"><i class="fa fa-list"></i> Leads</a>
-                </li>
-                <li
-                    class="<%= currentPath === '/user/holiday' ? 'active' : '' %>"
-                >
-                    <a href="/user/holiday"
-                        ><i class="fa fa-calendar"></i> Holiday Calendar</a
-                    >
-                </li>
-                <li
-                    class="<%= currentPath === '/user/profile' ? 'active' : '' %>"
-                >
-                    <a href="/user/profile"
-                        ><i class="fa fa-user-circle"></i> Profile</a
-                    >
-                </li>
-                <li
-                    class="<%= currentPath === '/user/notification' ? 'active' : '' %>"
-                >
-                    <a href="/user/notification"
-                        ><i class="fa fa-bell"></i> Notifications
-                        <span class="badge">1</span></a
-                    >
-                </li>
-            </ul>
+      <!-- Menu -->
+      <ul class="menu">
+        <li class="<%= currentPath === '/user/dashboard' ? 'active' : '' %>">
+          <a href="/user/dashboard"><i class="fa fa-th-large"></i> Dashboard</a>
+        </li>
+        <li class="<%= currentPath === '/user/attendance' ? 'active' : '' %>">
+          <a href="/user/attendance"><i class="fa fa-book"></i> Attendance</a>
+        </li>
+        <li class="<%= currentPath === '/user/add-lead' ? 'active' : '' %>">
+          <a href="/user/add-lead"
+            ><i class="fa fa-plus-square"></i> Add Lead</a
+          >
+        </li>
+        <li class="<%= currentPath === '/user/leads' ? 'active' : '' %>">
+          <a href="/user/leads"><i class="fa fa-list"></i> Leads</a>
+        </li>
+        <li class="<%= currentPath === '/user/holiday' ? 'active' : '' %>">
+          <a href="/user/holiday"
+            ><i class="fa fa-calendar"></i> Holiday Calendar</a
+          >
+        </li>
+        <li class="<%= currentPath === '/user/profile' ? 'active' : '' %>">
+          <a href="/user/profile"><i class="fa fa-user-circle"></i> Profile</a>
+        </li>
+        <li class="<%= currentPath === '/user/notification' ? 'active' : '' %>">
+          <a href="/user/notification"
+            ><i class="fa fa-bell"></i> Notifications
+            <span class="badge">1</span></a
+          >
+        </li>
+      </ul>
 
-            <!-- User Info -->
-            <div class="user-box">
-                <div class="avatar"><i class="fa fa-user"></i></div>
-                <div>
-                    <p>user1@email.com<br /><small>(User)</small></p>
-                    <button class="logout">Logout</button>
-                </div>
-            </div>
+      <!-- User Info -->
+      <div class="user-box">
+        <div class="avatar"><i class="fa fa-user"></i></div>
+        <div>
+          <p>user1@email.com<br /><small>(User)</small></p>
+          <button class="logout" id="logout">Logout</button>
         </div>
-    </body>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        $("#logout").click(function () {
+          $.get("/logout", function (response) {
+            window.location.href = "/login";
+          }).fail(function () {
+            $("#output").html("❌ Error: Could not fetch data");
+          });
+        });
+      });
+    </script>
+  </body>
 </html>

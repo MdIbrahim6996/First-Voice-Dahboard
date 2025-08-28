@@ -1,32 +1,39 @@
 h2 {
-    text-align: center;
-    color: #111827;
-    margin-bottom: 20px;
+  text-align: center;
+  color: #111827;
+  margin-bottom: 20px;
 }
 .cell-new {
-    background-color: #111827;
-    height: 100%;
+  background-color: #111827;
+  height: 100%;
 }
 #calendar {
-    /* max-width: 900px;
+  /* max-width: 900px;
                 margin: 40px auto; */
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .fc table {
-    border-collapse: collapse !important;
-    border-spacing: 2px; /* add spacing so rounding shows */
+  border-collapse: collapse !important;
+  border-spacing: 2px; /* add spacing so rounding shows */
+}
+
+.fc-toolbar .fc-left h2,
+.fc-day-header {
+  font-family: inherit;
+  font-weight: 400;
 }
 
 /* .fc-day {
-                border-radius: 8px;
-                padding: 2px;
-            } */
+  border-radius: 8px;
+  padding: 2px;
+} */
+
 .day-wrapper {
-    border: 1px solid rgb(175, 175, 175);
-    border-radius: 8px;
-    height: calc(100% - 8px);
-    /* margin: 2px; */
-    padding: 2px;
-    box-sizing: border-box;
+  border: 1px solid rgb(175, 175, 175);
+  border-radius: 8px;
+  height: 76px;
+  /* margin: 2px; */
+  padding: 2px;
+  box-sizing: border-box;
 }

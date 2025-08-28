@@ -1,355 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Dashboard</title>
-        <link rel="stylesheet" href="styles.css" />
-        <style>
-            .profile-container {
-                padding: 1rem;
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <style>
+      .profile-container {
+        padding: 1rem;
+      }
 
-            /* Header */
-            header h1 {
-                font-size: 24px;
-                font-weight: bold;
-                margin: 0;
-            }
-            header p {
-                margin: 4px 0 20px;
-                color: #555;
-            }
+      /* Header */
+      header h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+      }
+      header p {
+        margin: 4px 0 20px;
+        color: #555;
+      }
 
-            /* Analytics title */
-            .analytics-title {
-                font-style: italic;
-                font-size: 20px;
-                margin-bottom: 16px;
-            }
+      /* Analytics title */
+      .analytics-title {
+        font-style: italic;
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
 
-            /* Cards layout (inline-block, no flex/grid) */
-            .cards {
-                margin-bottom: 24px;
-            }
-            .card {
-                display: inline-block;
-                vertical-align: top;
-                width: 188px;
-                margin: 5px;
-                border-radius: 6px;
-                padding: 12px;
-                color: white;
-                text-align: center;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-            }
+      /* Cards layout (inline-block, no flex/grid) */
+      .cards {
+        margin-bottom: 24px;
+      }
+      .card {
+        display: inline-block;
+        vertical-align: top;
+        width: 154px;
+        margin: 5px;
+        border-radius: 6px;
+        padding: 12px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
 
-            .card p {
-                margin: 0;
-                font-weight: 500;
-            }
-            .card h3 {
-                margin: 6px 0 0;
-                font-size: 22px;
-                font-weight: bold;
-            }
+      .card p {
+        margin: 0;
+        font-weight: 500;
+      }
+      .card h3 {
+        margin: 6px 0 0;
+        font-size: 22px;
+        font-weight: bold;
+      }
 
-            /* Gradients (supported in FF28) */
-            .gradient-green {
-                background: linear-gradient(90deg, #4ade80, #fde68a);
-            }
-            .gradient-pink {
-                background: linear-gradient(90deg, #ec4899, #a855f7);
-            }
-            .gradient-teal {
-                background: linear-gradient(90deg, #10b981, #14b8a6);
-            }
-            .gradient-orange {
-                background: linear-gradient(90deg, #f97316, #ef4444);
-            }
-            .gradient-blue {
-                background: linear-gradient(90deg, #3b82f6, #22c55e);
-            }
+      /* Gradients (supported in FF28) */
+      .gradient-green {
+        background: linear-gradient(90deg, #4ade80, #fde68a);
+      }
+      .gradient-pink {
+        background: linear-gradient(90deg, #ec4899, #a855f7);
+      }
+      .gradient-teal {
+        background: linear-gradient(90deg, #10b981, #14b8a6);
+      }
+      .gradient-orange {
+        background: linear-gradient(90deg, #f97316, #ef4444);
+      }
+      .gradient-blue {
+        background: linear-gradient(90deg, #3b82f6, #22c55e);
+      }
 
-            /* Overview section (two-column float layout) */
-            .overview-box {
-                float: left;
-                width: 48%;
-                margin: 1%;
-                background: white;
-                padding: 16px;
-                border-radius: 6px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            }
-            .box-1 {
-                width: 58%;
-            }
-            .box-2 {
-                width: 38%;
-            }
+      /* Overview section (two-column float layout) */
+      .overview-box {
+        float: left;
+        width: 48%;
+        margin: 1%;
+        background: white;
+        padding: 16px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+      .box-1 {
+        width: 58%;
+      }
+      .box-2 {
+        width: 38%;
+      }
 
-            .overview-box h3 {
-                margin: 0 0 10px;
-                font-weight: 600;
-            }
+      .overview-box h3 {
+        margin: 0 0 10px;
+        font-weight: 600;
+      }
 
-            /* Placeholder for charts */
-            .chart-placeholder {
-                height: 250px;
-                text-align: center;
-                line-height: 250px;
-                color: #777;
-                font-size: 14px;
-                border-radius: 4px;
-            }
+      /* Placeholder for charts */
+      .chart-placeholder {
+        height: 250px;
+        text-align: center;
+        line-height: 250px;
+        color: #777;
+        font-size: 14px;
+        border-radius: 4px;
+      }
 
-            /* Clearfix */
-            .clear {
-                clear: both;
-            }
+      /* Clearfix */
+      .clear {
+        clear: both;
+      }
 
-            /* BAR GRAPH */
+      /* BAR GRAPH */
 
-            .chart-wrap {
-                width: 600px;
-                margin: 0 auto;
-            }
-            canvas {
-                display: block; /* avoid inline whitespace issues */
-            }
-            .legend {
-                text-align: center;
-                margin-top: 10px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="profile-container">
-            <!-- Header -->
-            <header>
-                <h1>GOOD DAY, USER1</h1>
-                <p>Hope you are having energetic and productive day.</p>
-            </header>
+      .chart-wrap {
+        width: 600px;
+        margin: 0 auto;
+      }
+      canvas {
+        display: block; /* avoid inline whitespace issues */
+      }
+      .legend {
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-container">
+      <!-- Header -->
+      <header>
+        <h1>GOOD DAY, USER1</h1>
+        <p>Hope you are having energetic and productive day.</p>
+      </header>
 
-            <!-- Analytics Heading -->
-            <h2 class="analytics-title">August Analytics</h2>
+      <!-- Analytics Heading -->
+      <h2 class="analytics-title">August Analytics</h2>
 
-            <!-- Cards -->
-            <div class="cards">
-                <div class="card gradient-green">
-                    <p>Today's Sale</p>
-                    <h3>00</h3>
-                </div>
-                <div class="card gradient-pink">
-                    <p>Month's Sale</p>
-                    <h3>03</h3>
-                </div>
-                <div class="card gradient-teal">
-                    <p>Gross Sales</p>
-                    <h3>19</h3>
-                </div>
-                <div class="card gradient-orange">
-                    <p>SPD</p>
-                    <h3>0.12</h3>
-                </div>
-                <div class="card gradient-blue">
-                    <p>Attendance</p>
-                    <h3>26</h3>
-                </div>
-                <div class="clear"></div>
-            </div>
-
-            <!-- Overview Section -->
-            <div class="overview">
-                <div class="overview-box box-1">
-                    <h3>MONTHLY OVERVIEW</h3>
-                    <div class="chart-placeholder">
-                        <div class="chart-wrap">
-                            <!-- fixed-size canvas helps old browsers handle layout reliably -->
-                            <canvas
-                                id="barChart"
-                                width="550"
-                                height="260"
-                            ></canvas>
-                            <!-- <div id="legend" class="legend"></div> -->
-                        </div>
-                    </div>
-                </div>
-                <div class="overview-box box-2">
-                    <h3>LEADS OVERVIEW</h3>
-                    <div class="chart-placeholder">
-                        <canvas id="pieChart" width="350" height="250"></canvas>
-                        <!-- <div id="pieLegend" class="legend"></div> -->
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
+      <!-- Cards -->
+      <div class="cards">
+        <div class="card gradient-green">
+          <p>Today's Sale</p>
+          <h3><%= cardInfo.todayLead %></h3>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script>
+        <div class="card gradient-pink">
+          <p>Month's Sale</p>
+          <h3><%= cardInfo.totalSuccessLead %></h3>
+        </div>
+        <div class="card gradient-teal">
+          <p>Gross Sales</p>
+          <h3><%= cardInfo.totalLead %></h3>
+        </div>
+        <div class="card gradient-orange">
+          <p>SPD</p>
+          <h3><%= cardInfo.spd %></h3>
+        </div>
+        <div class="card gradient-blue">
+          <p>Attendance</p>
+          <h3><%= cardInfo.totalAttendance %></h3>
+        </div>
+        <div class="clear"></div>
+      </div>
 
-        <script>
-            // Data in v1.x format
-            var data = {
-                labels: [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "jul",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec",
-                ],
-                datasets: [
-                    {
-                        label: "Product A",
-                        fillColor: "rgba(27,110,243,0.1)",
-                        strokeColor: "rgba(27,110,243,0.9)",
-                        highlightFill: "rgba(27,110,243,0.85)",
-                        highlightStroke: "rgba(27,110,243,1)",
-                        data: [65, 59, 80, 81, 56, 55],
-                    },
-                    {
-                        label: "Product B",
-                        fillColor: "rgba(220,220,220,0.7)",
-                        strokeColor: "rgba(220,220,220,0.9)",
-                        highlightFill: "rgba(220,220,220,0.85)",
-                        highlightStroke: "rgba(220,220,220,1)",
-                        data: [28, 48, 40, 19, 86, 27],
-                    },
-                ],
-            };
+      <!-- Overview Section -->
+      <div class="overview">
+        <div class="overview-box box-1">
+          <h3>MONTHLY OVERVIEW</h3>
+          <div class="chart-placeholder">
+            <div class="chart-wrap">
+              <!-- fixed-size canvas helps old browsers handle layout reliably -->
+              <canvas id="barChart" width="550" height="260"></canvas>
+              <!-- <div id="legend" class="legend"></div> -->
+            </div>
+          </div>
+        </div>
+        <div class="overview-box box-2">
+          <h3>LEADS OVERVIEW</h3>
+          <div class="chart-placeholder">
+            <canvas id="pieChart" width="350" height="250"></canvas>
+            <!-- <div id="pieLegend" class="legend"></div> -->
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script>
 
-            // Chart options (v1.x)
-            var options = {
-                // keep animations conservative for very old browsers
-                animation: true,
-                animationSteps: 30,
-                // display scale and grid lines
-                scaleShowGridLines: true,
-                // scaleGridLineColor: "rgba(0,0,0,.05)",
-                scaleGridLineWidth: 1,
-                barShowStroke: true,
-                barStrokeWidth: 1,
-                // spacing
-                barValueSpacing: 5,
-                barDatasetSpacing: 2,
-                // tooltip fallback: Chart.js v1 has built-in tooltips; they should work
-                // responsive: avoid enabling responsive resizing which can cause layout issues in very old engines
-                responsive: false,
-            };
+    <script>
+      var lateArray = <%- JSON.stringify(graphData?.lateArray)%>;
+      var onTimeArray = <%- JSON.stringify(graphData?.ontimeArray)%>;
 
-            // Draw the chart (ES5 style)
-            (function () {
-                var ctx = document.getElementById("barChart").getContext("2d");
-                // v1.x syntax creates a Chart instance and calls Bar
-                var chart = new Chart(ctx).Bar(data, options);
+      console.log("lateArray:", lateArray);
+      console.log("onTimeArray:", onTimeArray);
+       var data = {
+           labels: [
+               "Jan",
+               "Feb",
+               "Mar",
+               "Apr",
+               "May",
+               "Jun",
+               "jul",
+               "Aug",
+               "Sep",
+               "Oct",
+               "Nov",
+               "Dec",
+           ],
+           datasets: [
+               {
+                   label: "Product A",
+                   fillColor: "rgba(27,110,243,0.1)",
+                   strokeColor: "rgba(27,110,243,0.9)",
+                   highlightFill: "rgba(27,110,243,0.85)",
+                   highlightStroke: "rgba(27,110,243,1)",
+                   data: lateArray,
+               },
+               {
+                   label: "Product B",
+                   fillColor: "rgba(220,220,220,0.7)",
+                   strokeColor: "rgba(220,220,220,0.9)",
+                   highlightFill: "rgba(220,220,220,0.85)",
+                   highlightStroke: "rgba(220,220,220,1)",
+                   data: onTimeArray,
+               },
+           ],
+       };
 
-                // build a simple legend (v1 didn't include a legend DOM by default)
-                function buildLegend(datasets) {
-                    var html = [];
-                    for (var i = 0; i < datasets.length; i++) {
-                        var ds = datasets[i];
-                        html.push(
-                            '<span style="display:inline-block;margin:0 8px;">' +
-                                '<span style="display:inline-block;width:12px;height:12px;background:' +
-                                ds.fillColor +
-                                ";border:1px solid " +
-                                ds.strokeColor +
-                                ';margin-right:6px;vertical-align:middle;"></span>' +
-                                '<span style="vertical-align:middle;">' +
-                                (ds.label || "Series " + (i + 1)) +
-                                "</span>" +
-                                "</span>"
-                        );
-                    }
-                    return html.join("");
-                }
+       // Chart options (v1.x)
+       var options = {
+           // keep animations conservative for very old browsers
+           animation: true,
+           animationSteps: 30,
+           // display scale and grid lines
+           scaleShowGridLines: true,
+           // scaleGridLineColor: "rgba(0,0,0,.05)",
+           scaleGridLineWidth: 1,
+           barShowStroke: true,
+           barStrokeWidth: 1,
+           // spacing
+           barValueSpacing: 5,
+           barDatasetSpacing: 2,
+           // tooltip fallback: Chart.js v1 has built-in tooltips; they should work
+           // responsive: avoid enabling responsive resizing which can cause layout issues in very old engines
+           responsive: false,
+       };
 
-                var legendEl = document.getElementById("legend");
-                if (legendEl) {
-                    legendEl.innerHTML = buildLegend(data.datasets);
-                }
-            })();
-        </script>
+       // Draw the chart (ES5 style)
+       (function () {
+           var ctx = document.getElementById("barChart").getContext("2d");
+           // v1.x syntax creates a Chart instance and calls Bar
+           var chart = new Chart(ctx).Bar(data, options);
 
-        <!-- PIE -->
+           // build a simple legend (v1 didn't include a legend DOM by default)
+           function buildLegend(datasets) {
+               var html = [];
+               for (var i = 0; i < datasets.length; i++) {
+                   var ds = datasets[i];
+                   html.push(
+                       '<span style="display:inline-block;margin:0 8px;">' +
+                           '<span style="display:inline-block;width:12px;height:12px;background:' +
+                           ds.fillColor +
+                           ";border:1px solid " +
+                           ds.strokeColor +
+                           ';margin-right:6px;vertical-align:middle;"></span>' +
+                           '<span style="vertical-align:middle;">' +
+                           (ds.label || "Series " + (i + 1)) +
+                           "</span>" +
+                           "</span>"
+                   );
+               }
+               return html.join("");
+           }
 
-        <script>
-            // Pie chart data format in Chart.js v1.x
-            var pieData = [
-                {
-                    value: 300,
-                    color: "#1B6EF3",
-                    highlight: "#3C82F5",
-                    label: "Product A",
-                },
-                {
-                    value: 150,
-                    color: "#F39C12",
-                    highlight: "#F5B041",
-                    label: "Product B",
-                },
-                {
-                    value: 100,
-                    color: "#2ECC71",
-                    highlight: "#58D68D",
-                    label: "Product C",
-                },
-                {
-                    value: 80,
-                    color: "#E74C3C",
-                    highlight: "#EC7063",
-                    label: "Product D",
-                },
-            ];
+           var legendEl = document.getElementById("legend");
+           if (legendEl) {
+               legendEl.innerHTML = buildLegend(data.datasets);
+           }
+       })();
+    </script>
 
-            var pieOptions = {
-                animation: true,
-                animationSteps: 12,
-                segmentShowStroke: true,
-                duration: 15000, // 1.5 seconds
-                easing: "ease",
-                segmentStrokeColor: "#fff",
-                segmentStrokeWidth: 2,
-                percentageInnerCutout: 60, // 0 = Pie, >0 = Doughnut
-                // animateRotate: true,
-                animateScale: true,
-                responsive: false,
-            };
+    <!-- PIE -->
 
-            // Draw the chart
-            (function () {
-                var ctx = document.getElementById("pieChart").getContext("2d");
-                var myPie = new Chart(ctx).Pie(pieData, pieOptions);
+    <script>
+                  // Pie chart data format in Chart.js v1.x
 
-                // Simple legend builder
-                function buildLegend(data) {
-                    var html = [];
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        html.push(
-                            '<span style="display:inline-block;margin:0 8px;">' +
-                                '<span style="display:inline-block;width:12px;height:12px;background:' +
-                                item.color +
-                                ';margin-right:6px;vertical-align:middle;"></span>' +
-                                '<span style="vertical-align:middle;">' +
-                                (item.label || "Slice " + (i + 1)) +
-                                "</span>" +
-                                "</span>"
-                        );
-                    }
-                    return html.join("");
-                }
+                  var pieChartData = <%- JSON.stringify(pieChart)%>;
+                  console.log("pieChartData:", pieChartData);
 
-                var legendEl = document.getElementById("pieLegend");
-                if (legendEl) {
-                    legendEl.innerHTML = buildLegend(pieData);
-                }
-            })();
-        </script>
-    </body>
+
+                   var returnColors = function(status){
+                      switch (status) {
+                          case "pending":
+                              return "#FFFE71";
+                          case "success":
+                              return "#ACE1AF";
+                          case "cancelled":
+                              return "#C81D11";
+                          case "rework/warmup":
+                              return "#0070BB";
+                          default:
+                              return "";
+                      }
+      };
+
+                  var pieData = pieChartData?.map(item=>(
+                      {
+                          value: item.count,
+                          color: returnColors(item.status),
+                          label: item.status.toUpperCase(),
+                      }
+                  ))
+
+
+                  var pieOptions = {
+                      animation: true,
+                      animationSteps: 12,
+                      segmentShowStroke: true,
+                      duration: 15000, // 1.5 seconds
+                      easing: "ease",
+                      segmentStrokeColor: "#fff",
+                      segmentStrokeWidth: 2,
+                      percentageInnerCutout: 60,
+                       // 0 = Pie, >0 = Doughnut
+                      // animateRotate: true,
+                      animateScale: true,
+                      responsive: false,
+                  };
+
+                  // Draw the chart
+                  (function () {
+                      var ctx = document.getElementById("pieChart").getContext("2d");
+                      var myPie = new Chart(ctx).Pie(pieData, pieOptions);
+
+                      // Simple legend builder
+                      function buildLegend(data) {
+                          var html = [];
+                          for (var i = 0; i < data.length; i++) {
+                              var item = data[i];
+                              html.push(
+                                  '<span style="display:inline-block;margin:0 8px;">' +
+                                      '<span style="display:inline-block;width:12px;height:12px;background:' +
+                                      item.color +
+                                      ';margin-right:6px;vertical-align:middle;"></span>' +
+                                      '<span style="vertical-align:middle;">' +
+                                      (item.label || "Slice " + (i + 1)) +
+                                      "</span>" +
+                                      "</span>"
+                              );
+                          }
+                          return html.join("");
+                      }
+
+                      var legendEl = document.getElementById("pieLegend");
+                      if (legendEl) {
+                          legendEl.innerHTML = buildLegend(pieData);
+                      }
+                  })();
+    </script>
+  </body>
 </html>

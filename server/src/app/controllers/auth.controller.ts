@@ -55,13 +55,12 @@ export const loginController = async (
             );
 
             const { password, ...userData } = existingUser;
-            console.log(existingUser?.role);
-            if (existingUser?.role === "user") {
-                res.json({
-                    success: true,
-                    redirectUrl: "http://localhost:4000/user",
-                });
-            }
+            // if (existingUser?.role === "user") {
+            //     res.json({
+            //         success: true,
+            //         redirectUrl: "http://localhost:4000/user",
+            //     });
+            // }
 
             return res
                 .cookie("token", token, {

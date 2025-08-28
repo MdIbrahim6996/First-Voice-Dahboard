@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login - First Voice Global Services</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f7ff;
+    }
+
+    .container {
+      width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Left Section */
+    .left {
+      float: left;
+      width: 45%;
+      height: 400px;
+      background: #1e90ff; /* fallback */
+      background: -moz-linear-gradient(top, #2a9df4, #005eff); /* Firefox 3.6+ */
+      color: #fff;
+      text-align: center;
+      padding-top: 120px;
+    }
+
+    .left h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .left p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    /* Right Section */
+    .right {
+      float: right;
+      width: 45%;
+      height: 400px;
+      padding: 60px 40px;
+      box-sizing: border-box;
+    }
+
+    .right h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .right p {
+      color: #555;
+      margin: 5px 0 20px;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #005eff;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #0041c2;
+    }
+
+    .forgot {
+      display: block;
+      margin-top: 15px;
+      text-align: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    /* Clear floats */
+    .clearfix::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container clearfix">
+    <!-- Left Side -->
+    <div class="left">
+      <h1>First Voice Global Services</h1>
+      <p>Driving Global Growth Through Smarter Sales Solutions</p>
+    </div>
+
+    <!-- Right Side -->
+    <div class="right">
+      <h2>Hello Again!</h2>
+      <p>Welcome Back</p>
+
+      <form action="/login" method="POST">
+        <input type="text" class="input-box" placeholder="Email Address" name="email" />
+        <input type="password" class="input-box" placeholder="Password" name="password" />
+        <button type="submit" class="btn">Login</button>
+      </form>
+
+      <a href="#" class="forgot">Forgot Password</a>
+    </div>
+  </div>
+
+</body>
+</html>

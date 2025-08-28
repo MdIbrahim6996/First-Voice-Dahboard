@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login - First Voice Global Services</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #eaf3fb;
+      } */
+
+      .login-container {
+        width: 900px;
+        height: 80vh;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Left Panel */
+      .left-panel {
+        width: 40%;
+        height: 100%;
+        float: left;
+        text-align: center;
+        color: #fff;
+        padding: 11rem 20px;
+        background: linear-gradient(#2d8cf0, #1664c4);
+      }
+
+      .left-panel h1 {
+        font-size: 26px;
+        margin-bottom: 15px;
+      }
+
+      .left-panel p {
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      /* Right Panel */
+      .right-panel {
+        width: 50%;
+        float: left;
+        padding: 7rem 40px;
+        box-sizing: border-box;
+      }
+
+      .right-panel h2 {
+        font-size: 22px;
+        margin: 0 0 10px;
+      }
+
+      .right-panel .welcome {
+        margin: 0 0 20px;
+        color: #666;
+      }
+
+      .right-panel input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      .right-panel button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        background: #1664c4;
+        color: #fff;
+        border-radius: 25px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .right-panel button:hover {
+        background: #1253a5;
+      }
+
+      .right-panel .forgot {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 13px;
+        color: #1664c4;
+        text-decoration: none;
+      }
+
+      .right-panel .forgot:hover {
+        text-decoration: underline;
+      }
+
+      /* ========== Animations ========== */
+      @-webkit-keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          -webkit-transform: translateX(-40px);
+        }
+        to {
+          opacity: 1;
+          -webkit-transform: translateX(0);
+        }
+      }
+      @-moz-keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          -moz-transform: translateX(-40px);
+        }
+        to {
+          opacity: 1;
+          -moz-transform: translateX(0);
+        }
+      }
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @-webkit-keyframes fadeInRight {
+        from {
+          opacity: 0;
+          -webkit-transform: translateX(40px);
+        }
+        to {
+          opacity: 1;
+          -webkit-transform: translateX(0);
+        }
+      }
+      @-moz-keyframes fadeInRight {
+        from {
+          opacity: 0;
+          -moz-transform: translateX(40px);
+        }
+        to {
+          opacity: 1;
+          -moz-transform: translateX(0);
+        }
+      }
+      @keyframes fadeInRight {
+        from {
+          opacity: 0;
+          transform: translateX(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .animate-left {
+        -webkit-animation: fadeInLeft 0.8s ease forwards;
+        -moz-animation: fadeInLeft 0.8s ease forwards;
+        animation: fadeInLeft 0.8s ease forwards;
+      }
+
+      .animate-right {
+        -webkit-animation: fadeInRight 0.8s ease forwards;
+        -moz-animation: fadeInRight 0.8s ease forwards;
+        animation: fadeInRight 0.8s ease forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Left Side -->
+      <div class="left-panel animate-left">
+        <h1>First Voice Global Services</h1>
+        <p>Driving Global Growth Through Smarter Sales Solutions</p>
+      </div>
+
+      <!-- Right Side -->
+      <div class="right-panel animate-right">
+        <h2>Hello Again!</h2>
+        <p class="welcome">Welcome Back</p>
+        <form>
+          <input type="email" placeholder="Email Address" required />
+          <input type="password" placeholder="Password" required />
+          <button type="submit">Login</button>
+          <a href="#" class="forgot">Forgot Password</a>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
