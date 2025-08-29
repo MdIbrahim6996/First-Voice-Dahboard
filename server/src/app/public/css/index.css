@@ -62,8 +62,8 @@ a {
   position: relative;
 
   /* Vendor-prefixed + standard animation */
-  -moz-animation: headerSlide 0.75s ease-out forwards;
-  animation: headerSlide 0.75s ease-out forwards;
+  -moz-animation: headerSlide 0.5s ease-out forwards;
+  animation: headerSlide 0.5s ease-out forwards;
 }
 
 .animated-element {

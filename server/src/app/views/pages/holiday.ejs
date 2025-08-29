@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Daily Leads Count - Chart</title>
-       
-                <link rel="stylesheet" href="/css/holiday.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Leads Count - Chart</title>
 
-    </head>
-    <body>
-        <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"
-            rel="stylesheet"
-        />
-        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
+    <link rel="stylesheet" href="/css/holiday.css" />
+  </head>
+  <body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
 
-        <div id="calendar"></div>
+    <div class="animated-header"><div id="calendar"></div></div>
 
-        <script>
-            $(document).ready(function () {
-                $("#calendar").fullCalendar({
-                    height: 585,
-                    defaultView: "month",
-                    dayRender: function (date, cell) {
-                        var content = cell.html();
-                        cell.html(
-                            '<div class="day-wrapper">' + content + "</div>"
-                        );
-                    },
-                    events: [
-                        { title: "Meeting", start: "2025-08-05" },
-                        {
-                            title: "Conference",
-                            start: "2025-08-15",
-                            end: "2025-08-17",
-                        },
-                        { title: "Birthday", start: "2025-08-22" },
-                    ],
-                });
-            });
-        </script>
-    </body>
+    <script>
+      $(document).ready(function () {
+        $("#calendar").fullCalendar({
+          height: 585,
+          defaultView: "month",
+          dayRender: function (date, cell) {
+            var content = cell.html();
+            cell.html('<div class="day-wrapper">' + content + "</div>");
+          },
+          events: [
+            { title: "Meeting", start: "2025-08-05" },
+            {
+              title: "Conference",
+              start: "2025-08-15",
+              end: "2025-08-17",
+            },
+            { title: "Birthday", start: "2025-08-22" },
+          ],
+        });
+      });
+    </script>
+  </body>
 </html>

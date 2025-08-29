@@ -8,6 +8,52 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+
+    <style>
+      /* Notification Box */
+      .notification {
+        background: #d3d2d2;
+        border-radius: 8px;
+        /* padding: 10px; */
+        margin-bottom: 15px;
+        width: 320px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        /* position: absolute;
+        top: 2rem;
+        left: 50%;
+        transform: translate(-50%, 0);
+        -moz-transform: translate(-50%, 0); */
+      }
+
+      /* Header */
+      .notif-header {
+        overflow: hidden; /* old clearfix */
+        background-color: white;
+        padding: 0.5rem 1rem;
+      }
+
+      .notif-title {
+        font-weight: bold;
+        font-size: 12px;
+        vertical-align: middle;
+      }
+
+      .notif-time {
+        float: right;
+        font-size: 11px;
+        color: #555;
+      }
+
+      /* Body */
+      .notif-body {
+        font-size: 13px;
+        line-height: 1.4em;
+        padding: 1rem;
+      }
+      .notif-body p {
+        margin: 5px 0 0;
+      }
+    </style>
   </head>
   <body>
     <div class="sidebar">
@@ -44,23 +90,81 @@
         <li class="<%= currentPath === '/user/notification' ? 'active' : '' %>">
           <a href="/user/notification"
             ><i class="fa fa-bell"></i> Notifications
-            <span class="badge">1</span></a
-          >
+            <span class="badge"><span class="badge-text"></span></span
+          ></a>
         </li>
       </ul>
-
+      <div id="toast-container"></div>
       <!-- User Info -->
       <div class="user-box">
         <div class="avatar"><i class="fa fa-user"></i></div>
         <div>
-          <p>user1@email.com<br /><small>(User)</small></p>
+          <p><%=user.email%><br /><small>(<%=user.role%>)</small></p>
           <button class="logout" id="logout">Logout</button>
         </div>
       </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+    <script>
+      var notifCount = <%= notifCount %>;
+      var badgeText = document.querySelector(".badge-text");
+      badgeText.textContent = notifCount
 
+      var pusher = new Pusher("<%= pusherKey %>", {
+        cluster: "<%= pusherCluster %>",
+      });
+
+      var channel = pusher.subscribe("notifications");
+
+      channel.bind("new-notification", function (data) {
+       const notifComponent = " "+
+       '<div class="notification">' +
+          '<div class="notif-header">' +
+            '<span class="notif-title">' + "title" + '</span>' +
+          '</div>' +
+          '<div class="notif-body">' +
+            '<p>' + data.text + '</p>' +
+          '</div>' +
+      '</div>';
+        showToast(data.text);
+      });
+
+      // Toast function
+      function showToast(message) {
+
+        const notifComponent = " "+
+       '<div class="notification">' +
+          '<div class="notif-header">' +
+            '<span class="notif-title">' + "title" + '</span>' +
+          '</div>' +
+          '<div class="notif-body">' +
+            '<p>' + message + '</p>' +
+          '</div>' +
+      '</div>';
+        var container = document.getElementById("toast-container");
+
+        var toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = notifComponent;
+
+        container.appendChild(toast);
+
+        // Trigger fade-in
+        setTimeout(function () {
+          toast.className += " show";
+        }, 10);
+
+        // Auto-remove after 3s
+        setTimeout(function () {
+          toast.className = "toast"; // fade-out
+          setTimeout(function () {
+            container.removeChild(toast);
+          }, 500); // wait for transition
+        }, 3000);
+      }
+    </script>
     <script>
       $(document).ready(function () {
         $("#logout").click(function () {

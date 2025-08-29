@@ -20,6 +20,7 @@
   text-align: center;
   margin-bottom: 30px;
 }
+
 .logo img {
   width: 14rem;
   height: auto;
@@ -40,7 +41,6 @@
 
 .menu li {
   width: 14rem;
-
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -48,6 +48,7 @@
 
 .menu li a {
   display: block;
+
   padding: 10px 12px;
   margin: 6px 0;
   width: 100%;
@@ -79,13 +80,32 @@
 
 /* Notification badge */
 .badge {
+  position: relative;
   background: white;
+  width: 1.5rem;
+  height: 1.5rem;
   color: blue;
-  padding: 2px 6px;
+  /* padding: 2px 6px; */
   border-radius: 50%;
   font-size: 11px;
   float: right;
+  margin-right: 20px;
   margin-top: 2px;
+}
+
+.badge-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+.menu .active .badge {
+  background: #1d4ed8;
+  color: #fff;
+  font-weight: bold;
 }
 
 /* User info */
@@ -132,4 +152,31 @@
 
 .logout:hover {
   background: #2563eb; /* lighter blue */
+}
+
+/* Toast container (fixed at top-center) */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  -moz-transform: translateX(-50%); /* for FF28 */
+  z-index: 9999;
+}
+
+/* Toast notification box */
+.toast {
+  min-width: 250px;
+  margin: 5px 0;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 4px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out; /* FF28 */
+}
+
+.toast.show {
+  opacity: 1;
 }

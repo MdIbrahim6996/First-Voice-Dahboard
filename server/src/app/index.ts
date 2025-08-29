@@ -16,6 +16,9 @@ import bcrypt from "bcrypt";
 import { getDailyLeadCount } from "./controllers/user/dashboard.controller";
 import { getUserAllAttendance } from "./controllers/user/attendance.controller";
 import { getUserInfo } from "./controllers/user/profile.controller";
+import { getAllNotificationOfUser } from "./controllers/user/notification.controller";
+import { pusher } from "./lib/pusher";
+import { getUserLeads } from "./controllers/user/leads.controller";
 
 const numCPUs = os.cpus().length;
 
@@ -55,6 +58,9 @@ app.use(
 // app.get("/api/v1/health-check", (_, res: Response) =>
 //   res.send({ message: "ok" })
 // );
+
+app.locals.pusherKey = process.env.PUSHER_KEY;
+app.locals.pusherCluster = process.env.PUSHER_CLUSTER;
 
 const loginFunction = async (
   req: Request,
@@ -119,6 +125,13 @@ const loginFunction = async (
   }
 };
 
+app.post("/notify", (req, res) => {
+  const notification = req.body.notification || "Default notification";
+  console.log("Notification received:", notification); // Debugging line
+  pusher.trigger("notifications", "new-notification", { text: notification });
+  res.json({ status: "ok" });
+});
+
 app.get("/login", (req, res: Response) => {
   const { token } = req.cookies;
   console.log("Token from cookie login:", token); // Debugging line
@@ -131,6 +144,15 @@ app.get("/logout", (req, res: Response) => {
   res.clearCookie("token");
   res.redirect("/login");
 });
+
+app.use(isUserAuth, async (req, res, next) => {
+  const notifs = await prisma.notification.count({
+    where: { userId: Number(req.user?.id) },
+  });
+  res.locals.user = req.user;
+  res.locals.notifCount = notifs;
+  next();
+});
 app.get("", isUserAuth, (_, res: Response) => res.redirect("/user/dashboard"));
 app.get("/user", isUserAuth, (_, res: Response) =>
   res.redirect("/user/dashboard")
@@ -140,17 +162,15 @@ app.get("/user/attendance", isUserAuth, getUserAllAttendance);
 app.get("/user/holiday", isUserAuth, (_, res: Response) =>
   res.render("pages/holiday", { currentPath: "/user/holiday" })
 );
-app.get("/user/leads", isUserAuth, (_, res: Response) =>
-  res.render("pages/leads", { currentPath: "/user/leads" })
-);
+app.get("/user/leads", isUserAuth, getUserLeads);
+
 app.get("/user/add-lead", isUserAuth, (_, res: Response) =>
   res.render("pages/add-lead", { currentPath: "/user/add-lead" })
 );
-app.get("/user/notification", isUserAuth, (_, res: Response) =>
-  res.render("pages/notification", { currentPath: "/user/notification" })
-);
+app.get("/user/notification", isUserAuth, getAllNotificationOfUser);
+
 app.get("/user/profile", isUserAuth, getUserInfo);
-app.use("/", pagesRouter);
+app.use("/", isUserAuth, pagesRouter);
 app.use("/api/v1", router);
 
 // Serve front-end app for all unmatched routes

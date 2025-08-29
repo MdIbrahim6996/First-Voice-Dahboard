@@ -45,10 +45,11 @@
       .card p {
         margin: 0;
         font-weight: 500;
+        font-size: 22px;
       }
       .card h3 {
         margin: 6px 0 0;
-        font-size: 22px;
+        font-size: 32px;
         font-weight: bold;
       }
 
@@ -133,7 +134,7 @@
       <h2 class="analytics-title">August Analytics</h2>
 
       <!-- Cards -->
-      <div class="cards animated-element">
+      <div class="cards animated-header">
         <div class="card gradient-green">
           <p>Today's Sale</p>
           <h3><%= cardInfo.todayLead %></h3>
@@ -204,19 +205,19 @@
            ],
            datasets: [
                {
-                   label: "Product A",
-                   fillColor: "rgba(27,110,243,0.1)",
-                   strokeColor: "rgba(27,110,243,0.9)",
-                   highlightFill: "rgba(27,110,243,0.85)",
-                   highlightStroke: "rgba(27,110,243,1)",
+                   label: "LATE",
+                   fillColor: "rgba(255,0,0,0.25)",
+                   strokeColor: "rgb(255,0,0)",
+                   highlightFill: "rgba(255,0,0,0.65)",
+                   highlightStroke: "rgba(255,0,0,0.65)",
                    data: lateArray,
                },
                {
-                   label: "Product B",
-                   fillColor: "rgba(220,220,220,0.7)",
-                   strokeColor: "rgba(220,220,220,0.9)",
-                   highlightFill: "rgba(220,220,220,0.85)",
-                   highlightStroke: "rgba(220,220,220,1)",
+                   label: "ON TIME",
+                   fillColor: "rgba(172,225,175,0.75)",
+                   strokeColor: "rgba(172,225,175,1)",
+                   highlightFill: "rgba(172,225,175,1)",
+                   highlightStroke: "rgba(172,225,175,1)",
                    data: onTimeArray,
                },
            ],

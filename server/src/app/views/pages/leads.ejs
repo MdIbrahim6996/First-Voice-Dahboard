@@ -34,21 +34,21 @@
         </div>
         <div class="filter-buttons">
           <button class="btn-green">Search</button>
-          <button class="btn-blue">Reset Filters</button>
+          <a href="/user/leads" class="reset-link btn-blue">Reset Filters</a>
         </div>
       </div>
 
       <!-- Status Labels -->
       <h2>LEADS - ALL LEADS</h2>
       <p>Browse list of leads closed by user1.</p>
-
       <div class="status-labels">
-        <span class="label label-success">Success</span>
-        <span class="label label-pending">Pending</span>
-        <span class="label label-rework">Rework/Warmup</span>
-        <span class="label label-cancel">Cancelled</span>
+        <% status.forEach(function(item){ %>
+        <span
+          class="label <%= item.name==='rework/warmup' ? 'label-rework' : 'label-' + item.name %>"
+          ><a href="?statusId=<%= item.id %>"><%= item.name %></a></span
+        >
+        <% }) %>
       </div>
-
       <!-- Table -->
       <table>
         <thead>
@@ -62,30 +62,24 @@
           </tr>
         </thead>
         <tbody>
+          <% leads.forEach(function(lead){ %>
           <tr>
-            <td><span class="status-badge pending">Pending</span></td>
+            <td>
+              <span
+                class="status-badge <%= lead.status.name==='rework/warmup' ? 'rework' : lead.status.name %>"
+                ><%= lead.status.name %></span
+              >
+            </td>
             <td>Wed Aug 20 2025</td>
-            <td>Miss FirstName MiddleName LastName</td>
-            <td>P2</td>
-            <td>Plan 2</td>
+            <td>
+              <%= lead.title %> <%= lead.firstName %> <%= lead.middleName %> <%=
+              lead.lastName %>
+            </td>
+            <td class="process-name"><%= lead.process.name %></td>
+            <td class="plan-name"><%= lead.plan.name %></td>
             <td><button class="action-btn">View Change In Status</button></td>
           </tr>
-          <tr>
-            <td><span class="status-badge pending">Pending</span></td>
-            <td>Wed Aug 20 2025</td>
-            <td>Mr. First Middle Last</td>
-            <td>P2</td>
-            <td>Plan 2</td>
-            <td><button class="action-btn">View Change In Status</button></td>
-          </tr>
-          <tr>
-            <td><span class="status-badge success">Success</span></td>
-            <td>Mon Aug 18 2025</td>
-            <td>Mr. Werwe Wer Wer</td>
-            <td>P1</td>
-            <td>Gfdg</td>
-            <td><button class="action-btn">View Change In Status</button></td>
-          </tr>
+          <% }) %>
         </tbody>
       </table>
     </main>
