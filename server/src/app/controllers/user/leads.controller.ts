@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../../lib/prismaClient";
-import { Prisma } from "../../../../prisma/generated/prisma/client";
+import { Prisma } from "@prisma/client";
 
 export const getUserLeads = async (
   req: Request,
