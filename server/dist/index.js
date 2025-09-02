@@ -54,12 +54,12 @@ var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var morgan_1 = __importDefault(require("morgan"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var compression_1 = __importDefault(require("compression"));
 var routes_1 = __importDefault(require("./routes"));
 var pages_route_1 = __importDefault(require("./routes/user/pages.route"));
 var errorHandler_1 = require("./middlewares/errorHandler");
 var path_1 = __importDefault(require("path"));
 var express_ejs_layouts_1 = __importDefault(require("express-ejs-layouts"));
-var cluster_1 = __importDefault(require("cluster"));
 var os_1 = __importDefault(require("os"));
 var authMiddleware_1 = require("./middlewares/authMiddleware");
 var prismaClient_1 = require("./lib/prismaClient");
@@ -68,6 +68,9 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var dashboard_controller_1 = require("./controllers/user/dashboard.controller");
 var attendance_controller_1 = require("./controllers/user/attendance.controller");
 var profile_controller_1 = require("./controllers/user/profile.controller");
+var notification_controller_1 = require("./controllers/user/notification.controller");
+var pusher_1 = require("./lib/pusher");
+var leads_controller_1 = require("./controllers/user/leads.controller");
 var numCPUs = os_1.default.cpus().length;
 var app = (0, express_1.default)();
 //MIDDLEWARES
@@ -83,11 +86,24 @@ app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, compression_1.default)());
 // VIEWS
 app.set("view engine", "ejs");
 app.set("views", path_1.default.join(path_1.default.resolve(), "src/app/views"));
 app.use(express_ejs_layouts_1.default);
 app.set("layout", "layouts/main");
+app.use(function (req, res, next) {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    next();
+});
+// app.use(
+//   "/assets",
+//   express.static(path.join(path.resolve(), "../client", "dist", "assets"))
+// );
+app.use("/app", express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
+app.get("/app/{*any}", function (req, res) {
+    res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
+});
 //STATIC FILES
 app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public")));
 app.use("/js", express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public/js")));
@@ -97,6 +113,8 @@ app.use("/css", express_1.default.static(path_1.default.join(path_1.default.reso
 // app.get("/api/v1/health-check", (_, res: Response) =>
 //   res.send({ message: "ok" })
 // );
+app.locals.pusherKey = process.env.PUSHER_KEY;
+app.locals.pusherCluster = process.env.PUSHER_CLUSTER;
 var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, existingUser, matchedPassword, token, password_1, userData, error_1;
     return __generator(this, function (_b) {
@@ -123,7 +141,6 @@ var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0,
                 matchedPassword = _b.sent();
                 if (matchedPassword) {
                     token = (0, token_1.generateAuthToken)(String(existingUser === null || existingUser === void 0 ? void 0 : existingUser.id), existingUser.role);
-                    console.log("Generated Token:", token); // Debugging line
                     if ((existingUser === null || existingUser === void 0 ? void 0 : existingUser.role) === "user") {
                         return [2 /*return*/, res
                                 .cookie("token", token, {
@@ -134,19 +151,13 @@ var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0,
                                 .redirect(303, "/user/dashboard")];
                     }
                     password_1 = existingUser.password, userData = __rest(existingUser, ["password"]);
-                    // if (existingUser?.role === "user") {
-                    //     res.json({
-                    //         success: true,
-                    //         redirectUrl: "http://localhost:4000/user",
-                    //     });
-                    // }
                     return [2 /*return*/, res
                             .cookie("token", token, {
                             httpOnly: true,
                             secure: true,
                             maxAge: 12 * 60 * 60 * 1000,
                         })
-                            .redirect("http://localhost:5173/superadmin/dashboard")];
+                            .redirect("http://localhost:4000/app/superadmin/dashboard")];
                 }
                 else {
                     throw new Error("Invalid Credentials.");
@@ -155,12 +166,18 @@ var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0,
             case 4:
                 error_1 = _b.sent();
                 console.log(error_1);
-                next(error_1);
+                res.render("pages/login", { layout: false, error: error_1.message });
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/];
         }
     });
 }); };
+app.post("/notify", function (req, res) {
+    var notification = req.body.notification || "Default notification";
+    console.log("Notification received:", notification); // Debugging line
+    pusher_1.pusher.trigger("notifications", "new-notification", { text: notification });
+    res.json({ status: "ok" });
+});
 app.get("/login", function (req, res) {
     var token = req.cookies.token;
     console.log("Token from cookie login:", token); // Debugging line
@@ -168,14 +185,31 @@ app.get("/login", function (req, res) {
         return res.redirect("/user/dashboard");
     }
     else
-        res.render("pages/login", { layout: false });
+        res.render("pages/login", { layout: false, error: null });
 });
 app.post("/login", loginFunction);
 app.get("/logout", function (req, res) {
     res.clearCookie("token");
     res.redirect("/login");
 });
-app.get("", authMiddleware_1.isUserAuth, function (_, res) { return res.redirect("/user/dashboard"); });
+app.use(authMiddleware_1.isUserAuth, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var notifs;
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, prismaClient_1.prisma.notification.count({
+                    where: { userId: Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) },
+                })];
+            case 1:
+                notifs = _b.sent();
+                res.locals.user = req.user;
+                res.locals.notifCount = notifs;
+                next();
+                return [2 /*return*/];
+        }
+    });
+}); });
+// app.get("", isUserAuth, (_, res: Response) => res.redirect("/user/dashboard"));
 app.get("/user", authMiddleware_1.isUserAuth, function (_, res) {
     return res.redirect("/user/dashboard");
 });
@@ -184,17 +218,44 @@ app.get("/user/attendance", authMiddleware_1.isUserAuth, attendance_controller_1
 app.get("/user/holiday", authMiddleware_1.isUserAuth, function (_, res) {
     return res.render("pages/holiday", { currentPath: "/user/holiday" });
 });
-app.get("/user/leads", authMiddleware_1.isUserAuth, function (_, res) {
-    return res.render("pages/leads", { currentPath: "/user/leads" });
-});
-app.get("/user/add-lead", authMiddleware_1.isUserAuth, function (_, res) {
-    return res.render("pages/add-lead", { currentPath: "/user/add-lead" });
-});
-app.get("/user/notification", authMiddleware_1.isUserAuth, function (_, res) {
-    return res.render("pages/notification", { currentPath: "/user/notification" });
-});
+app.get("/user/leads", authMiddleware_1.isUserAuth, leads_controller_1.getUserLeads);
+app.get("/user/add-lead", authMiddleware_1.isUserAuth, function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var process, plan, users;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, prismaClient_1.prisma.process.findMany({
+                    orderBy: { createdAt: "desc" },
+                    select: { id: true, name: true },
+                })];
+            case 1:
+                process = _a.sent();
+                return [4 /*yield*/, prismaClient_1.prisma.plan.findMany({
+                        orderBy: { createdAt: "desc" },
+                        select: { id: true, name: true },
+                    })];
+            case 2:
+                plan = _a.sent();
+                return [4 /*yield*/, prismaClient_1.prisma.user.findMany({
+                        orderBy: { createdAt: "desc" },
+                        where: { role: "closer" },
+                        select: { id: true, name: true },
+                    })];
+            case 3:
+                users = _a.sent();
+                res.render("pages/add-lead", {
+                    currentPath: "/user/add-lead",
+                    process: process,
+                    plan: plan,
+                    users: users,
+                });
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.post("/user/add-lead", authMiddleware_1.isUserAuth, leads_controller_1.createLead);
+app.get("/user/notification", authMiddleware_1.isUserAuth, notification_controller_1.getAllNotificationOfUser);
 app.get("/user/profile", authMiddleware_1.isUserAuth, profile_controller_1.getUserInfo);
-app.use("/", pages_route_1.default);
+app.use("/", authMiddleware_1.isUserAuth, pages_route_1.default);
 app.use("/api/v1", routes_1.default);
 // Serve front-end app for all unmatched routes
 if (process.env.NODE_ENV === "production") {
@@ -203,45 +264,53 @@ if (process.env.NODE_ENV === "production") {
         res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
     });
 }
+app.use(function (req, res, next) {
+    console.log("======", req.path);
+    if (req.path.startsWith("/app"))
+        return next(); // let React handle
+    res.status(404).render("errors/404", { url: req.originalUrl, layout: false });
+});
 // Serve front-end app for all unmatched routes
 app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
-app.get("/app", function (req, res) {
+app.get("/app/{*any}", function (req, res) {
     res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
 });
-app.use(function (req, res, next) {
-    // Only handle 404s for non-React routes
-    if (req.path.startsWith("/app")) {
-        return next(); // let React handle it
-    }
-    res.status(404).render("errors/404", {
-        url: req.originalUrl,
-        layout: false, // optional: show requested URL
-    });
-});
+// app.use((req, res, next) => {
+//   // Only handle 404s for non-React routes
+//   if (req.path.startsWith("/app")) {
+//     console.log("==============", req.path);
+//     app.use(
+//       "/app",
+//       express.static(path.join(path.resolve(), "../client", "dist"))
+//     );
+//     app.get("/app", (req, res) => {
+//       res.sendFile(
+//         path.resolve(path.resolve(), "../client", "dist", "index.html")
+//       );
+//     });
+//     return next(); // let React handle it
+//   }
+//   res.status(404).render("errors/404", {
+//     url: req.originalUrl,
+//     layout: false,
+//   });
+// });
 //ERROR HANDLER
 app.use(errorHandler_1.notFound);
 app.use(errorHandler_1.errorHandler);
 var PORT = 4000;
-// app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-if (numCPUs > 1) {
-    if (cluster_1.default.isPrimary) {
-        for (var i = 0; i < numCPUs; i++) {
-            cluster_1.default.fork();
-        }
-        cluster_1.default.on("exit", function (worker) {
-            console.log("Worker", worker.id, " has exited.");
-        });
-    }
-    else {
-        app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
-    }
-}
-else {
-    app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
-}
-// async function dropTable() {
-//     await prisma.$executeRaw`DROP TABLE IF EXISTS leadCount;`;
-//     // Or with IF EXISTS to prevent errors if the table doesn't exist:
-//     // await prisma.$executeRaw`DROP TABLE IF EXISTS User;`;
+app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
+// if (numCPUs > 1) {
+//   if (cluster.isPrimary) {
+//     for (let i = 0; i < numCPUs; i++) {
+//       cluster.fork();
+//     }
+//     cluster.on("exit", function (worker: any) {
+//       console.log("Worker", worker.id, " has exited.");
+//     });
+//   } else {
+//     app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+//   }
+// } else {
+//   app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
 // }
-// dropTable();

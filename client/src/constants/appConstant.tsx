@@ -10,7 +10,6 @@ import {
 import { IoBookSharp } from "react-icons/io5";
 import { RiFileAddFill, RiBook2Fill } from "react-icons/ri";
 import { BsCalendar2EventFill } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
 
 export const PUSHER_SECRET = "3598d69c8453a73ad670";
 export const PUSHER_CLUSTER = "ap2";
@@ -30,44 +29,6 @@ export const monthNames = [
     "December",
 ];
 
-export const userLinks = [
-    {
-        id: 1,
-        title: "Dashboard",
-        link: "/user/dashboard",
-        icon: <MdDashboard className="text-xl" />,
-    },
-    {
-        id: 3,
-        title: "Attendance",
-        link: "/user/attendance",
-        icon: <IoBookSharp className="text-xl" />,
-    },
-    {
-        id: 4,
-        title: "Add Lead",
-        link: "/user/add-lead",
-        icon: <RiFileAddFill className="text-xl" />,
-    },
-    {
-        id: 5,
-        title: "Leads",
-        link: "/user/leads",
-        icon: <MdList className="text-xl" />,
-    },
-    {
-        id: 6,
-        title: "Holiday Calendar",
-        link: "/user/holiday-calendar",
-        icon: <MdCalendarMonth className="text-xl" />,
-    },
-    {
-        id: 7,
-        title: "Profile",
-        link: "/user/profile",
-        icon: <CgProfile className="text-xl" />,
-    },
-];
 export const adminLinks = [
     {
         id: 1,

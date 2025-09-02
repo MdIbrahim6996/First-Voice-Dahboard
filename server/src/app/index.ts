@@ -2,6 +2,7 @@ import express, { Application, NextFunction, Response, Request } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import compression from "compression";
 import router from "./routes";
 import pagesRouter from "./routes/user/pages.route";
 import { errorHandler, notFound } from "./middlewares/errorHandler";
@@ -18,7 +19,7 @@ import { getUserAllAttendance } from "./controllers/user/attendance.controller";
 import { getUserInfo } from "./controllers/user/profile.controller";
 import { getAllNotificationOfUser } from "./controllers/user/notification.controller";
 import { pusher } from "./lib/pusher";
-import { getUserLeads } from "./controllers/user/leads.controller";
+import { createLead, getUserLeads } from "./controllers/user/leads.controller";
 
 const numCPUs = os.cpus().length;
 
@@ -35,15 +36,32 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(compression());
 // VIEWS
 app.set("view engine", "ejs");
 app.set("views", path.join(path.resolve(), "src/app/views"));
 app.use(expressLayouts);
 app.set("layout", "layouts/main");
+
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+  next();
+});
+
+// app.use(
+//   "/assets",
+//   express.static(path.join(path.resolve(), "../client", "dist", "assets"))
+// );
+app.use("/app", express.static(path.join(path.resolve(), "../client", "dist")));
+app.get("/app/{*any}", (req, res) => {
+  res.sendFile(path.resolve(path.resolve(), "../client", "dist", "index.html"));
+});
 
 //STATIC FILES
 app.use(express.static(path.join(path.resolve(), "src/app/public")));
@@ -89,8 +107,6 @@ const loginFunction = async (
         String(existingUser?.id),
         existingUser.role
       );
-      console.log("Generated Token:", token); // Debugging line
-
       if (existingUser?.role === "user") {
         return res
           .cookie("token", token, {
@@ -102,12 +118,6 @@ const loginFunction = async (
       }
 
       const { password, ...userData } = existingUser;
-      // if (existingUser?.role === "user") {
-      //     res.json({
-      //         success: true,
-      //         redirectUrl: "http://localhost:4000/user",
-      //     });
-      // }
 
       return res
         .cookie("token", token, {
@@ -115,13 +125,14 @@ const loginFunction = async (
           secure: true,
           maxAge: 12 * 60 * 60 * 1000,
         })
-        .redirect("http://localhost:5173/superadmin/dashboard");
+        .redirect("http://localhost:4000/app/superadmin/dashboard");
     } else {
       throw new Error("Invalid Credentials.");
     }
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    next(error);
+    res.render("pages/login", { layout: false, error: error.message });
+    // next(error);
   }
 };
 
@@ -137,8 +148,9 @@ app.get("/login", (req, res: Response) => {
   console.log("Token from cookie login:", token); // Debugging line
   if (token) {
     return res.redirect("/user/dashboard");
-  } else res.render("pages/login", { layout: false });
+  } else res.render("pages/login", { layout: false, error: null });
 });
+
 app.post("/login", loginFunction);
 app.get("/logout", (req, res: Response) => {
   res.clearCookie("token");
@@ -153,7 +165,7 @@ app.use(isUserAuth, async (req, res, next) => {
   res.locals.notifCount = notifs;
   next();
 });
-app.get("", isUserAuth, (_, res: Response) => res.redirect("/user/dashboard"));
+// app.get("", isUserAuth, (_, res: Response) => res.redirect("/user/dashboard"));
 app.get("/user", isUserAuth, (_, res: Response) =>
   res.redirect("/user/dashboard")
 );
@@ -164,9 +176,28 @@ app.get("/user/holiday", isUserAuth, (_, res: Response) =>
 );
 app.get("/user/leads", isUserAuth, getUserLeads);
 
-app.get("/user/add-lead", isUserAuth, (_, res: Response) =>
-  res.render("pages/add-lead", { currentPath: "/user/add-lead" })
-);
+app.get("/user/add-lead", isUserAuth, async (_, res: Response) => {
+  const process = await prisma.process.findMany({
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true },
+  });
+  const plan = await prisma.plan.findMany({
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true },
+  });
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: "desc" },
+    where: { role: "closer" },
+    select: { id: true, name: true },
+  });
+  res.render("pages/add-lead", {
+    currentPath: "/user/add-lead",
+    process,
+    plan,
+    users,
+  });
+});
+app.post("/user/add-lead", isUserAuth, createLead);
 app.get("/user/notification", isUserAuth, getAllNotificationOfUser);
 
 app.get("/user/profile", isUserAuth, getUserInfo);
@@ -183,52 +214,58 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
-
+app.use((req, res, next) => {
+  console.log("======", req.path);
+  if (req.path.startsWith("/app")) return next(); // let React handle
+  res.status(404).render("errors/404", { url: req.originalUrl, layout: false });
+});
 // Serve front-end app for all unmatched routes
 app.use(express.static(path.join(path.resolve(), "../client", "dist")));
-app.get("/app", (req, res) => {
+app.get("/app/{*any}", (req, res) => {
   res.sendFile(path.resolve(path.resolve(), "../client", "dist", "index.html"));
 });
 
-app.use((req, res, next) => {
-  // Only handle 404s for non-React routes
-  if (req.path.startsWith("/app")) {
-    return next(); // let React handle it
-  }
+// app.use((req, res, next) => {
+//   // Only handle 404s for non-React routes
+//   if (req.path.startsWith("/app")) {
+//     console.log("==============", req.path);
+//     app.use(
+//       "/app",
+//       express.static(path.join(path.resolve(), "../client", "dist"))
+//     );
+//     app.get("/app", (req, res) => {
+//       res.sendFile(
+//         path.resolve(path.resolve(), "../client", "dist", "index.html")
+//       );
+//     });
+//     return next(); // let React handle it
+//   }
 
-  res.status(404).render("errors/404", {
-    url: req.originalUrl,
-    layout: false, // optional: show requested URL
-  });
-});
+//   res.status(404).render("errors/404", {
+//     url: req.originalUrl,
+//     layout: false,
+//   });
+// });
 
 //ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);
 
 const PORT = 4000;
-// app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
 
-if (numCPUs > 1) {
-  if (cluster.isPrimary) {
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork();
-    }
+// if (numCPUs > 1) {
+//   if (cluster.isPrimary) {
+//     for (let i = 0; i < numCPUs; i++) {
+//       cluster.fork();
+//     }
 
-    cluster.on("exit", function (worker: any) {
-      console.log("Worker", worker.id, " has exited.");
-    });
-  } else {
-    app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-  }
-} else {
-  app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-}
-
-// async function dropTable() {
-//     await prisma.$executeRaw`DROP TABLE IF EXISTS leadCount;`;
-//     // Or with IF EXISTS to prevent errors if the table doesn't exist:
-//     // await prisma.$executeRaw`DROP TABLE IF EXISTS User;`;
+//     cluster.on("exit", function (worker: any) {
+//       console.log("Worker", worker.id, " has exited.");
+//     });
+//   } else {
+//     app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+//   }
+// } else {
+//   app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
 // }
-
-// dropTable();

@@ -12,15 +12,16 @@ import { useQuery } from "@tanstack/react-query";
 const RootLayout = () => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(AuthContext);
+    console.log(user);
 
     const handleLogout = () => {
         localStorage.removeItem("authUser");
         setUser(null);
     };
 
-    const getSingleUser = async (id: number) => {
+    const getUserDetail = async () => {
         try {
-            const { data } = await axiosInstance.get(`/user/profile/${id}`);
+            const { data } = await axiosInstance.get(`/common/user-detail`);
             return data;
         } catch (error) {
             console.log(error);
@@ -36,31 +37,32 @@ const RootLayout = () => {
     };
 
     //@ts-ignore
-    const { data: profile = [], refetch } = useQuery({
-        queryKey: ["userprofile"],
-        queryFn: () => getSingleUser(user?.user?.id!),
+    const {
+        data: userDetail = [],
+        refetch,
+        isSuccess,
+    } = useQuery({
+        queryKey: ["user-detail"],
+        queryFn: getUserDetail,
     });
 
-    useEffect(() => {
-        if (!user) navigate("/login");
-        // else if (user?.user?.role === "user") navigate("/user");
-        // else if (user?.user?.role === "admin") navigate("/admin");
-    }, []);
+    if (isSuccess) {
+        setUser(userDetail);
+        localStorage.setItem("authUser", JSON.stringify(userDetail));
+    }
 
     useEffect(() => {
         refetch();
     });
     useEffect(() => {
-        if (user?.user?.role === "user" || user?.user?.role === "closer")
-            navigate("/user");
-        else if (user?.user?.role === "admin") navigate("/admin");
-        else if (user?.user?.role === "superadmin") navigate("/superadmin");
+        if (user?.role === "admin") navigate("/admin");
+        else if (user?.role === "superadmin") navigate("/superadmin");
     }, []);
     return (
         <>
             <ErrorBoundary FallbackComponent={() => <FallbackRenderer />}>
                 {user && (
-                    <div className="bg-blue-700 h-screen max-w-screen flex gap-3 gradient-backgroun">
+                    <div className="bg-blue-700 h-screen max-w-screen flex gap-3">
                         <div className="min-w-[17rem] max-w-[17rem] sidebar">
                             <Sidebar />
                         </div>

@@ -11,7 +11,6 @@
       href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"
     />
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-
     <style>
       .main {
         padding: 1rem;
@@ -62,6 +61,12 @@
         margin-right: 2%;
         vertical-align: top;
       }
+      .card-form-group {
+        display: inline-block;
+        width: 17.5%;
+        margin-right: 2%;
+        vertical-align: top;
+      }
 
       .form-group:last-child {
         margin-right: 0;
@@ -98,7 +103,7 @@
   <body>
     <main class="main">
       <h2 style="display: inline-block">ADD A NEW LEAD</h2>
-      <span class="date-label">Aug 28 2025</span>
+      <span class="date-label"><%= new Date().toDateString()%></span>
       <p>
         Start Adding Leads Now &amp; Expand Your Reach.<br />Your Gateway to New
         Connections.
@@ -106,11 +111,11 @@
 
       <h3>Customer Information</h3>
 
-      <form>
+      <form action="/user/add-lead" method="post">
         <div class="form-row">
           <div class="form-group">
             <label>Title <span class="required">*</span></label>
-            <select>
+            <select name="title" required>
               <option>Mr.</option>
               <option>Mrs.</option>
               <option>Miss</option>
@@ -118,63 +123,90 @@
           </div>
           <div class="form-group">
             <label>First Name <span class="required">*</span></label>
-            <input type="text" placeholder="First Name" />
+            <input
+              type="text"
+              placeholder="First Name"
+              name="firstName"
+              required
+            />
           </div>
           <div class="form-group">
             <label>Middle Name</label>
-            <input type="text" placeholder="Middle Name" />
+            <input type="text" placeholder="Middle Name" name="middleName" />
           </div>
           <div class="form-group">
             <label>Last Name <span class="required">*</span></label>
-            <input type="text" placeholder="Last Name" />
+            <input
+              type="text"
+              placeholder="Last Name"
+              name="lastName"
+              required
+            />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Centre <span class="required">*</span></label>
-            <input type="text" placeholder="Centre" />
+            <input
+              type="text"
+              placeholder="Centre"
+              name="centre"
+              required
+              value="001"
+            />
           </div>
           <div class="form-group" style="width: 74%">
             <label>Address</label>
-            <textarea placeholder="Address"></textarea>
+            <textarea placeholder="Address" name="address"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>City</label>
-            <input type="text" placeholder="West Bridgford" />
+            <input type="text" placeholder="West Bridgford" name="city" />
           </div>
           <div class="form-group">
             <label>County</label>
-            <input type="text" placeholder="Nottinghamshire" />
+            <input type="text" placeholder="Nottinghamshire" name="county" />
           </div>
           <div class="form-group">
             <label>Pin Code <span class="required">*</span></label>
-            <input type="text" placeholder="700001" />
+            <input type="text" placeholder="700001" name="pincode" required />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Password</label>
-            <input type="password" placeholder="********" />
+            <input type="password" placeholder="********" name="password" />
           </div>
           <div class="form-group">
             <label>Date of Birth</label>
-            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+            <input
+              type="text"
+              class="datepicker"
+              placeholder="dd-mm-yyyy"
+              name="dateOfbirth"
+            />
           </div>
           <div class="form-group">
             <label>Phone Number <span class="required">*</span></label>
-            <input type="text" placeholder="(033) 2347 9645" />
+            <input
+              type="tel"
+              maxlength="10"
+              placeholder="(033) 2347 9645"
+              name="phone"
+              required
+            />
           </div>
           <div class="form-group">
             <label>Power Of Attorney</label>
-            <select>
-              <option>Select Yes/No.</option>
-              <option>Yes</option>
-              <option>No</option>
+            <select name="poa" required>
+              <option selected disabled>Select Yes/No.</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
             </select>
           </div>
         </div>
@@ -185,37 +217,49 @@
           <div class="form-row">
             <div class="form-group">
               <label>Select Process</label>
-              <select>
-                <option>Select a Process</option>
-                <option>Process 1</option>
-                <option>Process 2</option>
+              <select name="process" required>
+                <option selected disabled>Select a Process</option>
+                <% process.forEach(function(item){%>
+                <option value="<%= item.id%>" style="text-transform: uppercase">
+                  <%= item.name %>
+                </option>
+                <%}) %>
               </select>
             </div>
 
             <div class="form-group">
               <label>Plan</label>
-              <select>
-                <option>Select a Plan</option>
-                <option>Plan A</option>
-                <option>Plan B</option>
+              <select name="plan" required>
+                <option selected disabled>Select a Plan</option>
+                <% plan.forEach(function(item){%>
+                <option value="<%= item.id%>" style="text-transform: uppercase">
+                  <%= item.name %>
+                </option>
+                <%}) %>
               </select>
             </div>
 
             <div class="form-group">
               <label>Closer</label>
-              <select>
-                <option>Select a Closer</option>
-                <option>Closer 1</option>
-                <option>Closer 2</option>
+              <select name="closer" required>
+                <option selected disabled>Select a Closer</option>
+                <% users.forEach(function(item){%>
+                <option value="<%= item.id%>" style="text-transform: uppercase">
+                  <%= item.name %>
+                </option>
+                <%}) %>
               </select>
             </div>
 
             <div class="form-group">
               <label>Verifier</label>
-              <select>
-                <option>Select a Verifier</option>
-                <option>Verifier 1</option>
-                <option>Verifier 2</option>
+              <select name="verifier" required>
+                <option selected disabled>Select a Verifier</option>
+                <% users.forEach(function(item){%>
+                <option value="<%= item.id%>" style="text-transform: uppercase">
+                  <%= item.name %>
+                </option>
+                <%}) %>
               </select>
             </div>
           </div>
@@ -223,20 +267,20 @@
           <div class="form-row">
             <div class="form-group" style="width: 48%">
               <label>Select Payment Method</label>
-              <select id="payment-method">
-                <option value="">Select a Payment Method</option>
+              <select id="payment-method" name="paymentMethod" required>
+                <option selected disabled>Select a Payment Method</option>
+                <option value="cash">Cash</option>
                 <option value="bank">Bank Transfer</option>
-                <option value="card">Credit Card</option>
-                <option value="paypal">PayPal</option>
+                <option value="card">Credit / Debit Card</option>
               </select>
             </div>
 
             <div class="form-group" style="width: 48%">
               <label>Shift</label>
-              <select>
-                <option>UNITED KINGDOM (UK)</option>
-                <option>USA</option>
-                <option>INDIA</option>
+              <select name="shift">
+                <option selected value="UK">UNITED KINGDOM (UK)</option>
+                <option value="US">UNITED STATES OF AMERICA (USA)</option>
+                <option value="AUS">AUSTRALIA (AUS)</option>
               </select>
             </div>
           </div>
@@ -248,30 +292,89 @@
           <div class="form-section">
             <div class="form-group">
               <label>Bank Name</label>
-              <input type="text" value="Bank of UK" />
+              <input type="text" placeholder="Bank of UK" name="bankName" />
             </div>
             <div class="form-group">
               <label>Account Name</label>
-              <input type="text" value="Steve Balmer" />
+              <input
+                type="text"
+                placeholder="Steve Balmer"
+                name="accountName"
+              />
             </div>
             <div class="form-group">
               <label>Account Number</label>
-              <input type="text" value="000405007899" />
+              <input
+                type="text"
+                placeholder="0004050078999000"
+                name="accountNumber"
+              />
             </div>
             <div class="form-group">
               <label>SORT Code</label>
-              <input type="text" value="*****" />
+              <input type="text" placeholder="*****" name="sort" />
             </div>
           </div>
         </div>
+        <!-- Credit / Debit Details (Hidden Initially) -->
+        <div id="card-details">
+          <h3>Credit / Debit Card Details</h3>
+          <div class="card-form-section">
+            <div class="card-form-group">
+              <label>Name On Card</label>
+              <input type="text" placeholder="Steve Balmer" name="cardName" />
+            </div>
+            <div class="card-form-group">
+              <label>Bank Name</label>
+              <input type="text" placeholder="Bank Of UK" name="cardBankName" />
+            </div>
+            <div class="card-form-group">
+              <label>Card Number</label>
+              <input
+                id="ccnum"
+                type="text"
+                placeholder="0004050078999000"
+                name="cardNumber"
+              />
+              <span id="errorMsg" style="color: red; font-size: 13px"></span>
+              <span id="cardType" style="color: red; font-size: 13px"></span>
+            </div>
+            <div class="card-form-group">
+              <label>Card Expiry</label>
+              <input
+                type="text"
+                placeholder="05 / 30"
+                name="expiry"
+                id="expiry"
+              />
+              <span id="expiry-errorMsg" style="font-size: 13px"></span>
+            </div>
+            <div class="card-form-group">
+              <label>Card CVV</label>
+              <input
+                type="text"
+                maxlength="3"
+                placeholder="123"
+                name="cardCvv"
+              />
+            </div>
+          </div>
+        </div>
+        <button>submit</button>
       </form>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.4.1/jquery.payment.min.js"></script>
+
     <script>
       $(function () {
         $(".datepicker").datepicker({
           dateFormat: "dd-mm-yy",
         });
       });
+
+      $("#bank-details").slideUp(); // hide if not bank
+      $("#card-details").slideUp(); // hide if not bank
 
       $(document).ready(function () {
         $("#payment-method").change(function () {
@@ -283,6 +386,51 @@
           }
         });
       });
+
+      $(document).ready(function () {
+        $("#payment-method").change(function () {
+          var method = $(this).val();
+          if (method === "card") {
+            $("#card-details").slideDown(); // show with animation
+          } else {
+            $("#card-details").slideUp(); // hide if not bank
+          }
+        });
+      });
+
+      var $cardInput = $("#ccnum");
+      var $type = $("#cardType");
+      var $expiryInput = $("#expiry");
+
+      $expiryInput.payment("formatCardExpiry");
+      $cardInput.payment("formatCardNumber");
+
+      $cardInput.on("keyup input", function () {
+        var number = $cardInput.val();
+        var type = $.payment.cardType(number);
+
+        if ($.payment.validateCardNumber(number)) {
+          $("#errorMsg").text("✅ Valid Card").css("color", "green");
+          if (type) {
+            $type.text("- " + type.toUpperCase()).css("color", "green");
+          } else {
+            $type.text("Unknown card type");
+          }
+        } else {
+          $type.text("");
+          $("#errorMsg").text("❌ Invalid Card").css("color", "red");
+        }
+      });
+      $expiryInput.on("keyup input", function () {
+        var expiry = $.payment.cardExpiryVal($expiryInput.val());
+        if ($.payment.validateCardExpiry(expiry.month, expiry.year)) {
+          $("#expiry-errorMsg").text("✅ Valid Expiry").css("color", "green");
+        } else {
+          $("#expiry-errorMsg").text("❌ Invalid Expiry").css("color", "red");
+        }
+      });
+
+      $("input.expiry").payment("formatCardExpiry");
     </script>
   </body>
 </html>

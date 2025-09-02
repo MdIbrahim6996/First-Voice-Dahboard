@@ -62,7 +62,6 @@ export const isUserAuth = async (
 ) => {
   try {
     const { token } = req.cookies;
-    console.log("Token from cookie:", token); // Debugging line
     if (!token) {
       return res.redirect("/login");
     }

@@ -8,7 +8,7 @@ const SuperadminLayout = () => {
 
     return (
         <>
-            {user?.user?.role === "superadmin" ? (
+            {user?.role === "superadmin" ? (
                 <Outlet />
             ) : (
                 <div className="bg-red-500 absolute top-0 left-0 w-full h-screen">

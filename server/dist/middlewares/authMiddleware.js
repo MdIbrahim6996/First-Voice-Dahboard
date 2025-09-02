@@ -95,7 +95,6 @@ var isUserAuth = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 0:
                 _a.trys.push([0, 4, , 5]);
                 token = req.cookies.token;
-                console.log("Token from cookie:", token); // Debugging line
                 if (!token) {
                     return [2 /*return*/, res.redirect("/login")];
                 }

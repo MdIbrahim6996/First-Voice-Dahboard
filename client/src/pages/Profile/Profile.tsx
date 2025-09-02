@@ -14,17 +14,17 @@ const Profile = () => {
     const [time, setTime] = useState("thisMonth");
 
     const { data = [] } = useQuery({
-        queryKey: ["bar-chart", user?.user?.id],
-        queryFn: () => getUserMonthWiseAttendance(user?.user.id!),
+        queryKey: ["bar-chart", user?.id],
+        queryFn: () => getUserMonthWiseAttendance(user?.id!),
     });
 
     const { data: leadData = [] } = useQuery({
-        queryKey: [`profile-${user?.user?.id}`, time],
-        queryFn: () => getUserInfo(user?.user?.id!, time),
+        queryKey: [`profile-${user?.id}`, time],
+        queryFn: () => getUserInfo(user?.id!, time),
     });
     const { data: cardData } = useQuery({
-        queryKey: [`profile-${user?.user?.id}`],
-        queryFn: () => getProfileCardInfo(user?.user?.id!),
+        queryKey: [`profile-${user?.id}`],
+        queryFn: () => getProfileCardInfo(user?.id!),
     });
 
     const piedata = {
@@ -75,7 +75,7 @@ const Profile = () => {
                         transition={{ duration: 0.5 }}
                         className="text-3xl font-semibold uppercase origin-center w-fit"
                     >
-                        Good Day, {user?.user.alias}
+                        Good Day, {user?.alias}
                     </motion.p>
                     <motion.p
                         initial={{ opacity: 0, y: -20 }}

@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { createEmployeeAttendance } from "../../api/attendance";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../context/authContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import Pusher from "pusher-js";
+import { createEmployeeAttendance } from "../../api/attendance";
+import { AuthContext } from "../../context/authContext";
 import { getDailyLeadCount } from "../../api/dashboard";
 import LeadCountChartModal from "../../components/Modal/LeadCountChartModal";
 import EmptyState from "../../components/EmptyState/EmptyState";
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
     const { data: leadCount = [], isLoading } = useQuery({
         queryKey: ["leadCount"],
-        queryFn: () => getDailyLeadCount(user?.user?.id!),
+        queryFn: () => getDailyLeadCount(user?.id!),
     });
 
     return (
@@ -65,7 +65,7 @@ const Dashboard = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 onClick={() =>
-                                    attendanceMutation.mutate(user?.user?.id)
+                                    attendanceMutation.mutate(user?.id)
                                 }
                                 className="py-1.5 px-10 bg-blue-700 text-white rounded-md text-sm cursor-pointer"
                             >
@@ -150,7 +150,7 @@ const Dashboard = () => {
             {show && (
                 <LeadCountChartModal
                     handleClose={() => setShow(false)}
-                    id={user?.user?.id!}
+                    id={user?.id!}
                 />
             )}
         </>

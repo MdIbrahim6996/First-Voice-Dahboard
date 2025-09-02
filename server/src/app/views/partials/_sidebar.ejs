@@ -63,6 +63,12 @@
         <img src="/images/fv-logo.png" alt="" />
       </div>
 
+      <% if (!user) { %>
+      <script>
+        window.location.href = "/login";
+      </script>
+      <% } %>
+
       <!-- Menu -->
       <ul class="menu">
         <li class="<%= currentPath === '/user/dashboard' ? 'active' : '' %>">

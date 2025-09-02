@@ -20,6 +20,7 @@ export const getAllNotificationOfUser = async (
     });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 export const deleteNotification = async (
@@ -27,20 +28,22 @@ export const deleteNotification = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { userId, id } = req.params;
+  const { id: userId } = req.user!;
+  const { id } = req.params;
   try {
     const existingNotif = await prisma.notification.findFirst({
       where: { id: parseInt(id) },
     });
-    if (existingNotif?.userId !== parseInt(userId)) {
+    if (existingNotif?.userId !== userId) {
       throw new Error("You are not allowed to perform this operation");
     }
 
     const notif = await prisma.notification.delete({
-      where: { id: parseInt(id), userId: parseInt(userId) },
+      where: { id: parseInt(id), userId: userId },
     });
     res.send(notif);
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };

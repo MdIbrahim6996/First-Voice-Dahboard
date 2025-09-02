@@ -7,7 +7,7 @@ import { getSingleEmployeeEveryAttendance } from "../../api/userAttendance";
 
 const Attendance = () => {
     const { user } = useContext(AuthContext);
-    const userId = user?.user?.id;
+    const userId = user?.id;
     const { data } = useQuery({
         queryKey: ["user-attendance", userId],
         queryFn: () => getSingleEmployeeEveryAttendance(userId!),

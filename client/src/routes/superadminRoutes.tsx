@@ -1,4 +1,4 @@
-import type { RouteObject } from "react-router-dom";
+import { Navigate, type RouteObject } from "react-router-dom";
 import NotFoundPage from "../pages/NotFound";
 import SuperadminLayout from "../components/Shared/Layout/SuperadminLayout";
 
@@ -8,12 +8,7 @@ export const superadminRoutes: RouteObject = {
     children: [
         {
             path: "",
-            async lazy() {
-                let MainDashboard = await import(
-                    "../pages/MainDashboard/MainDashboard"
-                );
-                return { Component: MainDashboard.default };
-            },
+            element: <Navigate to={"/superadmin/main-dashboard"} />,
         },
         {
             path: "main-dashboard",

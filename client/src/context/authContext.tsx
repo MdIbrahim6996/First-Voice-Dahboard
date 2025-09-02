@@ -6,15 +6,12 @@ import {
 } from "react";
 
 type UserData = {
-    user: {
-        id: number;
-        name: string;
-        alias: string;
-        email: string;
-        password: string;
-        role: string;
-        token: string;
-    };
+    id: number;
+    name: string;
+    alias: string;
+    email: string;
+    password: string;
+    role: string;
     token: string;
 } | null;
 

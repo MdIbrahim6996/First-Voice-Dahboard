@@ -6,7 +6,7 @@ export default function NotFoundPage() {
         <div className="absolute top-0 left-0 w-full">
             <div className="min-h-screen flex flex-col items-center justify-center bg-white text-center p-6">
                 <motion.img
-                    src="/broken.svg"
+                    src="/app/broken.svg"
                     alt="404 Illustration"
                     className="w-40 h-40 mb-6"
                     initial={{ opacity: 0, scale: 0.8 }}

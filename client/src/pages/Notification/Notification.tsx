@@ -12,12 +12,12 @@ const Notification = () => {
 
     const { data: notif = [], isLoading } = useQuery({
         queryKey: ["notif"],
-        queryFn: () => getAllNotifs(user?.user?.id!),
+        queryFn: () => getAllNotifs(user?.id!),
     });
 
     const deleteMutation = useMutation({
         mutationKey: ["del-notif"],
-        mutationFn: (id: number) => deleteNotifs(user?.user?.id!, id),
+        mutationFn: (id: number) => deleteNotifs(user?.id!, id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["notif"] });
         },

@@ -12,7 +12,7 @@ import planRouter from "./plan.route";
 // import employeeAttendance from "./employeeAttendance.route";
 // import statusRoute from "./status.route";
 // import notificationRoute from "./notification.route";
-// import profileRoute from "./profile.route";
+import commonRouter from "./common.route";
 
 import superAdminRoute from "./superadmin";
 import userRoute from "./user";
@@ -23,9 +23,9 @@ const router = Router();
 
 router.use("/superadmin", isAuth, isSuperAdmin, superAdminRoute);
 router.use("/user", isAuth, userRoute);
+router.use("/common", isAuth, commonRouter);
 
 router.use("/auth", authRouter);
-// router.use("/attendance", attendanceRouter);
 // router.use("/dashboard", dashboardRouter);
 router.use("/main-dashboard", mainDashboardRouter);
 // router.use("/holiday", holidayRouter);

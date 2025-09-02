@@ -1,12 +1,11 @@
 import {
-    userLinks,
     adminLinks,
     superAdminLinks,
     PUSHER_SECRET,
     PUSHER_CLUSTER,
 } from "../../../constants/appConstant";
 
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../context/authContext";
 import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -14,10 +13,9 @@ import { getAllNotifs } from "../../../api/notifications";
 import NotificationToast from "../../NotificationToast/NotificationToast";
 import toast from "react-hot-toast";
 import Pusher from "pusher-js";
-import { MdPerson } from "react-icons/md";
+import { axiosInstance } from "../../../lib/axiosInstance";
 
 const Sidebar = () => {
-    const navigate = useNavigate();
     const { user, setUser } = useContext(AuthContext);
 
     const {
@@ -25,20 +23,21 @@ const Sidebar = () => {
         isSuccess,
         isRefetching,
     } = useQuery({
-        queryKey: ["notif", user?.user?.id],
-        queryFn: () => getAllNotifs(user?.user?.id!),
+        queryKey: ["notif", user?.id],
+        queryFn: () => getAllNotifs(user?.id!),
     });
 
-    const [length, setLength] = useState(0);
+    const [_, setLength] = useState(0);
+
     useEffect(() => {
         setLength(notif?.length);
     }, [isSuccess, isRefetching]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await axiosInstance.post(`/auth/logout`);
         localStorage.removeItem("authUser");
         setUser(null);
-        navigate("/login");
-        window.location.reload();
+        window.location.href = "http://localhost:4000/login";
     };
 
     useEffect(() => {
@@ -46,7 +45,7 @@ const Sidebar = () => {
             cluster: PUSHER_CLUSTER,
         });
         const channel = pusher.subscribe("lead");
-        channel.bind(`status-change-${user?.user?.id}`, (data: any) => {
+        channel.bind(`status-change-${user?.id}`, (data: any) => {
             setLength((prev: number) => prev + 1);
             toast.custom(<NotificationToast data={data?.notif} />, {
                 duration: 10 * 1000,
@@ -71,44 +70,7 @@ const Sidebar = () => {
                             />
                         </Link>
                     </div>
-                    {(user?.user?.role === "user" ||
-                        user?.user?.role === "closer") && (
-                        <div className="my-10 space-y-1">
-                            {userLinks?.map((item) => (
-                                <NavLink
-                                    to={item.link}
-                                    key={item.id}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "cursor-pointer flex gap-2 items-center bg-white text-blue-700 font-semibold px-5 rounded-md py-1.5"
-                                            : "cursor-pointer flex gap-2 items-center hover:bg-white/80 hover:text-blue-800 hover:font-semibold hover:px-5 transition-all duration-300 rounded-md py-1.5 px-2"
-                                    }
-                                >
-                                    {item.icon}
-                                    {item.title}
-                                </NavLink>
-                            ))}
-
-                            <NavLink
-                                to={"/user/notifications"}
-                                key={20}
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? "cursor-pointer flex justify-between items-center bg-white text-blue-700 font-semibold px-5 rounded-md py-1.5"
-                                        : "cursor-pointer flex justify-between items-center hover:bg-white/80 hover:text-blue-800 hover:font-semibold hover:px-5 transition-all duration-300 rounded-md py-1.5 px-2"
-                                }
-                            >
-                                <div className="flex gap-2 items-center">
-                                    <MdPerson className="text-xl" />
-                                    <p>Notifications</p>
-                                </div>
-                                <p className="bg-white flex justify-center items-center rounded-full h-5 w-5 text-blue-700">
-                                    {length}
-                                </p>
-                            </NavLink>
-                        </div>
-                    )}
-                    {user?.user?.role === "admin" && (
+                    {user?.role === "admin" && (
                         <div className="my-10 space-y-1">
                             {adminLinks?.map((item) => (
                                 <NavLink
@@ -126,7 +88,7 @@ const Sidebar = () => {
                             ))}
                         </div>
                     )}
-                    {user?.user?.role === "superadmin" && (
+                    {user?.role === "superadmin" && (
                         <div className="my-10 mb-14 space-y-1 h-[22rem] overflow-y-scroll sidebar">
                             {superAdminLinks?.map((item) => (
                                 <NavLink
@@ -153,8 +115,8 @@ const Sidebar = () => {
                             className="w-10 h-10 rounded-full border border-slate-300"
                         />
                         <div>
-                            <p>{user?.user?.email}</p>
-                            <p className="capitalize">({user?.user?.role})</p>
+                            <p>{user?.email}</p>
+                            <p className="capitalize">({user?.role})</p>
                         </div>
                     </div>
                     <button

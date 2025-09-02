@@ -36,92 +36,70 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProcessLeadCount = exports.getTopSellers = void 0;
-var prismaClient_1 = require("../lib/prismaClient");
-var getTopSellers = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var currentDay, nextDay, seller, error_1;
+exports.deleteNotification = exports.getAllNotificationOfUser = void 0;
+var prismaClient_1 = require("../../lib/prismaClient");
+//USER CONTROLLERS
+var getAllNotificationOfUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, notif, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                currentDay = new Date();
-                currentDay.setUTCHours(0, 0, 0, 0);
-                nextDay = new Date();
-                nextDay.setUTCHours(0, 0, 0, 0);
-                nextDay.setUTCDate(nextDay.getUTCDate() + 1);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, prismaClient_1.prisma.leadCount.findMany({
-                        where: {
-                            updatedAt: { gte: currentDay, lte: nextDay },
-                            userId: { not: null },
-                            count: { gt: 0 },
-                        },
-                        orderBy: [{ count: "desc" }, { updatedAt: "asc" }],
-                        include: { user: { select: { name: true, alias: true } } },
+                _a.trys.push([0, 2, , 3]);
+                userId = req.user.id;
+                return [4 /*yield*/, prismaClient_1.prisma.notification.findMany({
+                        where: { userId: userId },
+                        orderBy: { createdAt: "desc" },
                     })];
+            case 1:
+                notif = _a.sent();
+                res.render("pages/notification", {
+                    notifications: notif,
+                    userId: userId,
+                    currentPath: "/user/notification",
+                });
+                return [3 /*break*/, 3];
             case 2:
-                seller = _a.sent();
-                res.send(seller);
-                return [3 /*break*/, 4];
-            case 3:
                 error_1 = _a.sent();
                 console.log(error_1);
                 next(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-exports.getTopSellers = getTopSellers;
-var getProcessLeadCount = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var date, date2, leadCount, error_2;
+exports.getAllNotificationOfUser = getAllNotificationOfUser;
+var deleteNotification = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, id, existingNotif, notif, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                date = new Date();
-                date.setUTCHours(0, 0, 0, 0);
-                date2 = new Date();
-                date2.setUTCDate(date.getDate() + 1);
-                date2.setUTCHours(0, 0, 0, 0);
+                userId = req.user.id;
+                id = req.params.id;
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, prismaClient_1.prisma.process.findMany({
-                        include: {
-                            User: {
-                                // orderBy: { LeadCount: { _count: "desc" } },
-                                omit: {
-                                    email: true,
-                                    employeeId: true,
-                                    phone: true,
-                                    createdAt: true,
-                                    isBlocked: true,
-                                    password: true,
-                                    updatedAt: true,
-                                    processId: true,
-                                },
-                                include: {
-                                    LeadCount: {
-                                        select: { count: true },
-                                        where: { createdAt: { gte: date, lte: date2 } },
-                                    },
-                                },
-                            },
-                        },
+                _a.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, prismaClient_1.prisma.notification.findFirst({
+                        where: { id: parseInt(id) },
                     })];
             case 2:
-                leadCount = _a.sent();
-                console.log(leadCount);
-                res.send(leadCount);
-                return [3 /*break*/, 4];
+                existingNotif = _a.sent();
+                if ((existingNotif === null || existingNotif === void 0 ? void 0 : existingNotif.userId) !== userId) {
+                    throw new Error("You are not allowed to perform this operation");
+                }
+                return [4 /*yield*/, prismaClient_1.prisma.notification.delete({
+                        where: { id: parseInt(id), userId: userId },
+                    })];
             case 3:
+                notif = _a.sent();
+                res.send(notif);
+                return [3 /*break*/, 5];
+            case 4:
                 error_2 = _a.sent();
                 console.log(error_2);
                 next(error_2);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
-exports.getProcessLeadCount = getProcessLeadCount;
+exports.deleteNotification = deleteNotification;

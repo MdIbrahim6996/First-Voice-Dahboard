@@ -6,11 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "../../components/Loader/Loader";
 
 const MainDashboard = () => {
-    const { data: processLeadCount, isLoading } = useQuery({
+    const { data: processLeadCount = [], isLoading } = useQuery({
         queryKey: ["process-lead-count"],
         queryFn: getProcessLeadCount,
     });
-    console.log(processLeadCount);
 
     return (
         <div className="overflow-hidden">

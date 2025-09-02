@@ -36,33 +36,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProcessLeadCount = exports.getTopSellers = void 0;
+exports.getUserDetails = void 0;
 var prismaClient_1 = require("../lib/prismaClient");
-var getTopSellers = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var currentDay, nextDay, seller, error_1;
+var getUserDetails = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                currentDay = new Date();
-                currentDay.setUTCHours(0, 0, 0, 0);
-                nextDay = new Date();
-                nextDay.setUTCHours(0, 0, 0, 0);
-                nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+                id = req.user.id;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, prismaClient_1.prisma.leadCount.findMany({
-                        where: {
-                            updatedAt: { gte: currentDay, lte: nextDay },
-                            userId: { not: null },
-                            count: { gt: 0 },
-                        },
-                        orderBy: [{ count: "desc" }, { updatedAt: "asc" }],
-                        include: { user: { select: { name: true, alias: true } } },
+                return [4 /*yield*/, prismaClient_1.prisma.user.findFirst({
+                        where: { id: id },
                     })];
             case 2:
-                seller = _a.sent();
-                res.send(seller);
+                user = _a.sent();
+                res.send(user);
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
@@ -73,55 +63,4 @@ var getTopSellers = function (req, res, next) { return __awaiter(void 0, void 0,
         }
     });
 }); };
-exports.getTopSellers = getTopSellers;
-var getProcessLeadCount = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var date, date2, leadCount, error_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                date = new Date();
-                date.setUTCHours(0, 0, 0, 0);
-                date2 = new Date();
-                date2.setUTCDate(date.getDate() + 1);
-                date2.setUTCHours(0, 0, 0, 0);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, prismaClient_1.prisma.process.findMany({
-                        include: {
-                            User: {
-                                // orderBy: { LeadCount: { _count: "desc" } },
-                                omit: {
-                                    email: true,
-                                    employeeId: true,
-                                    phone: true,
-                                    createdAt: true,
-                                    isBlocked: true,
-                                    password: true,
-                                    updatedAt: true,
-                                    processId: true,
-                                },
-                                include: {
-                                    LeadCount: {
-                                        select: { count: true },
-                                        where: { createdAt: { gte: date, lte: date2 } },
-                                    },
-                                },
-                            },
-                        },
-                    })];
-            case 2:
-                leadCount = _a.sent();
-                console.log(leadCount);
-                res.send(leadCount);
-                return [3 /*break*/, 4];
-            case 3:
-                error_2 = _a.sent();
-                console.log(error_2);
-                next(error_2);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getProcessLeadCount = getProcessLeadCount;
+exports.getUserDetails = getUserDetails;

@@ -5,7 +5,7 @@ const FallbackRenderer = () => {
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4">
             <img
-                src="/wrong.jpg" // Replace this with your local image path or base64
+                src="/wrong.jpg"
                 alt="Something went wrong"
                 className="w-64 mb-8"
             />

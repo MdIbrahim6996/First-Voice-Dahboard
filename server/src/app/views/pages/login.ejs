@@ -113,18 +113,62 @@
         display: block;
         clear: both;
       }
+
+      .animated-header-slideup {
+        /* text-align: center; */
+        position: relative;
+
+        /* Vendor-prefixed + standard animation */
+        -moz-animation: headerSlideUp 0.5s ease-in forwards;
+        animation: headerSlideUp 0.5s ease-in forwards;
+      }
+
+      .animated-subheader-slideup {
+        /* text-align: center; */
+        position: relative;
+
+        /* Vendor-prefixed + standard animation */
+        -moz-animation: headerSlideUp 0.5s ease-in;
+        animation: headerSlideUp 0.5s ease-in;
+      }
+
+      /* Firefox prefixed keyframes */
+      @-moz-keyframes headerSlideUp {
+        from {
+          opacity: 0;
+          top: 50px;
+        }
+        to {
+          opacity: 1;
+          top: 0;
+        }
+      }
+
+      /* Standard keyframes */
+      @keyframes headerSlideUp {
+        from {
+          opacity: 0;
+          top: 50px;
+        }
+        to {
+          opacity: 1;
+          top: 0;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="container clearfix">
       <!-- Left Side -->
       <div class="left">
-        <h1>First Voice Global Services</h1>
-        <p>Driving Global Growth Through Smarter Sales Solutions</p>
+        <h1 class="animated-header-slideup">First Voice Global Services</h1>
+        <p class="animated-subheader-slideup">
+          Driving Global Growth Through Smarter Sales Solutions
+        </p>
       </div>
 
       <!-- Right Side -->
-      <div class="right">
+      <div class="right animated-header-slideup">
         <h2>Hello Again!</h2>
         <p>Welcome Back</p>
 
@@ -147,5 +191,9 @@
         <a href="#" class="forgot">Forgot Password</a>
       </div>
     </div>
+    <script>
+      var errormsg = "<%= error%>";
+      if (errormsg) alert(errormsg);
+    </script>
   </body>
 </html>

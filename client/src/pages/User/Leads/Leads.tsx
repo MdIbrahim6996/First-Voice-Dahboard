@@ -32,7 +32,7 @@ const Leads = () => {
         queryKey: ["leads", status],
         queryFn: () =>
             getAllLeadOfUser(
-                user?.user?.id!,
+                user?.id!,
                 status,
                 saleDate,
                 fromDate,
@@ -134,7 +134,7 @@ const Leads = () => {
                             transition={{ duration: 0.5, delay: 0.25 }}
                             className="mt-1 text-sm font-normal text-gray-700 w-[50%]"
                         >
-                            Browse list of leads closed by {user?.user?.name}.
+                            Browse list of leads closed by {user?.name}.
                         </motion.p>
                     </div>
 

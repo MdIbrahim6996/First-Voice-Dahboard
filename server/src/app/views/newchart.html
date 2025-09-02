@@ -1,67 +1,106 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Notification UI</title>
-    <link rel="stylesheet" href="style.css" />
-    <style>
-      /* Notification Box */
-      .notification {
-        background: #d3d2d2;
-        border-radius: 8px;
-        /* padding: 10px; */
-        margin-bottom: 15px;
-        width: 320px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        position: absolute;
-        top: 2rem;
-        left: 50%;
-        transform: translate(-50%, 0);
-        -moz-transform: translate(-50%, 0);
-      }
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wireframe - Balsamiq Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fafafa;
+      color: #333;
+    }
 
-      /* Header */
-      .notif-header {
-        overflow: hidden; /* old clearfix */
-        background-color: white;
-        padding: 0.5rem 1rem;
-      }
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      border-bottom: 2px solid #ccc;
+      background: #fff;
+    }
 
-      .notif-title {
-        font-weight: bold;
-        font-size: 12px;
-        vertical-align: middle;
-      }
+    .logo {
+      width: 120px;
+      height: 30px;
+      background: #ccc;
+    }
 
-      .notif-time {
-        float: right;
-        font-size: 11px;
-        color: #555;
-      }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
 
-      /* Body */
-      .notif-body {
-        font-size: 13px;
-        line-height: 1.4em;
-        padding: 1rem;
-      }
-      .notif-body p {
-        margin: 5px 0 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="notification">
-      <div class="notif-header">
-        <span class="notif-title">LOREMIPSUM</span>
-        <!-- <span class="notif-time">now</span> -->
-      </div>
-      <div class="notif-body">
-        <p>
-          Lorem ipsum dolor sit amet, conLorem ipsum dolor sit amet, conLorem
-          ipsum dolor sit amet.
-        </p>
-      </div>
+    nav li {
+      width: 80px;
+      height: 20px;
+      background: #ddd;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .auth-buttons div {
+      width: 80px;
+      height: 25px;
+      background: #bbb;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .hero h1 {
+      width: 60%;
+      margin: 0 auto 20px;
+      height: 50px;
+      background: #ddd;
+    }
+
+    .hero p {
+      width: 50%;
+      margin: 0 auto 30px;
+      height: 20px;
+      background: #eee;
+    }
+
+    .hero .cta {
+      display: inline-block;
+      width: 180px;
+      height: 40px;
+      background: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"></div>
+    <nav>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </nav>
+    <div class="auth-buttons">
+      <div></div>
+      <div></div>
     </div>
-  </body>
+  </header>
+
+  <section class="hero">
+    <h1></h1>
+    <p></p>
+    <div class="cta"></div>
+  </section>
+</body>
 </html>
