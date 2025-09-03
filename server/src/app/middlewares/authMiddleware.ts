@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prismaClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { CLIENT_URL } from "../utils/appContants";
 
 interface IJwtPayload extends JwtPayload {
   id: string;
@@ -84,6 +85,10 @@ export const isUserAuth = async (
       })) as User;
 
       req.user = user;
+
+      if (user.role === "superadmin") {
+        return res.redirect(CLIENT_URL);
+      }
     } else {
       res.redirect("/login");
       throw new Error("Invalid token. Please Sign in.");

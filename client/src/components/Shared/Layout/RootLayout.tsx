@@ -12,7 +12,6 @@ import { useQuery } from "@tanstack/react-query";
 const RootLayout = () => {
     const navigate = useNavigate();
     const { user, setUser } = useContext(AuthContext);
-    console.log(user);
 
     const handleLogout = () => {
         localStorage.removeItem("authUser");
@@ -29,7 +28,7 @@ const RootLayout = () => {
                 toast.error(error?.response?.data?.message);
                 if (error?.response?.status === 401) {
                     handleLogout();
-                    window.location.href = "/token-expired";
+                    window.location.href = "http://localhost:4000/login";
                 }
             }
             return error;
@@ -45,6 +44,7 @@ const RootLayout = () => {
         queryKey: ["user-detail"],
         queryFn: getUserDetail,
     });
+    console.log("userdetail", userDetail);
 
     if (isSuccess) {
         setUser(userDetail);

@@ -64,7 +64,6 @@ export const getProcessLeadCount = async (
         },
       },
     });
-    console.log(leadCount);
     res.send(leadCount);
   } catch (error) {
     console.log(error);

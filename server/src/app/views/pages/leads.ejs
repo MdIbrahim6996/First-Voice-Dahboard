@@ -21,19 +21,37 @@
         <div class="filters">
           <div>
             <label>Sale Date</label>
-            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+            <input
+              type="text"
+              class="datepicker"
+              placeholder="yyyy-mm-dd"
+              id="saleDate"
+              name="saleDate"
+            />
           </div>
           <div>
             <label>From Date</label>
-            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+            <input
+              type="text"
+              class="datepicker"
+              placeholder="yyyy-mm-dd"
+              id="fromDate"
+              name="fromDate"
+            />
           </div>
           <div>
             <label>To Date</label>
-            <input type="text" class="datepicker" placeholder="dd-mm-yyyy" />
+            <input
+              type="text"
+              class="datepicker"
+              placeholder="yyyy-mm-dd"
+              id="toDate"
+              name="toDate"
+            />
           </div>
         </div>
         <div class="filter-buttons">
-          <button class="btn-green">Search</button>
+          <button class="btn-green" id="searchBtn">Search</button>
           <a href="/user/leads" class="reset-link btn-blue">Reset Filters</a>
         </div>
       </div>
@@ -50,7 +68,9 @@
         <% }) %>
       </div>
       <!-- Table -->
-      <table>
+
+      <% if(leads && leads.length>0) {%>
+      <table id="lead-content">
         <thead>
           <tr>
             <th>STATUS</th>
@@ -70,26 +90,195 @@
                 ><%= lead.status.name %></span
               >
             </td>
-            <td>Wed Aug 20 2025</td>
+            <td><%= new Date(lead.saleDate).toString().substring(0,15) %></td>
             <td>
               <%= lead.title %> <%= lead.firstName %> <%= lead.middleName %> <%=
               lead.lastName %>
             </td>
             <td class="process-name"><%= lead.process.name %></td>
             <td class="plan-name"><%= lead.plan.name %></td>
-            <td><button class="action-btn">View Change In Status</button></td>
+            <td>
+              <a
+                href="#"
+                class="openModalBtn btn btn-green action-btn"
+                data-lead-id="<%= lead.id %>"
+              >
+                View Change In Status
+              </a>
+              <!-- <button class="btn btn-green action-btn">
+                View Change In Status
+              </button> -->
+            </td>
           </tr>
           <% }) %>
         </tbody>
+        <!-- <a href="#" id="openModalBtn" class="btn btn-green action-btn">
+          View Change In Status
+        </a> -->
       </table>
+      <% } else { %>
+      <!-- STATUS CHANGE REASON MODAL -->
+      <%- include('../partials/_empty-state') %> <%} %>
+
+      <!-- STATUS CHANGE REASON MODAL -->
+
+      <!-- Overlay + Modal -->
+      <div class="modal-overlay" id="overlay"></div>
+      <div
+        class="modal"
+        id="chartModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chartTitle"
+      >
+        <!-- [ { id: 9, reason: 'good', fromStatus: 'pending', toStatus: 'success',
+        userId: 14, leadId: 35, createdAt: 2025-08-29T16:21:00.875Z, updatedAt:
+        2025-08-29T16:21:00.875Z } ] -->
+        <div class="modal-header">
+          <h3 class="modal-title" id="chartTitle">
+            Change in Status Information
+          </h3>
+        </div>
+        <div class="modal-body">
+          <!-- <div class="status-item">
+            <p>
+              <span class="status-label success">item.fromStatu</span>
+              &rarr;
+              <span class="status-label pending">item.toStatus</span>
+            </p>
+            <div class="status-meta">
+              <p><span class="reason-label">REASON :</span> item.reason</p>
+              <p class="date-text">Tue Sep 03 2024 14:30</p>
+            </div>
+          </div> -->
+        </div>
+        <div class="modal-footer">
+          <button class="close-btn" id="closeModalBtn">Close</button>
+        </div>
+      </div>
     </main>
 
     <script>
-      $(function () {
-        $(".datepicker").datepicker({
-          dateFormat: "dd-mm-yy", // same format you wanted
-        });
-      });
+            // ES5 only (Firefox 28 safe)
+            var leads = <%- JSON.stringify(leads) %>;
+
+
+            var closeBtn = document.getElementById("closeModalBtn");
+            var overlay = document.getElementById("overlay");
+            var modal = document.getElementById("chartModal");
+            var modalContent = document.querySelector(".modal-body")
+      console.log(modalContent)
+            var openBtn = document.getElementsByClassName("openModalBtn");
+            for (var i = 0; i < openBtn.length; i++) {
+              openBtn[i].addEventListener(
+                "click",
+                function (e) {
+                  e.preventDefault();
+                  var leadId = +this.getAttribute("data-lead-id");
+                  var leadData = leads.find(function(item){
+                        return item.id===leadId
+                      })
+                      var statusChangeArray = leadData.StatusChangeReason
+                          modalContent.innerHTML = "";
+
+                          if (statusChangeArray && statusChangeArray.length > 0) {
+              var list = document.createElement("ul");
+
+              statusChangeArray.forEach(function(item) {
+                var li = document.createElement("li");
+                li.innerHTML =
+                '<div class="status-item">' +
+                  '<p>' +
+                    '<span class="status-label success">' + item.fromStatus + '</span>' +
+                    ' &rarr; ' +
+                    '<span class="status-label pending">' + item.toStatus + '</span>' +
+                  '</p>' +
+                  '<div class="status-meta">' +
+                    '<p><span class="reason-label">REASON :</span> ' + item.reason + '</p>' +
+                    '<p class="date-text">'+new Date(item.createdAt).toString().substring(0,25)+'</p>' +
+                  '</div>' +
+                '</div>';
+
+
+                // li.innerHTML =
+                //   "<strong>" + item.fromStatus + "</strong> → <strong>" +
+                //   item.toStatus + "</strong> | Reason: " + item.reason +
+                //   " | Date: " + new Date(item.createdAt).toDateString();
+                list.appendChild(li);
+              });
+
+              modalContent.appendChild(list);
+            } else {
+              modalContent.innerHTML = "<p>No status changes available.</p>";
+            }
+
+                  // Update modal dynamically
+                  // document.getElementById("chartTitle").innerHTML =
+                  //   "Change in Status for " + leadName + " (ID: " + leadId + ")";
+
+                  openModal();
+                },
+                false
+              );
+            }
+
+            var saleDate = document.getElementById("saleDate");
+            var fromDate = document.getElementById("fromDate");
+            var toDate = document.getElementById("toDate");
+            var searchBtn = document.getElementById("searchBtn");
+            searchBtn.addEventListener("click", function () {
+              var saleDateQuery = encodeURIComponent(saleDate.value);
+              var fromDateQuery = encodeURIComponent(fromDate.value);
+              var toDateQuery = encodeURIComponent(toDate.value);
+
+              window.location.search =
+                "saleDate=" +
+                saleDateQuery +
+                "&fromDate=" +
+                fromDateQuery +
+                "&toDate=" +
+                toDateQuery;
+            });
+
+            function openModal() {
+              overlay.className = "modal-overlay show";
+              modal.className = "modal show";
+            }
+
+            function closeModal() {
+              overlay.className = "modal-overlay";
+              modal.className = "modal";
+            }
+
+            // Wire up events
+            // openBtn.addEventListener("click", openModal, false);
+            closeBtn.addEventListener("click", closeModal, false);
+            overlay.addEventListener("click", closeModal, false);
+
+            // Optional: handle ESC key to close modal
+            document.addEventListener(
+              "keydown",
+              function (e) {
+                e = e || window.event;
+                if (e.keyCode === 27) {
+                  closeModal();
+                }
+              },
+              false
+            );
+
+            function initDatepickers() {
+              // Destroy before re-initializing to avoid duplicates
+              $(".datepicker").datepicker("destroy").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+              });
+            }
+
+            $(function () {
+              initDatepickers();
+            });
     </script>
   </body>
 </html>

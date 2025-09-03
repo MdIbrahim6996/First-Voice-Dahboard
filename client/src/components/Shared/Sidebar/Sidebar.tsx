@@ -37,7 +37,7 @@ const Sidebar = () => {
         await axiosInstance.post(`/auth/logout`);
         localStorage.removeItem("authUser");
         setUser(null);
-        window.location.href = "http://localhost:4000/login";
+        // window.location.href = "http://localhost:4000/login";
     };
 
     useEffect(() => {

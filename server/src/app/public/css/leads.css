@@ -147,3 +147,105 @@ th {
 .action-btn:hover {
   background: #1d4ed8;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  z-index: 9998;
+}
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal container (no flexbox) */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  z-index: 9999;
+  overflow: hidden;
+}
+.modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  background: #f7f9fb;
+}
+.modal-title {
+  margin: 0;
+  font-size: 16px;
+  color: #1b3c53;
+}
+.modal-body {
+  padding: 12px;
+}
+.modal-footer {
+  padding: 10px 12px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+.close-btn {
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.status-item {
+  border: 1px solid #94a3b8; /* slate-400 */
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+.status-label {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.status-meta {
+  margin-top: 8px;
+  font-size: 13px;
+
+  /* Old browser safe align (no flex) */
+  overflow: hidden;
+}
+.status-meta p {
+  float: left;
+  margin: 0;
+}
+.status-meta .date-text {
+  float: right;
+  font-size: 12px;
+  color: #555;
+}
+.reason-label {
+  text-decoration: underline;
+  font-size: 12px;
+}

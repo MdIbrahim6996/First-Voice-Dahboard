@@ -111,7 +111,7 @@
 
       <h3>Customer Information</h3>
 
-      <form action="/user/add-lead" method="post">
+      <form action="/user/add-lead" method="post" autocomplete="off">
         <div class="form-row">
           <div class="form-group">
             <label>Title <span class="required">*</span></label>
@@ -187,7 +187,7 @@
             <input
               type="text"
               class="datepicker"
-              placeholder="dd-mm-yyyy"
+              placeholder="yyyy-mm-dd"
               name="dateOfbirth"
             />
           </div>
@@ -269,9 +269,9 @@
               <label>Select Payment Method</label>
               <select id="payment-method" name="paymentMethod" required>
                 <option selected disabled>Select a Payment Method</option>
-                <option value="cash">Cash</option>
-                <option value="bank">Bank Transfer</option>
-                <option value="card">Credit / Debit Card</option>
+                <option value="cash">Cash / Cheque</option>
+                <option value="bank">Direct Debit (DD)</option>
+                <option value="card">Card</option>
               </select>
             </div>
 
@@ -333,7 +333,7 @@
               <input
                 id="ccnum"
                 type="text"
-                placeholder="0004050078999000"
+                placeholder="4242 4242 4242 4242"
                 name="cardNumber"
               />
               <span id="errorMsg" style="color: red; font-size: 13px"></span>
@@ -360,6 +360,11 @@
             </div>
           </div>
         </div>
+
+        <div class="form-group" style="width: 100%">
+          <label>Comment</label>
+          <textarea name="comment" placeholder="Comments if any."></textarea>
+        </div>
         <button>submit</button>
       </form>
     </main>
@@ -369,7 +374,9 @@
     <script>
       $(function () {
         $(".datepicker").datepicker({
-          dateFormat: "dd-mm-yy",
+          dateFormat: "yy-mm-dd",
+          changeMonth: true,
+          changeYear: true,
         });
       });
 

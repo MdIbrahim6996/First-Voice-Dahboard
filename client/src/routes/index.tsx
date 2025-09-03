@@ -7,10 +7,6 @@ import { superadminRoutes } from "./superadminRoutes";
 
 export const router = createBrowserRouter(
     [
-        // {
-        //     path: "login",
-        //     element: <Login />,
-        // },
         {
             path: "",
             element: <RootLayout />,

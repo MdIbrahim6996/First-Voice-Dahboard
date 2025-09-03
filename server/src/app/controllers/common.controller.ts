@@ -11,6 +11,7 @@ export const getUserDetails = async (
     const user = await prisma.user.findFirst({
       where: { id },
     });
+    console.log("====================================");
     res.send(user);
   } catch (error) {
     console.log(error);

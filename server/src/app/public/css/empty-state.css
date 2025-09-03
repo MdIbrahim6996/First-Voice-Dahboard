@@ -1,0 +1,24 @@
+/* Container */
+.empty-state {
+  background: #ffffff;
+  margin: 40px auto;
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Illustration wrapper */
+.illustration {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+}
+
+/* Text */
+.empty-message {
+  margin-top: 20px;
+  color: #374151; /* gray-700 */
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: capitalize;
+}
