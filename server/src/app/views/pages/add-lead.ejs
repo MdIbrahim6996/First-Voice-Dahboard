@@ -31,7 +31,8 @@
 
       p {
         margin-top: 0;
-        font-size: 14px;
+        font-size: 20px;
+        font-style: italic;
         color: #555;
       }
 
@@ -98,16 +99,28 @@
       .required {
         color: red;
       }
+      .btn {
+        margin-top: 1rem;
+        display: inline-block;
+        padding: 8px 14px;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        border: none;
+      }
+      .btn-blue {
+        background: #2563eb;
+      }
     </style>
   </head>
   <body>
     <main class="main">
       <h2 style="display: inline-block">ADD A NEW LEAD</h2>
       <span class="date-label"><%= new Date().toDateString()%></span>
-      <p>
-        Start Adding Leads Now &amp; Expand Your Reach.<br />Your Gateway to New
-        Connections.
-      </p>
+      <p><%=quote.quote %></p>
+      <p style="margin-top: -25px">~ <%=quote.author %></p>
 
       <h3>Customer Information</h3>
 
@@ -172,7 +185,7 @@
             <input type="text" placeholder="Nottinghamshire" name="county" />
           </div>
           <div class="form-group">
-            <label>Pin Code <span class="required">*</span></label>
+            <label>Post Code <span class="required">*</span></label>
             <input type="text" placeholder="700001" name="pincode" required />
           </div>
         </div>
@@ -217,7 +230,7 @@
           <div class="form-row">
             <div class="form-group">
               <label>Select Process</label>
-              <select name="process" required>
+              <select name="process" required id="process">
                 <option selected disabled>Select a Process</option>
                 <% process.forEach(function(item){%>
                 <option value="<%= item.id%>" style="text-transform: uppercase">
@@ -229,13 +242,8 @@
 
             <div class="form-group">
               <label>Plan</label>
-              <select name="plan" required>
+              <select name="plan" required id="plan">
                 <option selected disabled>Select a Plan</option>
-                <% plan.forEach(function(item){%>
-                <option value="<%= item.id%>" style="text-transform: uppercase">
-                  <%= item.name %>
-                </option>
-                <%}) %>
               </select>
             </div>
 
@@ -270,7 +278,7 @@
               <select id="payment-method" name="paymentMethod" required>
                 <option selected disabled>Select a Payment Method</option>
                 <option value="cash">Cash / Cheque</option>
-                <option value="bank">Direct Debit (DD)</option>
+                <option value="directDebit">Direct Debit (DD)</option>
                 <option value="card">Card</option>
               </select>
             </div>
@@ -305,14 +313,22 @@
             <div class="form-group">
               <label>Account Number</label>
               <input
+                id="accountNumber"
                 type="text"
-                placeholder="0004050078999000"
+                maxlength="9"
+                placeholder="3192 6819"
                 name="accountNumber"
               />
             </div>
             <div class="form-group">
               <label>SORT Code</label>
-              <input type="text" placeholder="*****" name="sort" />
+              <input
+                id="sort"
+                type="tel"
+                maxlength="8"
+                placeholder="60 16 13"
+                name="sort"
+              />
             </div>
           </div>
         </div>
@@ -365,7 +381,7 @@
           <label>Comment</label>
           <textarea name="comment" placeholder="Comments if any."></textarea>
         </div>
-        <button>submit</button>
+        <button class="btn btn-blue">SUBMIT</button>
       </form>
     </main>
 
@@ -377,6 +393,7 @@
           dateFormat: "yy-mm-dd",
           changeMonth: true,
           changeYear: true,
+          yearRange: "1940:2007",
         });
       });
 
@@ -386,7 +403,7 @@
       $(document).ready(function () {
         $("#payment-method").change(function () {
           var method = $(this).val();
-          if (method === "bank") {
+          if (method === "directDebit") {
             $("#bank-details").slideDown(); // show with animation
           } else {
             $("#bank-details").slideUp(); // hide if not bank
@@ -428,6 +445,7 @@
           $("#errorMsg").text("❌ Invalid Card").css("color", "red");
         }
       });
+
       $expiryInput.on("keyup input", function () {
         var expiry = $.payment.cardExpiryVal($expiryInput.val());
         if ($.payment.validateCardExpiry(expiry.month, expiry.year)) {
@@ -438,6 +456,63 @@
       });
 
       $("input.expiry").payment("formatCardExpiry");
+
+      // FORMAT ACCOUNT NUMBER
+      var input = document.getElementById("accountNumber");
+      function formatAccount(val) {
+        // remove non-digits
+        val = val.replace(/\D/g, "");
+        // insert space every 4 digits
+        return val.replace(/(.{4})/g, "$1 ").trim();
+      }
+
+      input.onkeyup = function () {
+        input.value = formatAccount(input.value);
+      };
+
+      input.onblur = function () {
+        input.value = formatAccount(input.value);
+      };
+
+      // FORMAT SORT
+      var sortInput = document.getElementById("sort");
+      function formatSort(val) {
+        // remove non-digits
+        val = val.replace(/\D/g, "");
+        // insert space every 4 digits
+        return val.replace(/(.{2})/g, "$1 ").trim();
+      }
+
+      sortInput.onkeyup = function () {
+        sortInput.value = formatSort(sortInput.value);
+      };
+
+      sortInput.onblur = function () {
+        sortInput.value = formatSort(sortInput.value);
+      };
+
+      var processSelect = document.querySelector("#process");
+      var planSelect = document.querySelector("#plan");
+
+      var plan= <%- JSON.stringify(plan)%>;
+
+      processSelect.addEventListener("change", function () {
+          var value = this.value
+          var filteredPlan = []
+          planSelect.innerHTML= "<option selected disabled>Select a Plan</option>"
+         filteredPlan = plan.filter(function(item){
+          return item.processId===+value
+        })
+
+        if(filteredPlan && filteredPlan.length>0){
+          filteredPlan.forEach(function(plan) {
+           var opt = document.createElement("option");
+          opt.value = plan.id;
+          opt.text = plan.name;
+          planSelect.appendChild(opt);
+          })
+        }
+      });
     </script>
   </body>
 </html>

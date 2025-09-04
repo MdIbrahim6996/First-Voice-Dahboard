@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../../lib/prismaClient";
+import { quote, quotesArray } from "../../utils/appContants";
 
 //USER CONTROLLERS
 export const getAllNotificationOfUser = async (
@@ -17,6 +18,7 @@ export const getAllNotificationOfUser = async (
       notifications: notif,
       userId,
       currentPath: "/user/notification",
+      quote: quote,
     });
   } catch (error) {
     console.log(error);

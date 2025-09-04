@@ -3,6 +3,7 @@ import { prisma } from "../lib/prismaClient";
 import { Prisma } from "@prisma/client";
 import { pusher } from "../lib/pusher";
 import { groupBy } from "lodash";
+import { cache } from "../lib/cache";
 
 export const createLead = async (
   req: Request,
@@ -42,7 +43,6 @@ export const createLead = async (
   //     cvv: 'sdf'
   //   }
   // }
-  console.log(req.body);
   const {
     title,
     firstName,
@@ -113,7 +113,6 @@ export const createLead = async (
       },
       include: { status: { select: { name: true } } },
     });
-    console.log(lead?.closerId);
 
     const dailyLeadCount = await prisma.leadCount.upsert({
       where: {
@@ -162,7 +161,6 @@ export const getAllLead = async (
     const newSaleDate = new Date(saleDate as string);
     const nextDay = new Date(saleDate as string);
     nextDay.setDate(nextDay.getDate() + 1);
-
 
     const leads = await prisma.lead.findMany({
       include: {
@@ -383,6 +381,9 @@ export const updateLead = async (
         notif,
       });
     }
+
+    const cacheKey = `userprofile_${lead?.leadByUserId}`;
+    cache.del(cacheKey);
     res.send(lead);
   } catch (error) {
     console.log(error);

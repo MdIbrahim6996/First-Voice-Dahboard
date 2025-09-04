@@ -113,8 +113,7 @@ export const loginFunction = async (
         maxAge: 12 * 60 * 60 * 1000,
       });
       if (existingUser?.role === "user") {
-        console.log("existingUser");
-        return res.redirect(303, "/user/dashboard");
+        return res.redirect(303, "/user/profile");
       }
 
       if (existingUser?.role === "superadmin") {

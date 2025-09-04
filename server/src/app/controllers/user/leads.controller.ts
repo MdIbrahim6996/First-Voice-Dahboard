@@ -38,7 +38,6 @@ export const getUserLeads = async (
       },
       orderBy: { createdAt: "desc" },
     });
-    console.log(req.user?.id);
     res.render("pages/leads", { currentPath: "/user/leads", leads, status });
   } catch (error) {
     console.log(error);
@@ -85,7 +84,6 @@ export const createLead = async (
   //     cvv: 'sdf'
   //   }
   // }
-  console.log(req.body);
   const {
     title,
     firstName,
@@ -156,7 +154,6 @@ export const createLead = async (
       },
       include: { status: { select: { name: true } } },
     });
-    console.log(lead?.closerId);
 
     const dailyLeadCount = await prisma.leadCount.upsert({
       where: {

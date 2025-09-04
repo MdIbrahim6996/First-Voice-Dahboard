@@ -15,7 +15,9 @@
         margin: 0;
       }
       header p {
-        margin: 4px 0 20px;
+        margin-top: 0;
+        font-size: 20px;
+        font-style: italic;
         color: #555;
       }
 
@@ -127,11 +129,12 @@
       <!-- Header -->
       <header class="animated-header">
         <h1>GOOD DAY, USER1</h1>
-        <p>Hope you are having energetic and productive day.</p>
+        <p><%=quote.quote %></p>
+        <p style="margin-top: -25px">~ <%=quote.author %></p>
       </header>
 
       <!-- Analytics Heading -->
-      <h2 class="analytics-title">August Analytics</h2>
+      <h2 class="analytics-title"><%=currentMonth %> Analytics</h2>
 
       <!-- Cards -->
       <div class="cards animated-header">
@@ -186,8 +189,6 @@
       var lateArray = <%- JSON.stringify(graphData?.lateArray)%>;
       var onTimeArray = <%- JSON.stringify(graphData?.ontimeArray)%>;
 
-      console.log("lateArray:", lateArray);
-      console.log("onTimeArray:", onTimeArray);
        var data = {
            labels: [
                "Jan",

@@ -85,11 +85,11 @@
         <li class="<%= currentPath === '/user/leads' ? 'active' : '' %>">
           <a href="/user/leads"><i class="fa fa-list"></i> Leads</a>
         </li>
-        <li class="<%= currentPath === '/user/holiday' ? 'active' : '' %>">
+        <!-- <li class="<%= currentPath === '/user/holiday' ? 'active' : '' %>">
           <a href="/user/holiday"
             ><i class="fa fa-calendar"></i> Holiday Calendar</a
           >
-        </li>
+        </li> -->
         <li class="<%= currentPath === '/user/profile' ? 'active' : '' %>">
           <a href="/user/profile"><i class="fa fa-user-circle"></i> Profile</a>
         </li>
@@ -115,6 +115,8 @@
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
     <script>
       var notifCount = <%= notifCount %>;
+      var user = <%- JSON.stringify(user) %>;
+      console.log("=============",user.id)
       var badgeText = document.querySelector(".badge-text");
       badgeText.textContent = notifCount
 
@@ -122,9 +124,13 @@
         cluster: "<%= pusherCluster %>",
       });
 
-      var channel = pusher.subscribe("notifications");
+      var channel = pusher.subscribe("lead");
 
-      channel.bind("new-notification", function (data) {
+      // "lead", `status-change-${lead?.leadByUserId}"
+
+      channel.bind("status-change-"+user.id, function (data) {
+        console.log("notfi",JSON.stringify(data))
+        notifCount++
        const notifComponent = " "+
        '<div class="notification">' +
           '<div class="notif-header">' +

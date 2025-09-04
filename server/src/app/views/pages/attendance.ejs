@@ -20,7 +20,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
 
     <div class="animated-header"><div id="calendar"></div></div>
-
+    <div
+      id="tooltip"
+      style="
+        position: absolute;
+        display: none;
+        background: #333;
+        color: #fff;
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 4px;
+        z-index: 10000;
+        pointer-events: none;
+      "
+    ></div>
     <script>
       var attendance = <%- JSON.stringify(attendance) %>;
 
@@ -38,7 +51,32 @@
                   title: item.isLate?"LATE":"ON TIME",
                   start: item.dateTime,
                   color: item.isLate ? "red" : "green",
-              }))
+              })),
+
+              eventMouseover: function (event, jsEvent, view) {
+        var tooltip = $('#tooltip');
+        tooltip.html(
+          "<strong>" + event.title + "</strong><br/>" +
+          // (event.start ? new Date(event.start).toString().substring(0,25) : "") + "<br/>" +
+          (event.description || "Mark Time: "+ new Date(event.start).toString().substring(0,25))
+        );
+
+        tooltip.css({
+          top: jsEvent.pageY + 10 + "px",
+          left: jsEvent.pageX + 10 + "px"
+        }).fadeIn(200);
+      },
+      eventMouseout: function (event, jsEvent, view) {
+        $('#tooltip').fadeOut(200);
+      },
+      eventMousemove: function (event, jsEvent, view) {
+        // Keep tooltip following the mouse
+        $('#tooltip').css({
+          top: jsEvent.pageY + 10 + "px",
+          left: jsEvent.pageX + 10 + "px"
+        });
+      }
+
           });
       });
     </script>

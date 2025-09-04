@@ -18,9 +18,10 @@
       }
 
       .greeting p {
-        font-size: 15px;
-        color: #6b7280;
-        margin: 0;
+        margin-top: 0;
+        font-size: 20px;
+        font-style: italic;
+        color: #555;
       }
 
       /* Notification Card */
@@ -91,7 +92,8 @@
     <!-- Greeting -->
     <div class="greeting animated-header">
       <h1>GOOD DAY, USER</h1>
-      <p>Hope you are having energetic and productive day.</p>
+      <p><%=quote.quote %></p>
+      <p style="margin-top: -25px">~ <%=quote.author %></p>
     </div>
 
     <!-- Notification Card -->

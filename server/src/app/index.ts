@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Response, Request } from "express";
+import express, { Application, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
@@ -7,20 +7,23 @@ import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import cluster from "cluster";
 import os from "os";
-import bcrypt from "bcrypt";
 import router from "./routes";
 import pagesRouter from "./routes/user/pages.route";
 import { errorHandler, notFound } from "./middlewares/errorHandler";
 import { isUserAuth } from "./middlewares/authMiddleware";
 import { prisma } from "./lib/prismaClient";
-import { generateAuthToken } from "./utils/token";
 import { getDailyLeadCount } from "./controllers/user/dashboard.controller";
 import { getUserAllAttendance } from "./controllers/user/attendance.controller";
 import { getUserInfo } from "./controllers/user/profile.controller";
 import { getAllNotificationOfUser } from "./controllers/user/notification.controller";
 import { pusher } from "./lib/pusher";
 import { createLead, getUserLeads } from "./controllers/user/leads.controller";
-import { CLIENT_URL } from "./utils/appContants";
+import {
+  CLIENT_URL,
+  monthNames,
+  quote,
+  quotesArray,
+} from "./utils/appContants";
 import { loginFunction } from "./controllers/auth.controller";
 
 const numCPUs = os.cpus().length;
@@ -77,11 +80,13 @@ app.use("/api/v1", router);
 app.locals.pusherKey = process.env.PUSHER_KEY;
 app.locals.pusherCluster = process.env.PUSHER_CLUSTER;
 
+app.locals.currentMonth = monthNames[new Date().getMonth()];
+
 // ROUTING FOR USERS STARTS
 app.get("/login", (req, res: Response) => {
   const { token } = req.cookies;
   if (token) {
-    return res.redirect("/user/dashboard");
+    return res.redirect("/user/profile");
   } else res.render("pages/login", { layout: false, error: null });
 });
 
@@ -105,16 +110,16 @@ app.get("", isUserAuth, (req, res: Response) => {
   if (req.user?.role === "superadmin") {
     res.redirect(CLIENT_URL);
   }
-  res.redirect("/user/dashboard");
+  res.redirect("/user/profile");
 });
 app.get("/user", isUserAuth, (_, res: Response) =>
-  res.redirect("/user/dashboard")
+  res.redirect("/user/profile")
 );
 app.get("/user/dashboard", isUserAuth, getDailyLeadCount);
 app.get("/user/attendance", isUserAuth, getUserAllAttendance);
-app.get("/user/holiday", isUserAuth, (_, res: Response) =>
-  res.render("pages/holiday", { currentPath: "/user/holiday" })
-);
+// app.get("/user/holiday", isUserAuth, (_, res: Response) =>
+//   res.render("pages/holiday", { currentPath: "/user/holiday" })
+// );
 app.get("/user/leads", isUserAuth, getUserLeads);
 
 app.get("/user/add-lead", isUserAuth, async (_, res: Response) => {
@@ -124,18 +129,20 @@ app.get("/user/add-lead", isUserAuth, async (_, res: Response) => {
   });
   const plan = await prisma.plan.findMany({
     orderBy: { createdAt: "desc" },
-    select: { id: true, name: true },
+    select: { id: true, name: true, processId: true },
   });
   const users = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
     where: { role: "closer" },
     select: { id: true, name: true },
   });
+
   res.render("pages/add-lead", {
     currentPath: "/user/add-lead",
     process,
     plan,
     users,
+    quote: quote,
   });
 });
 app.post("/user/add-lead", isUserAuth, createLead);
