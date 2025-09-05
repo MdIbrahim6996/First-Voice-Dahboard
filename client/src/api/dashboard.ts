@@ -4,14 +4,14 @@ import toast from "react-hot-toast";
 
 export const getDailyLeadCount = async (userId: number) => {
     try {
-        const { data } = await axiosInstance.get(
-            `/user/dashboard/${userId}`
-        );
+        const { data } = await axiosInstance.get(`/user/dashboard/${userId}`);
         return data;
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "getDailyLeadCount",
+            });
         }
         return error;
     }

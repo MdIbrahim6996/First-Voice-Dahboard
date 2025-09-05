@@ -12,7 +12,9 @@ export const createHoliday = async (formData: any) => {
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "createHoliday",
+            });
         }
         return error;
     }
@@ -31,7 +33,9 @@ export const updateHoliday = async (formData: any) => {
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "updateHoliday",
+            });
         }
         return error;
     }
@@ -51,7 +55,9 @@ export const getAllHoliday = async (
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "getAllHoliday",
+            });
         }
         return error;
     }
@@ -67,7 +73,9 @@ export const deleteHoliday = async (id: number) => {
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "deleteHoliday",
+            });
         }
         return error;
     }
@@ -81,7 +89,9 @@ export const getAllUserHoliday = async () => {
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "getAllUserHoliday",
+            });
         }
         return error;
     }

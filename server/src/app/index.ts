@@ -16,13 +16,11 @@ import { getDailyLeadCount } from "./controllers/user/dashboard.controller";
 import { getUserAllAttendance } from "./controllers/user/attendance.controller";
 import { getUserInfo } from "./controllers/user/profile.controller";
 import { getAllNotificationOfUser } from "./controllers/user/notification.controller";
-import { pusher } from "./lib/pusher";
 import { createLead, getUserLeads } from "./controllers/user/leads.controller";
 import {
   CLIENT_URL,
   monthNames,
-  quote,
-  quotesArray,
+  returnRandomQuotes,
 } from "./utils/appContants";
 import { loginFunction } from "./controllers/auth.controller";
 
@@ -142,7 +140,7 @@ app.get("/user/add-lead", isUserAuth, async (_, res: Response) => {
     process,
     plan,
     users,
-    quote: quote,
+    quote: returnRandomQuotes(),
   });
 });
 app.post("/user/add-lead", isUserAuth, createLead);

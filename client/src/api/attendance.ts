@@ -16,7 +16,9 @@ export const getAllAttendance = async (
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "getAllAttendance",
+            });
         }
         return error;
     }
@@ -33,7 +35,9 @@ export const createEmployeeAttendance = async (id: number) => {
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "createEmployeeAttendance",
+            });
         }
         return error;
     }
@@ -46,7 +50,9 @@ export const getEmployeeAttendance = async (id: number) => {
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message, {
+                id: "getEmployeeAttendance",
+            });
         }
         return error;
     }

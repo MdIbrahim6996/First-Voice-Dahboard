@@ -19,208 +19,57 @@ export const monthNames = [
 
 export const quotesArray = [
   {
-    quote: "If you are not taking care of your customer, your competitor will.",
-    author: "Bob Hooey",
+    quote: "The secret of getting ahead is getting started",
+    author: "Mark Twain",
   },
   {
     quote:
-      "Chase the vision, not the money; the money will end up following you.",
-    author: "Tony Hsieh",
+      "Success isn't about closing every deal; it's about never giving up on the next one",
+    author: "Xoxoday Blog",
   },
   {
-    quote:
-      "Pretend that every single person you meet has a sign around his or her neck that says, ‘Make me feel important.’ Not only will you succeed in sales, you will succeed in life.",
-    author: "Mary Kay Ash",
+    quote: "You just can't beat the person who never gives up",
+    author: "Unknown",
   },
   {
-    quote:
-      "Great salespeople are relationship builders who provide value and help their customers win.",
-    author: "Jeffrey Gitomer",
+    quote: "The way to get started is to quit talking and begin doing",
+    author: "Walt Disney",
   },
   {
-    quote: "90 percent of selling is conviction and 10 percent is persuasion.",
-    author: "Shiv Khera",
-  },
-  {
-    quote:
-      "You have to drop your sales mentality and start working with your prospects as if they’ve already hired you.",
-    author: "Jill Konrath",
-  },
-  {
-    quote:
-      "I like to think of sales as the ability to gracefully persuade, not manipulate, a person or persons into a win-win situation.",
-    author: "Bo Bennett",
-  },
-  {
-    quote:
-      "Don’t find customers for your products, find products for your customers.",
-    author: "Seth Godin",
-  },
-  {
-    quote:
-      "Companies should be selling ideas more than benefits. Sell Ideas. Not stuff.",
-    author: "Aaron Ross",
-  },
-  { quote: "Make a customer, not a sale.", author: "Katherine Barchetti" },
-  {
-    quote: "In sales, a referral is the key to the door of resistance.",
-    author: "Bo Bennett",
-  },
-  {
-    quote: "Your most unhappy customers are your greatest source of learning.",
-    author: "Bill Gates",
-  },
-  {
-    quote: "A-B-C. Always Be Closing.",
-    author: "Blake in Glengarry Glen Ross",
-  },
-  {
-    quote:
-      "You’re only as good as your last sale, so you put your all into something and just hope that from that you can get your next job.",
-    author: "Josh Peck",
-  },
-  {
-    quote: "You don't compete on price. You compete on relationships.",
-    author: "Patricia Fripp",
-  },
-  {
-    quote:
-      "Honest and transparent content is the best sales tool in the world. Period.",
-    author: "Marcus Sheridan",
-  },
-  {
-    quote:
-      "Sales are contingent upon the attitude of the salesman, not the attitude of the prospect.",
-    author: "William Clement Stone",
-  },
-  {
-    quote: "The sales compensation plan is Batman, the sales contest is Robin.",
-    author: "Mark Roberge",
-  },
-  {
-    quote:
-      "To me, job titles don’t matter. Everyone is in sales. It’s the only way we stay in business.",
-    author: "Harvey Mackay",
-  },
-  { quote: "Either you run the day, or the day runs you.", author: "Jim Rohn" },
-  {
-    quote:
-      "Anything that won’t sell, I don’t want to invent. Its sale is proof of utility, and utility is success.",
-    author: "Thomas Edison",
-  },
-  {
-    quote:
-      "Every morning in Africa, a gazelle wakes up. It knows it must outrun the fastest lion or it will be killed. Every morning in Africa, a lion wakes up. It knows it must run faster than the slowest gazelle, or it will starve. It doesn’t matter whether you’re the lion or a gazelle – when the sun comes up, you’d better be running.",
-    author: "Christopher McDougall",
-  },
-  {
-    quote:
-      "Even if you are on the right track, you’ll get run over if you just sit there.",
-    author: "Will Rogers",
-  },
-  {
-    quote:
-      "For a leader, getting results is more important than getting credit.",
-    author: "Bob Burg",
-  },
-  {
-    quote:
-      "By three methods we may learn wisdom: First, by reflection, which is noblest; Second, by imitation, which is easiest; and third by experience, which is the bitterest.",
-    author: "Confucius",
-  },
-  {
-    quote: "Trouble is only opportunity in work clothes.",
-    author: "Henry J. Kaiser",
-  },
-  { quote: "80% of success is showing up.", author: "Woody Allen" },
-  {
-    quote: "You miss 100% of the shots you don't take.",
-    author: "Wayne Gretzky",
-  },
-  {
-    quote: "Don’t wish it were easier, wish you were better.",
-    author: "Jim Rohn",
-  },
-  {
-    quote: "Life shrinks or expands in proportion to one’s courage.",
-    author: "Anais Nin",
-  },
-  {
-    quote: "Whatever the mind of man can conceive and believe, it can achieve.",
-    author: "Napoleon Hill",
-  },
-  {
-    quote:
-      "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.",
-    author: "Winston Churchill",
-  },
-  {
-    quote:
-      "Opportunities are usually disguised as hard work, so most people don’t recognize them.",
-    author: "Ann Landers",
-  },
-  {
-    quote: "Focus on being productive instead of being busy.",
-    author: "Tim Ferriss",
-  },
-  {
-    quote: "We’re not here to take part, we’re here to take over.",
-    author: "Conor McGregor",
-  },
-  {
-    quote:
-      "By working faithfully eight hours a day, you may eventually get to be boss and work twelve hours a day.",
-    author: "Robert Frost",
-  },
-  {
-    quote:
-      "Time is the friend of the wonderful business, the enemy of the mediocre.",
-    author: "Warren Buffett",
-  },
-  { quote: "Whatever you are, be a good one.", author: "Abraham Lincoln" },
-  {
-    quote:
-      "If you really look closely, most overnight successes took a long time.",
-    author: "Steve Jobs",
-  },
-  {
-    quote:
-      "Success looks a lot like failure up until the moment you break through the finish line.",
-    author: "Dan Waldschmidt",
-  },
-  {
-    quote: "Don’t watch the clock; do what it does. Keep going.",
+    quote: "Don't watch the clock; do what it does. Keep going",
     author: "Sam Levenson",
   },
   {
     quote:
-      "Timing, perseverance, and ten years of trying will eventually make you look like an overnight success.",
-    author: "Biz Stone",
-  },
-  {
-    quote: "Goals allow you to control the direction of change in your favor.",
-    author: "Brian Tracy",
-  },
-  {
-    quote: "Don’t be afraid to give up the good to go for the great.",
-    author: "John D. Rockefeller",
+      "Sales are not about closing deals; they are about opening relationships",
+    author: "Unknown",
   },
   {
     quote:
-      "If you’re offered a seat on a rocket ship, don’t ask what seat! Just get on.",
-    author: "Sheryl Sandberg",
+      "What differentiates sellers today is their ability to bring fresh ideas",
+    author: "Jill Konrath",
   },
   {
-    quote: "The expert in anything was once a beginner.",
-    author: "Helen Hayes",
-  },
-  { quote: "Be so good, they can’t ignore you.", author: "Steve Martin" },
-  {
-    quote: "Winning isn’t everything, but wanting to win is.",
-    author: "Vince Lombardi",
+    quote: "The best salespeople don't just hit targets—they set new ones",
+    author: "Xoxoday Blog",
   },
   {
-    quote: "I am who I am today because of the choices I made yesterday.",
+    quote:
+      "The only place where success comes before work is in the dictionary",
+    author: "Vidal Sassoon",
+  },
+  {
+    quote: "The best way to predict the future is to create it",
+    author: "Peter Drucker",
+  },
+  {
+    quote:
+      "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time",
+    author: "Thomas Edison",
+  },
+  {
+    quote:
+      "Learn from the mistakes of others. You can't live long enough to make them yourself.",
     author: "Eleanor Roosevelt",
   },
   {
@@ -228,37 +77,297 @@ export const quotesArray = [
     author: "Og Mandino",
   },
   {
-    quote: "The way to get started is to quit talking and begin doing.",
-    author: "Walt Disney",
+    quote:
+      "You’re not obligated to win. You’re obligated to keep trying to do the best you can every day.",
+    author: "Marian Wright Edelman",
   },
   {
     quote: "Become the person who would attract the results you seek.",
     author: "Jim Cathcart",
   },
   {
-    quote: "Whether you think you can or you think you can’t, you’re right.",
-    author: "Henry Ford",
-  },
-  { quote: "The best revenge is massive success.", author: "Frank Sinatra" },
-  {
-    quote: "Do not let what you cannot do interfere with what you can do.",
-    author: "John R. Wooden",
+    quote: "Growth and comfort do not coexist.",
+    author: "Ginni Rometty",
   },
   {
-    quote: "The secret of getting ahead is getting started.",
-    author: "Mark Twain",
+    quote: "Either run the day or the day runs you.",
+    author: "Jim Rohn",
   },
-  { quote: "A goal is a dream with a deadline.", author: "Napoleon Hill" },
+  {
+    quote: "Do not focus on numbers. Focus on doing what you do best.",
+    author: "Cassey Ho",
+  },
+  {
+    quote:
+      "I had to make my own living and my own opportunity. But I made it! Don’t sit down and wait for the opportunities to come. Get up and make them.",
+    author: "Madam C.J. Walker",
+  },
+  {
+    quote:
+      "There’s always something to suggest that you’ll never be who you wanted to be. Your choice is to take it or keep on moving.",
+    author: "Phylicia Rashad",
+  },
+  {
+    quote:
+      "Doubt is a killer. You just have to know who you are and what you stand for.",
+    author: "Jennifer Lopez",
+  },
   {
     quote:
       "Setting goals is the first step in turning the invisible into the visible.",
     author: "Tony Robbins",
   },
-  { quote: "Well done is better than well said.", author: "Benjamin Franklin" },
+  {
+    quote: "Believe you can, and you’re halfway there.",
+    author: "Theodore Roosevelt",
+  },
   {
     quote:
-      "Some men see things as they are and ask why … I dream of things that never were and ask why not?",
-    author: "Robert Kennedy",
+      "What you get by achieving your goals is not as important as what you become by achieving your goals.",
+    author: "Zig Ziglar",
+  },
+  {
+    quote:
+      "It’s not who you are that holds you back, it’s who you think you’re not.",
+    author: "Denis Waitley",
+  },
+  {
+    quote: "Everything you’ve ever wanted is on the other side of fear.",
+    author: "George Addair",
+  },
+  {
+    quote:
+      "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+    author: "Winston Churchill",
+  },
+  {
+    quote:
+      "The key to realizing a dream is to focus not on success but on significance — and then even the small steps and little victories along your path will take on greater meaning.",
+    author: "Oprah Winfrey",
+  },
+  {
+    quote: "Motivation will almost always beat mere talent.",
+    author: "Norman Ralph Augustine",
+  },
+  {
+    quote: "Change before you have to.",
+    author: "Jack Welch",
+  },
+  {
+    quote:
+      "Human beings have an innate inner drive to be autonomous, self-determined, and connected to one another. And when that drive is liberated, people achieve more and live richer lives.",
+    author: "Daniel Pink",
+  },
+  {
+    quote: "Your network is your net worth.",
+    author: "Porter Gale",
+  },
+  {
+    quote:
+      "The way to gain a good reputation is to endeavor to be what you desire to appear.",
+    author: "Socrates",
+  },
+  {
+    quote:
+      "You can only become truly accomplished at something you love. Don’t make money your goal. Instead, pursue the things you love doing, and then do them so well that people can’t take their eyes off you.",
+    author: "Maya Angelou",
+  },
+  {
+    quote: "You can’t give up! If you give up, you’re like everybody else.",
+    author: "Chris Evert",
+  },
+  {
+    quote: "Life is short, and it’s up to you to make it sweet.",
+    author: "Sadie Delany",
+  },
+  {
+    quote:
+      "There’s so much creativity in brokeness. Brokeness will have you making it work.",
+    author: "Issa Rae",
+  },
+  {
+    quote:
+      "If you’re offered a seat on a rocket ship, don’t ask what seat! Just get on.",
+    author: "Sheryl Sandberg",
+  },
+  {
+    quote:
+      "Don’t try to do everything by yourself, but try to connect with people and resources. Having that discipline and perseverance is really important.",
+    author: "Chieu Cao",
+  },
+  {
+    quote:
+      "Success seems to be connected with action. Successful people keep moving. They make mistakes, but they don’t quit.",
+    author: "Conrad Hilton",
+  },
+  {
+    quote: "The only way to do great work is to love what you do.",
+    author: "Steve Jobs",
+  },
+  {
+    quote:
+      "What you think, you become. What you feel, you attract. What you imagine, you create.",
+    author: "Buddha",
+  },
+  {
+    quote:
+      "Just don’t give up what you’re trying to do. Where there is love and inspiration, I don’t think you can go wrong.",
+    author: "Ella Fitzgerald",
+  },
+  {
+    quote: "I attribute my success to this: I never gave or took any excuse.",
+    author: "Florence Nightingale",
+  },
+  {
+    quote: "Your attitude, not your aptitude, will determine your altitude.",
+    author: "Zig Ziglar",
+  },
+  {
+    quote:
+      "I got lucky because I never gave up the search. Are you quitting too soon? Or are you willing to pursue luck with a vengeance?",
+    author: "Jill Konrath",
+  },
+  {
+    quote: "Quality performance starts with a positive attitude.",
+    author: "Jeffrey Gitomer",
+  },
+  // --- Newly added quotes (with duplicates kept) ---
+  {
+    quote:
+      "If you don’t give up on something you truly believe in, you will find a way.",
+    author: "Roy T. Bennett",
+  },
+  {
+    quote: "Life shrinks or expands in proportion to one's courage.",
+    author: "Anais Nin",
+  },
+  {
+    quote:
+      "Failure will never overtake me if my determination to succeed is strong enough.",
+    author: "Og Mandino",
+  },
+  {
+    quote:
+      "What you lack in talent can be made up with desire, hustle, and giving 110% all the time.",
+    author: "Don Zimmer",
+  },
+  {
+    quote:
+      "The most difficult thing is the decision to act, the rest is merely tenacity. The fears are paper tigers. You can do anything you decide to do. You can act to change and control your life; and the procedure, the process, is its own reward.",
+    author: "Amelia Earhart",
+  },
+  {
+    quote: "All great achievements require time.",
+    author: "Maya Angelou",
+  },
+  {
+    quote:
+      "You’re not obligated to win. You’re obligated to keep trying to do the best you can every day.",
+    author: "Marian Wright Edelman",
+  },
+  {
+    quote: "Nothing is impossible; the word itself says 'I'm possible!'",
+    author: "Audrey Hepburn",
+  },
+  {
+    quote: "The harder you work, the luckier you get.",
+    author: "Mike Adenuga",
+  },
+  {
+    quote:
+      "You don’t close a sale; you open a relationship if you want to build a long-term, successful enterprise.",
+    author: "Patricia Fripp",
+  },
+  {
+    quote:
+      "Sales are contingent upon the attitude of the salesman—not the attitude of the prospect.",
+    author: "W. Clement Stone",
+  },
+  {
+    quote: "If you are not taking care of your customer, your competitor will.",
+    author: "Bob Hooey",
+  },
+  {
+    quote: "People don’t buy what you do; they buy why you do it.",
+    author: "Simon Sinek",
+  },
+  {
+    quote:
+      "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.",
+    author: "Colin Powell",
+  },
+  {
+    quote:
+      "It’s not about having the right opportunities. It’s about handling the opportunities right.",
+    author: "Mark Hunter",
+  },
+  {
+    quote: "Knowing what must be done does away with fear.",
+    author: "Rosa Parks",
+  },
+  {
+    quote:
+      "All business is personal... Make your friends before you need them.",
+    author: "Robert L. Johnson",
+  },
+  {
+    quote:
+      "Solve customer problems and make sure that the customer is representative of a large market and then you will have a pretty good formula.",
+    author: "Melanie Perkins",
+  },
+  {
+    quote:
+      "Success isn’t about how much money you make; it’s about the difference you make in people’s lives.",
+    author: "Michelle Obama",
+  },
+  {
+    quote:
+      "The most common way people give up their power is by thinking they don’t have any.",
+    author: "Alice Walker",
+  },
+  {
+    quote:
+      "If you want to make money, you have to help someone else make money.",
+    author: "Russell Simmons",
+  },
+  {
+    quote:
+      "If we are going to be part of the solution, we have to engage the problems.",
+    author: "Majora Carter",
+  },
+  {
+    quote:
+      "Instead of looking at the past, I put myself ahead twenty years and try to look at what I need to do now in order to get there then.",
+    author: "Diana Ross",
+  },
+  {
+    quote: "If you don’t risk anything, you risk even more.",
+    author: "Erica Jong",
+  },
+  {
+    quote: "High expectations are the key to everything.",
+    author: "Sam Walton",
+  },
+  {
+    quote: "No one can make you feel inferior without your consent.",
+    author: "Eleanor Roosevelt",
+  },
+  {
+    quote: "You miss 100% of the shots you don’t take.",
+    author: "Wayne Gretzky",
+  },
+  {
+    quote:
+      "Sales are not about selling anymore, but about building trust and educating.",
+    author: "Siva Devaki",
+  },
+  {
+    quote: "Don’t be afraid to give up the good to go for the great.",
+    author: "John D. Rockefeller",
+  },
+  {
+    quote: "Success is the sum of small efforts, repeated day in and day out.",
+    author: "Robert Collier",
   },
   {
     quote: "The successful warrior is the average man, with laser-like focus.",
@@ -266,129 +375,142 @@ export const quotesArray = [
   },
   {
     quote:
-      "If you were happy every day of your life, you wouldn’t be human, you’d be a game show host.",
-    author: "Gabriel Heather",
-  },
-  {
-    quote: "If you’re going through hell, keep going.",
-    author: "Winston Churchill",
-  },
-  {
-    quote: "Tough times never last, but tough people do.",
-    author: "Robert Schuller",
+      "The key to successful leadership today is influence, not authority.",
+    author: "Ken Blanchard",
   },
   {
     quote:
-      "Two roads diverged in a wood, and I – I took the one less traveled by, and that has made all the difference.",
-    author: "Robert Frost",
+      "Never ever chase money. You should chase success because with success, money follows.",
+    author: "Wilfred Emmanuel-Jones",
   },
   {
     quote:
-      "Success is the ability to go from failure to failure without losing your enthusiasm.",
-    author: "Winston Churchill",
+      "Be passionate and move forward with gusto every single hour of every single day until you reach your goal.",
+    author: "Ava DuVernay",
   },
   {
     quote:
-      "Success is the culmination of failures, mistakes, false starts, confusion, and the determination to keep going anyway.",
-    author: "Nick Gleason",
-  },
-  {
-    quote:
-      "You don’t learn to walk by following rules. You learn by doing and falling over.",
-    author: "Richard Branson",
-  },
-  { quote: "Fall seven times, stand up eight.", author: "Japanese Proverb" },
-  {
-    quote: "You just can’t beat the person who never gives up.",
-    author: "Babe Ruth",
-  },
-  {
-    quote:
-      "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack of will.",
-    author: "Vince Lombardi",
-  },
-  {
-    quote: "Every strike brings me closer to the next home run.",
-    author: "Babe Ruth",
-  },
-  {
-    quote:
-      "A successful man is one who can lay a firm foundation with the bricks others have thrown at him.",
-    author: "David Brinkley",
-  },
-  {
-    quote:
-      "Success is never final, failure is never fatal. It’s courage that counts.",
-    author: "John Wooden",
-  },
-  {
-    quote:
-      "Most of the important things in the world have been accomplished by people who have kept on trying when there seemed to be no hope at all.",
-    author: "Dale Carnegie",
-  },
-  {
-    quote: "Today is always the most productive day of your week.",
-    author: "Mark Hunter",
-  },
-  {
-    quote: "Believe you can and you’re halfway there.",
-    author: "Theodore Roosevelt",
-  },
-  { quote: "It hurt because it mattered.", author: "John Green" },
-  {
-    quote: "Alone we can do so little, together we can do so much.",
-    author: "Helen Keller",
-  },
-  {
-    quote:
-      "Don’t look at your feet to see if you are doing it right. Just dance.",
-    author: "Anne Lamott",
-  },
-  {
-    quote: "Set your goals high, and don’t stop till you get there.",
-    author: "Bo Jackson",
-  },
-  {
-    quote:
-      "You don’t have to see the whole staircase, just take the first step.",
-    author: "Martin Luther King, Jr.",
-  },
-  {
-    quote:
-      "Think like a queen. A queen is not afraid to fail. Failure is another stepping stone to greatness.",
+      "When you undervalue what you do, the world will undervalue who you are.",
     author: "Oprah Winfrey",
   },
   {
-    quote: "Don’t count the days. Make the days count.",
-    author: "Muhammad Ali",
+    quote:
+      "There have been so many people who have said to me, ‘You can’t do that,’ but I’ve had an innate belief that they were wrong. Be unwavering and relentless in your approach.",
+    author: "Halle Berry",
+  },
+  {
+    quote: "A goal is a dream with a deadline.",
+    author: "Napoleon Hill",
+  },
+  {
+    quote: "Winning isn’t everything, but wanting to win is.",
+    author: "Vince Lombardi",
   },
   {
     quote:
-      "You may not control all the events that happen to you, but you can decide not to be reduced by them.",
-    author: "Maya Angelou",
+      "Knowing is not enough; we must apply. Wishing is not enough; we must do.",
+    author: "Johann Wolfgang Von Goethe",
   },
   {
     quote:
-      "It takes two to speak the truth – one to speak, and another to hear.",
-    author: "Henry David Thoreau",
-  },
-  {
-    quote: "Don’t get so busy making a living that you forget to make a life.",
-    author: "Dolly Parton",
+      "No matter how many customers you have, each is an individual. The day you start thinking of them as this amorphous ‘collection’ and stop thinking of them as people is the day you start going out of business.",
+    author: "Dharmesh Shah",
   },
   {
     quote:
-      "Preparation, I have often said, is rightly two-thirds of any venture.",
-    author: "Amelia Earhart",
+      "You can’t just sit there and wait for people to give you that golden dream. You’ve got to get out there and make it happen for yourself.",
+    author: "Diana Ross",
+  },
+  {
+    quote:
+      "Winning is great, sure, but if you are really going to do something in life, the secret is learning how to lose. Nobody goes undefeated all the time. If you can pick up after a crushing defeat, and go on to win again, you are going to be a champion someday.",
+    author: "Wilma Rudolph",
+  },
+  {
+    quote:
+      "Don't settle for average. Bring your best to the moment. Then, whether it fails or succeeds, at least you know you gave all you had. We need to live the best that's in us.",
+    author: "Angela Bassett",
+  },
+  {
+    quote: "You just can't beat the person who never gives up.",
+    author: "Babe Ruth",
+  },
+  {
+    quote:
+      "I thrive on obstacles. If I'm told that it can't be done, then I push harder.",
+    author: "Issa Rae",
+  },
+  {
+    quote:
+      "The best way to sell something: Don’t sell anything. Earn the awareness, respect, and trust of those who might buy.",
+    author: "Rand Fishkin",
+  },
+  {
+    quote: "I have stood on a mountain of no’s for one yes.",
+    author: "B. Smith",
+  },
+  {
+    quote: "Treat objections as requests for further information.",
+    author: "Brian Tracy",
+  },
+  {
+    quote: "Selling is essentially a transfer of feelings.",
+    author: "Zig Ziglar",
+  },
+  {
+    quote:
+      "The aim of marketing is to know and understand the customer so well the product or service fits him and sells itself.",
+    author: "Peter Drucker",
+  },
+  {
+    quote: "Make a customer, not a sale.",
+    author: "Katherine Barchetti",
+  },
+  {
+    quote:
+      "What differentiates sellers today is their ability to bring fresh ideas.",
+    author: "Jill Konrath",
+  },
+  {
+    quote:
+      "I have never worked a day in my life without selling. If I believe in something, I sell it, and I sell it hard.",
+    author: "Estée Lauder",
+  },
+  {
+    quote: "Leadership belongs to those who take it.",
+    author: "Sheryl Sandberg",
+  },
+  {
+    quote: "Beware of monotony; it's the mother of all deadly sins.",
+    author: "Edith Wharton",
+  },
+  {
+    quote:
+      "You have to learn to keep your eyes on an ultimate goal. If you lose sight of that goal, you have to get out.",
+    author: "Hamdi Ulukaya",
+  },
+  {
+    quote:
+      "I'd rather regret the things I've done than regret the things I haven't done.",
+    author: "Lucille Ball",
+  },
+  {
+    quote: "The way to get started is to quit talking and begin doing.",
+    author: "Walt Disney",
+  },
+  {
+    quote:
+      "You can never leave footprints that last if you are always walking on tiptoe.",
+    author: "Leymah Gbowee",
   },
 ];
 
-const quoteObj = quotesArray[Math.floor(Math.random() * quotesArray.length)];
-console.log("quoteobj",quoteObj);
-export const quote = quoteObj
-  ? quoteObj
-  : {
-      quote:
-        "If you are not taking care of your customer, your competitor will.",
-      author: "Bob Hooey",
-    };
+
+
+export const returnRandomQuotes = () => {
+  const randomNum = Math.floor(Math.random() * quotesArray.length);
+  console.log(randomNum);
+  return quotesArray[randomNum];
+};
+
+

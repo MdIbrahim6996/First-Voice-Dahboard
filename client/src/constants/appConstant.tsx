@@ -104,18 +104,18 @@ export const superAdminLinks = [
         link: "/superadmin/leads",
         icon: <MdList className="text-xl" />,
     },
-    {
-        id: 6,
-        title: "Holiday-Calendar",
-        link: "/superadmin/holiday-calendar",
-        icon: <MdEventNote className="text-xl" />,
-    },
-    {
-        id: 7,
-        title: "Add Holiday",
-        link: "/superadmin/add-holiday",
-        icon: <MdEventNote className="text-xl" />,
-    },
+    // {
+    //     id: 6,
+    //     title: "Holiday-Calendar",
+    //     link: "/superadmin/holiday-calendar",
+    //     icon: <MdEventNote className="text-xl" />,
+    // },
+    // {
+    //     id: 7,
+    //     title: "Add Holiday",
+    //     link: "/superadmin/add-holiday",
+    //     icon: <MdEventNote className="text-xl" />,
+    // },
     {
         id: 8,
         title: "All Attendance",

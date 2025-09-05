@@ -19,8 +19,8 @@
       <div class="header animated-header">
         <div>
           <h1>DASHBOARD - DAILY LEADS COUNT</h1>
-          <p><%=quote.quote %></p>
-          <p style="margin-top: -25px">~ <%=quote.author %></p>
+          <p><%= quote.quote || "Fallback text" %></p>
+          <p style="margin-top: -25px">~ <%= quote.author || "Fallback text" %></p>
         </div>
         <button id="attendance-btn" class="btn btn-blue">
           Mark Attendance

@@ -3,7 +3,7 @@ import { graphData } from "../../utils/arrayGouping";
 import { groupBy } from "lodash";
 import { prisma } from "../../lib/prismaClient";
 import { cache } from "../../lib/cache";
-import { quote, quotesArray } from "../../utils/appContants";
+import { returnRandomQuotes } from "../../utils/appContants";
 
 const getProfileCardInfo = async (userId: number) => {
   const currentStartDay = new Date();
@@ -164,7 +164,7 @@ export const getUserInfo = async (
       return res.render("pages/profile", {
         currentPath: "/user/profile",
         ...profileData,
-        quote: quote 
+        quote: returnRandomQuotes(),
       });
     }
 

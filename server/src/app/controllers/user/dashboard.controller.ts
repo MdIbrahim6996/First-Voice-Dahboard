@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../../lib/prismaClient";
-import { quote, quotesArray } from "../../utils/appContants";
+import { returnRandomQuotes } from "../../utils/appContants";
 
 export const getDailyLeadCount = async (
   req: Request,
@@ -17,7 +17,7 @@ export const getDailyLeadCount = async (
     res.render("pages/dashboard", {
       currentPath: "/user/dashboard",
       leadCount,
-      quote: quote,
+      quote: returnRandomQuotes(),
     });
   } catch (error) {
     console.log(error);
