@@ -1,18 +1,18 @@
-import { Router } from "express";
+// import { Router } from "express";
 
-import {
-    createNotification,
-    deleteNotification,
-    getAllNotificationOfUser,
-} from "../controllers/notification.controller";
+// import {
+//     createNotification,
+//     deleteNotification,
+//     getAllNotificationOfUser,
+// } from "../controllers/notification.controller";
 
-import { isAuth } from "../middlewares/authMiddleware";
+// import { isAuth } from "../middlewares/authMiddleware";
 
-const router = Router();
+// const router = Router();
 
-router.post("/", createNotification);
-// router.get("/", getAllDashboard);
-router.get("/:userId", isAuth, getAllNotificationOfUser);
-router.delete("/:userId/:id", deleteNotification);
+// router.post("/", createNotification);
+// // router.get("/", getAllDashboard);
+// router.get("/:userId", isAuth, getAllNotificationOfUser);
+// router.delete("/:userId/:id", deleteNotification);
 
-export default router;
+// export default router;

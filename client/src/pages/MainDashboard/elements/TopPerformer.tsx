@@ -53,7 +53,7 @@ const TopPerformer = () => {
                     >
                         <div>
                             <img
-                                src="/trophy-1.svg"
+                                src="/app/trophy-1.svg"
                                 alt=""
                                 className="mx-auto mb-5"
                             />
@@ -77,7 +77,7 @@ const TopPerformer = () => {
                         style={{ visibility: first ? "visible" : "hidden" }}
                     >
                         <img
-                            src="/trophy-1.svg"
+                            src="/app/trophy-1.svg"
                             alt=""
                             className="mx-auto mb-5"
                         />
@@ -100,7 +100,7 @@ const TopPerformer = () => {
                         style={{ visibility: third ? "visible" : "hidden" }}
                     >
                         <img
-                            src="/trophy-1.svg"
+                            src="/app/trophy-1.svg"
                             alt=""
                             className="mx-auto mb-5"
                         />

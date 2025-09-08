@@ -1,0 +1,118 @@
+.profile-container {
+  padding: 1rem;
+}
+
+/* Header */
+header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+header p {
+  margin-top: 0;
+  font-size: 20px;
+  font-style: italic;
+  color: #555;
+}
+
+/* Analytics title */
+.analytics-title {
+  font-style: italic;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+/* Cards layout (inline-block, no flex/grid) */
+.cards {
+  margin-bottom: 24px;
+}
+.card {
+  display: inline-block;
+  vertical-align: top;
+  width: 165px;
+  margin: 5px;
+  border-radius: 6px;
+  padding: 12px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.card p {
+  margin: 0;
+  font-weight: 500;
+  font-size: 22px;
+}
+.card h3 {
+  margin: 6px 0 0;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Gradients (supported in FF28) */
+.gradient-green {
+  background: linear-gradient(90deg, #4ade80, #fde68a);
+}
+.gradient-pink {
+  background: linear-gradient(90deg, #ec4899, #a855f7);
+}
+.gradient-teal {
+  background: linear-gradient(90deg, #10b981, #14b8a6);
+}
+.gradient-orange {
+  background: linear-gradient(90deg, #f97316, #ef4444);
+}
+.gradient-blue {
+  background: linear-gradient(90deg, #3b82f6, #22c55e);
+}
+
+/* Overview section (two-column float layout) */
+.overview-box {
+  float: left;
+  width: 48%;
+  margin: 1%;
+  background: white;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.box-1 {
+  width: 58%;
+}
+.box-2 {
+  width: 31.5%;
+}
+
+.overview-box h3 {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+/* Placeholder for charts */
+.chart-placeholder {
+  height: 250px;
+  text-align: center;
+  line-height: 250px;
+  color: #777;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+/* Clearfix */
+.clear {
+  clear: both;
+}
+
+/* BAR GRAPH */
+
+.chart-wrap {
+  width: 600px;
+  margin: 0 auto;
+}
+canvas {
+  display: block; /* avoid inline whitespace issues */
+}
+.legend {
+  text-align: center;
+  margin-top: 10px;
+}

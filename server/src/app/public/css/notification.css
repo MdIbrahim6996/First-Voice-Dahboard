@@ -1,0 +1,81 @@
+/* Greeting Section */
+.greeting {
+  padding: 30px 40px 10px 40px;
+}
+
+.greeting h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 5px;
+  color: #111827;
+}
+
+.greeting p {
+  margin-top: 0;
+  font-size: 20px;
+  font-style: italic;
+  color: #555;
+}
+
+/* Notification Card */
+.card {
+  max-width: 700px;
+  height: fit-content;
+  position: relative;
+  margin: 30px auto;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card .content {
+  white-space: pre-wrap;
+  -moz-white-space: pre-wrap;
+}
+
+.card h2 {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.card p {
+  font-size: 14px;
+  margin: 0px 0;
+  color: #374151;
+}
+
+.reason {
+  margin: 12px 0;
+}
+
+.btn {
+  /* display: inline-block;
+        display: block; */
+  margin-top: 1rem;
+  width: 10rem;
+  padding: 3px 16px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 13px;
+  color: #374151;
+  margin-top: 10px;
+}

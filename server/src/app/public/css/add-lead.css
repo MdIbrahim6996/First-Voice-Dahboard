@@ -1,0 +1,101 @@
+.main {
+  padding: 1rem;
+}
+
+h2 {
+  margin-bottom: 5px;
+}
+
+.date-label {
+  float: right;
+  background: #2563eb;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+p {
+  margin-top: 0;
+  font-size: 20px;
+  font-style: italic;
+  color: #555;
+}
+
+h3 {
+  margin-top: 20px;
+  font-size: 16px;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-row {
+  width: 100%;
+  clear: both;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  display: inline-block;
+  width: 23%;
+  margin-right: 2%;
+  vertical-align: top;
+}
+.card-form-group {
+  display: inline-block;
+  width: 17.5%;
+  margin-right: 2%;
+  vertical-align: top;
+}
+
+.form-group:last-child {
+  margin-right: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 60px;
+  resize: vertical;
+}
+
+.required {
+  color: red;
+}
+.btn {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 8px 14px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  border: none;
+}
+.btn-blue {
+  background: #2563eb;
+}

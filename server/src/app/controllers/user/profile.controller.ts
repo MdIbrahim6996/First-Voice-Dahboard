@@ -192,6 +192,7 @@ export const getUserInfo = async (
       graphData: graphData(grouped),
       cardInfo: await getProfileCardInfo(userId),
       pieChart: await getPieChartInfo(userId),
+      quote: returnRandomQuotes(),
     });
   } catch (error) {
     console.log(error);
