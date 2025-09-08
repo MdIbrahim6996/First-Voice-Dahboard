@@ -129,8 +129,12 @@
       <!-- Header -->
       <header class="animated-header">
         <h1>GOOD DAY, USER1</h1>
-        <p><%=quote.quote || "Fallback"%></p>
-        <p style="margin-top: -25px">~ <%=quote.author || "Author" %></p>
+        <p>
+          <%= quote && quote.quote ? quote.quote : "Achieve your target." %>
+        </p>
+        <p style="margin-top: -25px">
+          ~ <%= quote && quote.author ? quote.author : "Bob Hooey" %>
+        </p>
       </header>
 
       <!-- Analytics Heading -->

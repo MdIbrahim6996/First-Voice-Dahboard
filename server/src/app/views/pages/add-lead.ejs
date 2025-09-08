@@ -119,9 +119,10 @@
     <main class="main">
       <h2 style="display: inline-block">ADD A NEW LEAD</h2>
       <span class="date-label"><%= new Date().toDateString()%></span>
-      <p><%= quote.quote || "Fallback Text" %></p>
-      <p style="margin-top: -25px">~ <%=quote.author || "Bob Hooey" %></p>
-
+      <p><%= quote && quote.quote ? quote.quote : "Achieve your target." %></p>
+      <p style="margin-top: -25px">
+        ~ <%= quote && quote.author ? quote.author : "Bob Hooey" %>
+      </p>
       <h3>Customer Information</h3>
 
       <form action="/user/add-lead" method="post" autocomplete="off">
