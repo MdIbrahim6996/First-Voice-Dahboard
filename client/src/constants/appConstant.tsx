@@ -4,7 +4,6 @@ import {
     MdPerson,
     MdList,
     MdWorkspacePremium,
-    MdEventNote,
     MdCalendarMonth,
 } from "react-icons/md";
 import { IoBookSharp } from "react-icons/io5";
