@@ -113,6 +113,7 @@ app.get("", isUserAuth, (req, res: Response) => {
 app.get("/user", isUserAuth, (_, res: Response) =>
   res.redirect("/user/profile")
 );
+app.get("/ping", (_, res: Response) => res.send("pong"));
 app.get("/user/dashboard", isUserAuth, getDailyLeadCount);
 app.get("/user/attendance", isUserAuth, getUserAllAttendance);
 // app.get("/user/holiday", isUserAuth, (_, res: Response) =>
