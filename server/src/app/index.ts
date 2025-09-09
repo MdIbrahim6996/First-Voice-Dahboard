@@ -103,8 +103,9 @@ app.use(isUserAuth, async (req, res, next) => {
   res.locals.notifCount = notifs;
   next();
 });
+app.get("/ping", (_, res: Response) => res.send("pong"));
 
-app.get("", isUserAuth, (req, res: Response) => {
+app.get("/", isUserAuth, (req, res: Response) => {
   if (req.user?.role === "superadmin") {
     res.redirect(CLIENT_URL);
   }
@@ -113,7 +114,6 @@ app.get("", isUserAuth, (req, res: Response) => {
 app.get("/user", isUserAuth, (_, res: Response) =>
   res.redirect("/user/profile")
 );
-app.get("/ping", (_, res: Response) => res.send("pong"));
 app.get("/user/dashboard", isUserAuth, getDailyLeadCount);
 app.get("/user/attendance", isUserAuth, getUserAllAttendance);
 // app.get("/user/holiday", isUserAuth, (_, res: Response) =>
@@ -172,23 +172,23 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = 4000;
-// app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
 
 console.log(process.env.NODE_ENV);
 
 //INITIATION OF CLUSTER SERVER
-if (numCPUs > 1) {
-  if (cluster.isPrimary) {
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork();
-    }
+// if (numCPUs > 1) {
+//   if (cluster.isPrimary) {
+//     for (let i = 0; i < numCPUs; i++) {
+//       cluster.fork();
+//     }
 
-    cluster.on("exit", function (worker: any) {
-      console.log("Worker", worker.id, " has exited.");
-    });
-  } else {
-    app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
-  }
-} else {
-  app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
-}
+//     cluster.on("exit", function (worker: any) {
+//       console.log("Worker", worker.id, " has exited.");
+//     });
+//   } else {
+//     app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
+//   }
+// } else {
+//   app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
+// }
