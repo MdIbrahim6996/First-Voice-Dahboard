@@ -40,46 +40,13 @@ exports.deleteLead = exports.updateLead = exports.getSingleLead = exports.getLea
 var prismaClient_1 = require("../lib/prismaClient");
 var client_1 = require("@prisma/client");
 var pusher_1 = require("../lib/pusher");
+var cache_1 = require("../lib/cache");
 var createLead = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, title, firstName, middleName, lastName, centre, address, city, county, pincode, password, dateOfBirth, phone, process, plan, poa, closer, verifier, bank, paymentMethod, shift, comment, card, date, status_1, lead, dailyLeadCount, error_1;
     var _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                //     {
-                //   title: 'Mr.',
-                //   firstName: 'dsfdsf',
-                //   middleName: '',
-                //   lastName: 'dfdsf',
-                //   centre: 'dsfsdf',
-                //   address: '',
-                //   city: '',
-                //   county: '',
-                //   pincode: 'sdfsdf',
-                //   password: '',
-                //   dateOfBirth: '',
-                //   phone: '3242343242',
-                //   process: '1',
-                //   plan: '1',
-                //   closer: '6',
-                //   verifier: '6',
-                //   paymentMethod: 'demandDraft',
-                //   shift: 'UNITED KINGDOM (UK)',
-                //   bank: {
-                //     bankName: 'dsfsdf',
-                //     accountName: 'dsfsdf',
-                //     accountNumber: 'sdfsdf',
-                //     sort: 'sdfsdf'
-                //   },
-                //     card: {
-                //     name: 'fsdf',
-                //     bankName: 'sdf',
-                //     cardNumber: 'sdf',
-                //     expiry: 'dsf',
-                //     cvv: 'sdf'
-                //   }
-                // }
-                console.log(req.body);
                 _a = req.body, title = _a.title, firstName = _a.firstName, middleName = _a.middleName, lastName = _a.lastName, centre = _a.centre, address = _a.address, city = _a.city, county = _a.county, pincode = _a.pincode, password = _a.password, dateOfBirth = _a.dateOfBirth, phone = _a.phone, process = _a.process, plan = _a.plan, poa = _a.poa, closer = _a.closer, verifier = _a.verifier, bank = _a.bank, paymentMethod = _a.paymentMethod, shift = _a.shift, comment = _a.comment, card = _a.card;
                 date = new Date();
                 _c.label = 1;
@@ -115,12 +82,8 @@ var createLead = function (req, res, next) { return __awaiter(void 0, void 0, vo
                             comment: comment ? comment : client_1.Prisma.skip,
                             // BANK
                             bankName: (bank === null || bank === void 0 ? void 0 : bank.bankName) ? bank === null || bank === void 0 ? void 0 : bank.bankName : client_1.Prisma.skip,
-                            accountName: (bank === null || bank === void 0 ? void 0 : bank.accountName)
-                                ? bank === null || bank === void 0 ? void 0 : bank.accountName
-                                : client_1.Prisma.skip,
-                            accountNumber: (bank === null || bank === void 0 ? void 0 : bank.accountNumber)
-                                ? bank === null || bank === void 0 ? void 0 : bank.accountNumber
-                                : client_1.Prisma.skip,
+                            accountName: (bank === null || bank === void 0 ? void 0 : bank.accountName) ? bank === null || bank === void 0 ? void 0 : bank.accountName : client_1.Prisma.skip,
+                            accountNumber: (bank === null || bank === void 0 ? void 0 : bank.accountNumber) ? bank === null || bank === void 0 ? void 0 : bank.accountNumber : client_1.Prisma.skip,
                             sort: (bank === null || bank === void 0 ? void 0 : bank.sort) ? bank === null || bank === void 0 ? void 0 : bank.sort : client_1.Prisma.skip,
                             // CARD
                             cardName: (card === null || card === void 0 ? void 0 : card.name) ? card === null || card === void 0 ? void 0 : card.name : client_1.Prisma.skip,
@@ -134,7 +97,6 @@ var createLead = function (req, res, next) { return __awaiter(void 0, void 0, vo
                     })];
             case 3:
                 lead = _c.sent();
-                console.log(lead === null || lead === void 0 ? void 0 : lead.closerId);
                 return [4 /*yield*/, prismaClient_1.prisma.leadCount.upsert({
                         where: {
                             userId: lead === null || lead === void 0 ? void 0 : lead.leadByUserId,
@@ -329,7 +291,7 @@ var getSingleLead = function (req, res, next) { return __awaiter(void 0, void 0,
 }); };
 exports.getSingleLead = getSingleLead;
 var updateLead = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, _a, title, firstName, middleName, lastName, address, city, county, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, reason, initialStatus, finalStatus, lead, statusChangeReason, content, notif, error_5;
+    var id, _a, title, firstName, middleName, lastName, address, city, county, pincode, phone, fee, currency, bankName, accountName, sort, dateOfBirth, status, reason, initialStatus, finalStatus, lead, statusChangeReason, content, notif, cacheKey, error_5;
     var _b, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -403,6 +365,8 @@ var updateLead = function (req, res, next) { return __awaiter(void 0, void 0, vo
                         notif: notif,
                     });
                 }
+                cacheKey = "userprofile_".concat(lead === null || lead === void 0 ? void 0 : lead.leadByUserId);
+                cache_1.cache.del(cacheKey);
                 res.send(lead);
                 return [3 /*break*/, 7];
             case 6:

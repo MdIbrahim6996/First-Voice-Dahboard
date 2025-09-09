@@ -52,6 +52,7 @@ var getUserDetails = function (req, res, next) { return __awaiter(void 0, void 0
                     })];
             case 2:
                 user = _a.sent();
+                console.log("====================================");
                 res.send(user);
                 return [3 /*break*/, 4];
             case 3:

@@ -61,6 +61,7 @@ var arrayGouping_1 = require("../../utils/arrayGouping");
 var lodash_1 = require("lodash");
 var prismaClient_1 = require("../../lib/prismaClient");
 var cache_1 = require("../../lib/cache");
+var appContants_1 = require("../../utils/appContants");
 var getProfileCardInfo = function (userId) { return __awaiter(void 0, void 0, void 0, function () {
     var currentStartDay, nextStartDay, currentStartMonth, nextStartMonth, todayLead, totalLead, totalSuccessLead, totalAttendance, spd;
     return __generator(this, function (_a) {
@@ -227,7 +228,7 @@ var getUserInfo = function (req, res, next) { return __awaiter(void 0, void 0, v
                 cacheKey = "userprofile_".concat(userId);
                 if (cache_1.cache.has(cacheKey)) {
                     profileData = cache_1.cache.get(cacheKey);
-                    return [2 /*return*/, res.render("pages/profile", __assign({ currentPath: "/user/profile" }, profileData))];
+                    return [2 /*return*/, res.render("pages/profile", __assign(__assign({ currentPath: "/user/profile" }, profileData), { quote: (0, appContants_1.returnRandomQuotes)() }))];
                 }
                 return [4 /*yield*/, prismaClient_1.prisma.attendance.findMany({
                         where: { userId: userId },
@@ -264,6 +265,7 @@ var getUserInfo = function (req, res, next) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, getPieChartInfo(userId)];
             case 7:
                 _e.apply(_d, _f.concat([(_h.pieChart = _j.sent(),
+                        _h.quote = (0, appContants_1.returnRandomQuotes)(),
                         _h)]));
                 return [3 /*break*/, 9];
             case 8:

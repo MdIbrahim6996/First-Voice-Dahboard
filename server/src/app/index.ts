@@ -173,6 +173,8 @@ app.use(errorHandler);
 const PORT = 4000;
 // app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
 
+console.log(process.env.NODE_ENV);
+
 //INITIATION OF CLUSTER SERVER
 if (numCPUs > 1) {
   if (cluster.isPrimary) {

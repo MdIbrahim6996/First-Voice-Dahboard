@@ -35,17 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -55,22 +44,22 @@ var cors_1 = __importDefault(require("cors"));
 var morgan_1 = __importDefault(require("morgan"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var compression_1 = __importDefault(require("compression"));
+var path_1 = __importDefault(require("path"));
+var express_ejs_layouts_1 = __importDefault(require("express-ejs-layouts"));
+var cluster_1 = __importDefault(require("cluster"));
+var os_1 = __importDefault(require("os"));
 var routes_1 = __importDefault(require("./routes"));
 var pages_route_1 = __importDefault(require("./routes/user/pages.route"));
 var errorHandler_1 = require("./middlewares/errorHandler");
-var path_1 = __importDefault(require("path"));
-var express_ejs_layouts_1 = __importDefault(require("express-ejs-layouts"));
-var os_1 = __importDefault(require("os"));
 var authMiddleware_1 = require("./middlewares/authMiddleware");
 var prismaClient_1 = require("./lib/prismaClient");
-var token_1 = require("./utils/token");
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var dashboard_controller_1 = require("./controllers/user/dashboard.controller");
 var attendance_controller_1 = require("./controllers/user/attendance.controller");
 var profile_controller_1 = require("./controllers/user/profile.controller");
 var notification_controller_1 = require("./controllers/user/notification.controller");
-var pusher_1 = require("./lib/pusher");
 var leads_controller_1 = require("./controllers/user/leads.controller");
+var appContants_1 = require("./utils/appContants");
+var auth_controller_1 = require("./controllers/auth.controller");
 var numCPUs = os_1.default.cpus().length;
 var app = (0, express_1.default)();
 //MIDDLEWARES
@@ -92,14 +81,12 @@ app.set("view engine", "ejs");
 app.set("views", path_1.default.join(path_1.default.resolve(), "src/app/views"));
 app.use(express_ejs_layouts_1.default);
 app.set("layout", "layouts/main");
+// NO CACHE, FRESH PAGE FETCHING ALWAYS FOR EJS ROUTES
 app.use(function (req, res, next) {
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
     next();
 });
-// app.use(
-//   "/assets",
-//   express.static(path.join(path.resolve(), "../client", "dist", "assets"))
-// );
+// ROUTING FOR REACT APP
 app.use("/app", express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
 app.get("/app/{*any}", function (req, res) {
     res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
@@ -108,90 +95,27 @@ app.get("/app/{*any}", function (req, res) {
 app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public")));
 app.use("/js", express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public/js")));
 app.use("/css", express_1.default.static(path_1.default.join(path_1.default.resolve(), "src/app/public/css")));
-// ROUTES
-// app.get("/user/{*any}", (_, res: Response) => res.send("pages not found"));
-// app.get("/api/v1/health-check", (_, res: Response) =>
-//   res.send({ message: "ok" })
-// );
+// API ROUTER
+app.use("/api/v1", routes_1.default);
+// GLOBAL VARIABLES FOR EJS
 app.locals.pusherKey = process.env.PUSHER_KEY;
 app.locals.pusherCluster = process.env.PUSHER_CLUSTER;
-var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, existingUser, matchedPassword, token, password_1, userData, error_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, email = _a.email, password = _a.password;
-                _b.label = 1;
-            case 1:
-                _b.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, prismaClient_1.prisma.user.findFirst({
-                        where: { email: email },
-                    })];
-            case 2:
-                existingUser = _b.sent();
-                if (!existingUser) {
-                    throw new Error("User Does not Exist.");
-                }
-                if (existingUser === null || existingUser === void 0 ? void 0 : existingUser.isBlocked) {
-                    res.status(401);
-                    throw new Error("You Have Been Blocked By Admin.");
-                }
-                return [4 /*yield*/, bcrypt_1.default.compare(password, existingUser.password)];
-            case 3:
-                matchedPassword = _b.sent();
-                if (matchedPassword) {
-                    token = (0, token_1.generateAuthToken)(String(existingUser === null || existingUser === void 0 ? void 0 : existingUser.id), existingUser.role);
-                    if ((existingUser === null || existingUser === void 0 ? void 0 : existingUser.role) === "user") {
-                        return [2 /*return*/, res
-                                .cookie("token", token, {
-                                httpOnly: true,
-                                secure: false,
-                                maxAge: 12 * 60 * 60 * 1000,
-                            })
-                                .redirect(303, "/user/dashboard")];
-                    }
-                    password_1 = existingUser.password, userData = __rest(existingUser, ["password"]);
-                    return [2 /*return*/, res
-                            .cookie("token", token, {
-                            httpOnly: true,
-                            secure: true,
-                            maxAge: 12 * 60 * 60 * 1000,
-                        })
-                            .redirect("http://localhost:4000/app/superadmin/dashboard")];
-                }
-                else {
-                    throw new Error("Invalid Credentials.");
-                }
-                return [3 /*break*/, 5];
-            case 4:
-                error_1 = _b.sent();
-                console.log(error_1);
-                res.render("pages/login", { layout: false, error: error_1.message });
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); };
-app.post("/notify", function (req, res) {
-    var notification = req.body.notification || "Default notification";
-    console.log("Notification received:", notification); // Debugging line
-    pusher_1.pusher.trigger("notifications", "new-notification", { text: notification });
-    res.json({ status: "ok" });
-});
+app.locals.currentMonth = appContants_1.monthNames[new Date().getMonth()];
+// ROUTING FOR USERS STARTS
 app.get("/login", function (req, res) {
     var token = req.cookies.token;
-    console.log("Token from cookie login:", token); // Debugging line
     if (token) {
-        return res.redirect("/user/dashboard");
+        return res.redirect("/user/profile");
     }
     else
         res.render("pages/login", { layout: false, error: null });
 });
-app.post("/login", loginFunction);
+app.post("/login", auth_controller_1.loginFunction);
 app.get("/logout", function (req, res) {
     res.clearCookie("token");
     res.redirect("/login");
 });
+// SENDING GLOBAL VARIABLES TO SIDEBAR EJS
 app.use(authMiddleware_1.isUserAuth, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var notifs;
     var _a;
@@ -209,15 +133,21 @@ app.use(authMiddleware_1.isUserAuth, function (req, res, next) { return __awaite
         }
     });
 }); });
-// app.get("", isUserAuth, (_, res: Response) => res.redirect("/user/dashboard"));
+app.get("", authMiddleware_1.isUserAuth, function (req, res) {
+    var _a;
+    if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.role) === "superadmin") {
+        res.redirect(appContants_1.CLIENT_URL);
+    }
+    res.redirect("/user/profile");
+});
 app.get("/user", authMiddleware_1.isUserAuth, function (_, res) {
-    return res.redirect("/user/dashboard");
+    return res.redirect("/user/profile");
 });
 app.get("/user/dashboard", authMiddleware_1.isUserAuth, dashboard_controller_1.getDailyLeadCount);
 app.get("/user/attendance", authMiddleware_1.isUserAuth, attendance_controller_1.getUserAllAttendance);
-app.get("/user/holiday", authMiddleware_1.isUserAuth, function (_, res) {
-    return res.render("pages/holiday", { currentPath: "/user/holiday" });
-});
+// app.get("/user/holiday", isUserAuth, (_, res: Response) =>
+//   res.render("pages/holiday", { currentPath: "/user/holiday" })
+// );
 app.get("/user/leads", authMiddleware_1.isUserAuth, leads_controller_1.getUserLeads);
 app.get("/user/add-lead", authMiddleware_1.isUserAuth, function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
     var process, plan, users;
@@ -231,7 +161,7 @@ app.get("/user/add-lead", authMiddleware_1.isUserAuth, function (_, res) { retur
                 process = _a.sent();
                 return [4 /*yield*/, prismaClient_1.prisma.plan.findMany({
                         orderBy: { createdAt: "desc" },
-                        select: { id: true, name: true },
+                        select: { id: true, name: true, processId: true },
                     })];
             case 2:
                 plan = _a.sent();
@@ -247,6 +177,7 @@ app.get("/user/add-lead", authMiddleware_1.isUserAuth, function (_, res) { retur
                     process: process,
                     plan: plan,
                     users: users,
+                    quote: (0, appContants_1.returnRandomQuotes)(),
                 });
                 return [2 /*return*/];
         }
@@ -256,7 +187,7 @@ app.post("/user/add-lead", authMiddleware_1.isUserAuth, leads_controller_1.creat
 app.get("/user/notification", authMiddleware_1.isUserAuth, notification_controller_1.getAllNotificationOfUser);
 app.get("/user/profile", authMiddleware_1.isUserAuth, profile_controller_1.getUserInfo);
 app.use("/", authMiddleware_1.isUserAuth, pages_route_1.default);
-app.use("/api/v1", routes_1.default);
+// ROUTING FOR USERS ENDS
 // Serve front-end app for all unmatched routes
 if (process.env.NODE_ENV === "production") {
     app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
@@ -265,52 +196,30 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 app.use(function (req, res, next) {
-    console.log("======", req.path);
     if (req.path.startsWith("/app"))
-        return next(); // let React handle
+        return next(); // React handles routing from here.
     res.status(404).render("errors/404", { url: req.originalUrl, layout: false });
 });
-// Serve front-end app for all unmatched routes
-app.use(express_1.default.static(path_1.default.join(path_1.default.resolve(), "../client", "dist")));
-app.get("/app/{*any}", function (req, res) {
-    res.sendFile(path_1.default.resolve(path_1.default.resolve(), "../client", "dist", "index.html"));
-});
-// app.use((req, res, next) => {
-//   // Only handle 404s for non-React routes
-//   if (req.path.startsWith("/app")) {
-//     console.log("==============", req.path);
-//     app.use(
-//       "/app",
-//       express.static(path.join(path.resolve(), "../client", "dist"))
-//     );
-//     app.get("/app", (req, res) => {
-//       res.sendFile(
-//         path.resolve(path.resolve(), "../client", "dist", "index.html")
-//       );
-//     });
-//     return next(); // let React handle it
-//   }
-//   res.status(404).render("errors/404", {
-//     url: req.originalUrl,
-//     layout: false,
-//   });
-// });
 //ERROR HANDLER
 app.use(errorHandler_1.notFound);
 app.use(errorHandler_1.errorHandler);
 var PORT = 4000;
-app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
-// if (numCPUs > 1) {
-//   if (cluster.isPrimary) {
-//     for (let i = 0; i < numCPUs; i++) {
-//       cluster.fork();
-//     }
-//     cluster.on("exit", function (worker: any) {
-//       console.log("Worker", worker.id, " has exited.");
-//     });
-//   } else {
-//     app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-//   }
-// } else {
-//   app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
-// }
+// app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+console.log(process.env.NODE_ENV);
+//INITIATION OF CLUSTER SERVER
+if (numCPUs > 1) {
+    if (cluster_1.default.isPrimary) {
+        for (var i = 0; i < numCPUs; i++) {
+            cluster_1.default.fork();
+        }
+        cluster_1.default.on("exit", function (worker) {
+            console.log("Worker", worker.id, " has exited.");
+        });
+    }
+    else {
+        app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
+    }
+}
+else {
+    app.listen(PORT, function () { return console.log("Listening at PORT ".concat(PORT)); });
+}

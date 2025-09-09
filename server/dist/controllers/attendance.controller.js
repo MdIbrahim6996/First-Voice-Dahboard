@@ -73,7 +73,7 @@ var createEmployeeAttendance = function (req, res, next) { return __awaiter(void
                 }
                 currentUTCTime = new Date();
                 timeToCompare = new Date();
-                isLate = currentUTCTime > new Date(timeToCompare.setUTCHours(9, 0, 0, 0))
+                isLate = currentUTCTime > new Date(timeToCompare.setUTCHours(9, 15, 0, 0))
                     ? true
                     : false;
                 return [4 /*yield*/, prismaClient_1.prisma.attendance.create({
@@ -267,9 +267,7 @@ var getEmployeeMonthlyAttendance = function (req, res, next) { return __awaiter(
                 return [4 /*yield*/, prismaClient_1.prisma.user.findMany({
                         where: {
                             id: {
-                                in: attendance.map(function (item) {
-                                    return item.userId ? item === null || item === void 0 ? void 0 : item.userId : 0;
-                                }),
+                                in: attendance.map(function (item) { return (item.userId ? item === null || item === void 0 ? void 0 : item.userId : 0); }),
                             },
                         },
                         select: { id: true, name: true },
@@ -304,9 +302,7 @@ var getAllAttendance = function (req, res, next) { return __awaiter(void 0, void
                             user: { name: name ? name : client_1.Prisma.skip },
                             userId: { not: null },
                             dateTime: {
-                                gte: startDate
-                                    ? new Date(startDate)
-                                    : client_1.Prisma.skip,
+                                gte: startDate ? new Date(startDate) : client_1.Prisma.skip,
                                 lte: endDate ? new Date(endDate) : client_1.Prisma.skip,
                             },
                         },

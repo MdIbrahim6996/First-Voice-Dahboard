@@ -50,10 +50,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logoutController = exports.loginController = exports.registerController = void 0;
+exports.logoutController = exports.loginFunction = exports.loginController = exports.registerController = void 0;
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var prismaClient_1 = require("../lib/prismaClient");
 var token_1 = require("../utils/token");
+var appContants_1 = require("../utils/appContants");
 var registerController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, role, name_1, existingUser, hanshedPassword, error_1;
     return __generator(this, function (_b) {
@@ -140,6 +141,58 @@ var loginController = function (req, res, next) { return __awaiter(void 0, void 
     });
 }); };
 exports.loginController = loginController;
+var loginFunction = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, existingUser, matchedPassword, token, error_3;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, email = _a.email, password = _a.password;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, prismaClient_1.prisma.user.findFirst({
+                        where: { email: email },
+                    })];
+            case 2:
+                existingUser = _b.sent();
+                if (!existingUser) {
+                    throw new Error("User Does not Exist.");
+                }
+                if (existingUser === null || existingUser === void 0 ? void 0 : existingUser.isBlocked) {
+                    res.status(401);
+                    throw new Error("You Have Been Blocked By Admin.");
+                }
+                return [4 /*yield*/, bcrypt_1.default.compare(password, existingUser.password)];
+            case 3:
+                matchedPassword = _b.sent();
+                if (matchedPassword) {
+                    token = (0, token_1.generateAuthToken)(String(existingUser === null || existingUser === void 0 ? void 0 : existingUser.id), existingUser.role);
+                    res.cookie("token", token, {
+                        httpOnly: true,
+                        secure: false,
+                        maxAge: 12 * 60 * 60 * 1000,
+                    });
+                    if ((existingUser === null || existingUser === void 0 ? void 0 : existingUser.role) === "user") {
+                        return [2 /*return*/, res.redirect(303, "/user/profile")];
+                    }
+                    if ((existingUser === null || existingUser === void 0 ? void 0 : existingUser.role) === "superadmin") {
+                        return [2 /*return*/, res.redirect("".concat(appContants_1.CLIENT_URL, "superadmin/main-dashboard"))];
+                    }
+                }
+                else {
+                    throw new Error("Invalid Credentials.");
+                }
+                return [3 /*break*/, 5];
+            case 4:
+                error_3 = _b.sent();
+                console.log(error_3);
+                res.render("pages/login", { layout: false, error: error_3.message });
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); };
+exports.loginFunction = loginFunction;
 var logoutController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         res.clearCookie("token");

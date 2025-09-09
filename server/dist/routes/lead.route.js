@@ -1,12 +1,19 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var lead_controller_1 = require("../controllers/lead.controller");
-var router = (0, express_1.Router)();
-router.post("/", lead_controller_1.createLead);
-router.get("/", lead_controller_1.getAllLead);
-router.get("/:userId", lead_controller_1.getAllLeadOfUser);
-router.get("/date/:userId", lead_controller_1.getLeadOfUserByDate);
-router.put("/:id", lead_controller_1.updateLead);
-router.delete("/:id", lead_controller_1.deleteLead);
-exports.default = router;
+// import { Router } from "express";
+// import {
+//     createLead,
+//     deleteLead,
+//     getAllLead,
+//     getAllLeadOfUser,
+//     getLeadOfUserByDate,
+//     getSingleLead,
+//     updateLead,
+// } from "../controllers/lead.controller";
+// const router = Router();
+// router.post("/", createLead);
+// router.get("/", getAllLead);
+// router.get("/:userId", getAllLeadOfUser);
+// router.get("/date/:userId", getLeadOfUserByDate);
+// router.put("/:id", updateLead);
+// router.delete("/:id", deleteLead);
+// export default router;

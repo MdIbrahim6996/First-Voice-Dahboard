@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isUserAuth = exports.isAuth = void 0;
 var prismaClient_1 = require("../lib/prismaClient");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var appContants_1 = require("../utils/appContants");
 var isAuth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var token, id, user, error_1;
     return __generator(this, function (_a) {
@@ -118,6 +119,9 @@ var isUserAuth = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 1:
                 user = (_a.sent());
                 req.user = user;
+                if (user.role === "superadmin") {
+                    return [2 /*return*/, res.redirect(appContants_1.CLIENT_URL)];
+                }
                 return [3 /*break*/, 3];
             case 2:
                 res.redirect("/login");

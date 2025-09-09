@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDailyLeadCount = void 0;
 var prismaClient_1 = require("../../lib/prismaClient");
+var appContants_1 = require("../../utils/appContants");
 var getDailyLeadCount = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, leadCount, error_1;
     return __generator(this, function (_a) {
@@ -57,6 +58,7 @@ var getDailyLeadCount = function (req, res, next) { return __awaiter(void 0, voi
                 res.render("pages/dashboard", {
                     currentPath: "/user/dashboard",
                     leadCount: leadCount,
+                    quote: (0, appContants_1.returnRandomQuotes)(),
                 });
                 return [3 /*break*/, 4];
             case 3:

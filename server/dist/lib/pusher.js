@@ -5,10 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pusher = void 0;
 var pusher_1 = __importDefault(require("pusher"));
+var appContants_1 = require("../utils/appContants");
 exports.pusher = new pusher_1.default({
-    appId: "2027044",
-    key: "3598d69c8453a73ad670",
-    secret: "108117700ada004e41c5",
-    cluster: "ap2",
+    appId: appContants_1.PUHSER_APP_ID,
+    key: appContants_1.PUSHER_KEY,
+    secret: appContants_1.PUSHER_SECRET,
+    cluster: appContants_1.PUSHER_CLUSTER,
     useTLS: true,
 });

@@ -6,6 +6,7 @@
     "dev": "cross-env NODE_ENV=development nodemon --files src/app/index.ts",
     "stage": "cross-env NODE_ENV=staging && npm start",
     "build": " npm install && npm install --prefix ../client && npm run build --prefix ../client && npx prisma generate && tsc",
+    "build:prod": " npm install && npx prisma generate && tsc",
     "start": "node dist/index.js"
   },
   "keywords": [],

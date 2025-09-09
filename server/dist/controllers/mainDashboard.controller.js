@@ -112,7 +112,6 @@ var getProcessLeadCount = function (req, res, next) { return __awaiter(void 0, v
                     })];
             case 2:
                 leadCount = _a.sent();
-                console.log(leadCount);
                 res.send(leadCount);
                 return [3 /*break*/, 4];
             case 3:

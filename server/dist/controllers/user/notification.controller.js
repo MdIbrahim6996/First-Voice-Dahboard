@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteNotification = exports.getAllNotificationOfUser = void 0;
 var prismaClient_1 = require("../../lib/prismaClient");
+var appContants_1 = require("../../utils/appContants");
 //USER CONTROLLERS
 var getAllNotificationOfUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, notif, error_1;
@@ -56,6 +57,7 @@ var getAllNotificationOfUser = function (req, res, next) { return __awaiter(void
                     notifications: notif,
                     userId: userId,
                     currentPath: "/user/notification",
+                    quote: (0, appContants_1.returnRandomQuotes)(),
                 });
                 return [3 /*break*/, 3];
             case 2:
