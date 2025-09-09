@@ -186,8 +186,8 @@ if (numCPUs > 1) {
       console.log("Worker", worker.id, " has exited.");
     });
   } else {
-    app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+    app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
   }
 } else {
-  app.listen(PORT, () => console.log(`Listening at PORT ${PORT}`));
+  app.listen(PORT, "0.0.0.0", () => console.log(`Listening at PORT ${PORT}`));
 }
